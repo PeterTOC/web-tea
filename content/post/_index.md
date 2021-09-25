@@ -5,7 +5,7 @@ aliases:
 - blog
 - showcase
 - docs
-author: Hugo Authors
+author: Peter Boshe
 tags:
 - index
 title: Posts

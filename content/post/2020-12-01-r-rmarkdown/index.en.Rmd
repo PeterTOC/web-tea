@@ -1,37 +1,27 @@
 ---
-title: "Hello R Markdown"
-author: "Frida Gomam"
-date: 2020-12-01T21:13:14-05:00
+title: "Visualization - Case Study Selection"
+description: "Visualization project to mine, analyse and present data to justify selection criteria for a case study"
+author: "Peter Boshe"
+date: 2021-05-01T11:00:59-04:00
 categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+tags: ["R programming","Visualization","Data Analysis"]
+summary: 20
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# R Markdown
+The task was to mine for relevant data and presenting them in a manner that would simplify the decision making process in picking countries as case studies to assess the state and level of data protection regulation in Africa in order to;
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-You can embed an R code chunk like this:
+- Get a deeper feel of the trends present among the countries; \n
+-to find out which nations are to a more degree exposed to data mishandling;\n
+- To find out which countries have strategies in place to safeguard their citizens' right of privacy,\n
 
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
-```
+>The following are some of the visuals that I had then created to facilitate the research paper.
 
-# Including Plots
+![](index.en_files/figure-html/Rplot04.png) 
 
-You can also embed plots. See Figure \@ref(fig:pie) for example:
+![](index.en_files/figure-html/Rplot05.png) ![](index.en_files/figure-html/Rplot06.png) ![](index.en_files/figure-html/Rplot07.png) ![](index.en_files/figure-html/Rplot08.png) ![](index.en_files/figure-html/Rplot09.png) 
 
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
-```

@@ -1,20 +1,23 @@
 ---
-title: "Hello R Markdown"
-author: "Frida Gomam"
-date: 2020-12-01T21:13:14-05:00
+title: "Visualization - Case Study Selection"
+description: "Visualization project to mine, analyse and present data to justify selection criteria for a case study"
+author: "Peter Boshe"
+date: 2021-05-01T11:00:59-04:00
 categories: ["R"]
-tags: ["R Markdown", "plot", "regression"]
+tags: ["R programming","Visualization","Data Analysis"]
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-# R Markdown
+The task was to mine for relevant data and presenting them in a manner that would simplify the decision making process
+in picking countries as case studies to assess the state and level of data protection regulation in Africa in order to;
+- Get a deeper feel of the trends present among the countries; to find out which nations are to a more degree exposed to data mishandling;
+- To find out which countries have strategies in place to safeguard their citizens' right of privacy,
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+>The following are some of the visuals that I had then created to facilitate the research paper.
 
-You can embed an R code chunk like this:
 
 ```{r cars}
 summary(cars)
