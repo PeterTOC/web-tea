@@ -9,7 +9,7 @@ images: []
 authors: []
 ---
 
-#### **Data Type Constraints;** 
+#### **Data Type Constraints;**
 
 make sure that all data is in the preferred format, eg average of charatcer values
 
@@ -108,3 +108,39 @@ Tools;
 
         other_categories <- c("amphibian", "reptile","bug")
         animals %>% mutate(type_collapsed = fct_collapse(type_trimmed, other = other categories))
+
+#### Text Data Problems
+
+-   formatting inconsistencies
+
+-   information inconsistencies
+
+-   invalid data entered
+
+Tools
+
+stringr(package); str_detect(),str_replace_all(),str_remove_all(),str_length()
+
+REGEX(REGular EXpressions)
+
+### Advanced Data Problems
+
+#### Uniformity
+
+-   Different units or formats from data from multiple data sources or unstructured data
+
+Tools
+
+-   Seek for anomalies using vizualizations for each variable to be tested
+
+-   ifelse() function with mutate for unit conversion eg; centigrade to farheineit
+
+-   lubridate(package);
+
+    when working with non- uniform date formats; use ?strptime in console to get list of all available date formats to pass to the orders argument
+
+        parse_date_time(data$date_column, orders = c("%Y-%m-%d", "%m/%d/%y", "%B %d, %Y")
+
+Note: for ambiguous dates like 6/7/2021, which might be July or June depending whether you got your data from Europe or USA respectively
+
+#### Cross Field Validation (sanity check)

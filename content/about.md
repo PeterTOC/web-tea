@@ -1,31 +1,37 @@
 ---
-aliases:
-- about-us
-- about-hugo
-- contact
-author: Hugo Authors
-date: "2019-02-28"
-description: Hugo, the world’s fastest framework for building websites
+author: Peter Boshe
+date: "2021-09-18"
+description: Brief Description of Peter's Scope in Data Science
 title: About
 ---
+# 👋 Hi, I’m Peter Boshe
+I am a :computer: **Junior Analyst** and an **R** fanatic.
 
-Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+## My Tools of Trade include;
+- Descriptive Analysis
+- Data Cleaning
+- Data Wrangling
+- Data Visualization
+- Task Automation
+- Web Scraping
 
-Hugo makes use of a variety of open source projects including:
+## 🌱 I’m currently learning more on;
+- Statistical Inference
+- Regression Models
+- Practical Machine Learning
 
-* https://github.com/russross/blackfriday
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
 
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+## Fields Explored;
+- Telematic/IOT Analytics
+- Business Data Analysis
+- Sports Analytics
 
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
+### 📫 Contact Details
+email: peterboshe@gmail.com 
+linkedin: www.linkedin.com/in/peterboshe
+web page: https://petertoc.github.io/Peter_Portfolio_2/
+mobile: +255 688 372 127 / +255 769 405 758
 
-Websites built with Hugo are extremelly fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
-
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
 
 
 

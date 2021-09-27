@@ -20,9 +20,18 @@ options(blogdown.ext = ".Rmd", blogdown.author = "Peter Boshe",
 
 # serve site --------------------------------------------------------------
 
-serve_site()
+blogdown::serve_site()
 
 # to see why the site is not built ----------------------------------------
 
-check_site()
+blogdown::check_site()
 n
+blogdown::stop_server()
+
+# new post ----------------------------------------------------------------
+
+blogdown::new_post(title = 'covid_outbreak_analysis2.Rmd')
+
+# learning material  link-------------------------------------------------------
+
+https://www.youtube.com/watch?v=0GZxidrlaRM&list=PLLAZ4kZ9dFpOnyRlyS-liKL5ReHDcj4G3&index=6
