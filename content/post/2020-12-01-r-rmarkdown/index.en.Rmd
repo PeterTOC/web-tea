@@ -5,21 +5,22 @@ author: "Peter Boshe"
 date: 2021-05-01T11:00:59-04:00
 categories: ["R"]
 tags: ["R programming","Visualization","Data Analysis"]
-summary: 20
+summary: "This project includes charts that were used in a research paper on 'Data Protection Regulation in Africa'"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 
-The task was to mine for relevant data and presenting them in a manner that would simplify the decision making process in picking countries as case studies to assess the state and level of data protection regulation in Africa in order to;
+The task was to mine for relevant data and presenting them in a manner that would simplify the decision making process in picking countries as case studies.
 
 
-- Get a deeper feel of the trends present among the countries; \n
--to find out which nations are to a more degree exposed to data mishandling;\n
-- To find out which countries have strategies in place to safeguard their citizens' right of privacy,\n
+- The aim of the research paper was to assess the state and level of data protection regulation in Africa in order to;
+  - Get a deeper feel of the trends present among the countries, \n
+  - To find out which nations are to a more degree exposed to data mishandling,\n
+  - To find out which countries have strategies in place to safeguard their citizens' right of privacy.\n
 
->The following are some of the visuals that I had then created to facilitate the research paper.
+>The following are some of the visuals that I had then created.
 
 ![](index.en_files/figure-html/Rplot04.png) 
 

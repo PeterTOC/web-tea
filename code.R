@@ -30,7 +30,7 @@ blogdown::stop_server()
 
 # new post ----------------------------------------------------------------
 
-blogdown::new_post(title = 'covid_outbreak_analysis2.Rmd')
+blogdown::new_post(title = 'Popular Pollutants of The Public')
 
 # learning material  link-------------------------------------------------------
 

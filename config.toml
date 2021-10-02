@@ -10,6 +10,10 @@ footnoteReturnLinkContents = "^"
 googleAnalytics = "UA-XXXX"
 DisqusShortname = ""
 theme = "hugo-theme-chunky-poster"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
+summaryLength = 25
+canonifyURLs = true
+enableEmoji = true
 
 [menu]
   [[menu.main]]
@@ -38,7 +42,7 @@ author = "authors"
   showLanguageSwitcher = false
 
   # Custom CSS and JS. Relative to /static/css and /static/js respectively.
-  customCSS = []
+  customCSS = ["style1.css"]
   customJS = []
 
   [params.social]

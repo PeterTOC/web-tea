@@ -119,7 +119,7 @@ Tools;
 
 Tools
 
-stringr(package); str_detect(),str_replace_all(),str_remove_all(),str_length()
+stringr(package); str_detect(),str_replace_all(),str_remove_all(),str_length(),str_subset(),str_count()
 
 REGEX(REGular EXpressions)
 
