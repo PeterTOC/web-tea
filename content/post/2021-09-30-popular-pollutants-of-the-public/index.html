@@ -15,6 +15,13 @@ draft: true
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<link href="{{< blogdown/postref >}}index_files/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/wordcloud2/wordcloud2-all.js"></script>
+<script src="{{< blogdown/postref >}}index_files/wordcloud2/hover.js"></script>
+<script src="{{< blogdown/postref >}}index_files/wordcloud2-binding/wordcloud2.js"></script>
 
 <div id="TOC">
 <ul>
@@ -31,188 +38,445 @@ draft: true
 require(skimr)
 require(forcats)
 require(knitr)
+require(kableExtra)
+require(rebus)
+require(RColorBrewer)
+require(wordcloud2)
 data &lt;- read_csv(&quot;wastebase_scan_summary_20210815.csv&quot;)</code></pre>
 </div>
 <div id="inspect-the-data" class="section level2">
 <h2>inspect the data</h2>
-<table>
-<caption>(#tab:inspect data)Data summary</caption>
+<table style="width: auto;" class="table table-condensed">
+<caption>
+(#tab:inspect data)Data summary
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+</th>
+</tr>
+</thead>
 <tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">data</td>
+<tr>
+<td style="text-align:left;">
+Name
+</td>
+<td style="text-align:left;">
+data
+</td>
 </tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">568</td>
+<tr>
+<td style="text-align:left;">
+Number of rows
+</td>
+<td style="text-align:left;">
+568
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">10</td>
+<tr>
+<td style="text-align:left;">
+Number of columns
+</td>
+<td style="text-align:left;">
+10
+</td>
 </tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+_______________________
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+Column type frequency:
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="even">
-<td align="left">character</td>
-<td align="left">8</td>
+<tr>
+<td style="text-align:left;">
+character
+</td>
+<td style="text-align:left;">
+7
+</td>
 </tr>
-<tr class="odd">
-<td align="left">numeric</td>
-<td align="left">2</td>
+<tr>
+<td style="text-align:left;">
+numeric
+</td>
+<td style="text-align:left;">
+3
+</td>
 </tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
+<tr>
+<td style="text-align:left;">
+________________________
+</td>
+<td style="text-align:left;">
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
+<tr>
+<td style="text-align:left;">
+Group variables
+</td>
+<td style="text-align:left;">
+None
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: character</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+min
+</th>
+<th style="text-align:right;">
+max
+</th>
+<th style="text-align:right;">
+empty
+</th>
+<th style="text-align:right;">
+n_unique
+</th>
+<th style="text-align:right;">
+whitespace
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">product_barcode</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">8</td>
-<td align="right">13</td>
-<td align="right">0</td>
-<td align="right">538</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+product_label
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+399
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">product_label</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">48</td>
-<td align="right">0</td>
-<td align="right">399</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+product_size
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">product_size</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">9</td>
-<td align="right">0</td>
-<td align="right">95</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+brand_name
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+236
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">brand_name</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">30</td>
-<td align="right">0</td>
-<td align="right">236</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+manufacturer_country
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">manufacturer_country</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">25</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+manufacturer_name
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+47
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+90
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">manufacturer_name</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">47</td>
-<td align="right">0</td>
-<td align="right">90</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+scan_country
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">scan_country</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">7</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">data_url</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">62</td>
-<td align="right">62</td>
-<td align="right">0</td>
-<td align="right">90</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+data_url
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+90
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
 <table>
 <thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
+<tr>
+<th style="text-align:left;">
+skim_variable
+</th>
+<th style="text-align:right;">
+n_missing
+</th>
+<th style="text-align:right;">
+complete_rate
+</th>
+<th style="text-align:right;">
+mean
+</th>
+<th style="text-align:right;">
+sd
+</th>
+<th style="text-align:right;">
+p0
+</th>
+<th style="text-align:right;">
+p25
+</th>
+<th style="text-align:right;">
+p50
+</th>
+<th style="text-align:right;">
+p75
+</th>
+<th style="text-align:right;">
+p100
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">bottle_weight</td>
-<td align="right">526</td>
-<td align="right">0.07</td>
-<td align="right">33.82</td>
-<td align="right">23.77</td>
-<td align="right">0</td>
-<td align="right">21</td>
-<td align="right">25</td>
-<td align="right">48.62</td>
-<td align="right">115</td>
+<tr>
+<td style="text-align:left;">
+product_barcode
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+4.85247e+12
+</td>
+<td style="text-align:right;">
+2.3340e+12
+</td>
+<td style="text-align:right;">
+415668
+</td>
+<td style="text-align:right;">
+5.000187e+12
+</td>
+<td style="text-align:right;">
+6.001292e+12
+</td>
+<td style="text-align:right;">
+6.0099e+12
+</td>
+<td style="text-align:right;">
+9.716189e+12
+</td>
 </tr>
-<tr class="even">
-<td align="left">bottle_count</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">53.71</td>
-<td align="right">251.27</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">15.00</td>
-<td align="right">3822</td>
+<tr>
+<td style="text-align:left;">
+bottle_weight
+</td>
+<td style="text-align:right;">
+526
+</td>
+<td style="text-align:right;">
+0.07
+</td>
+<td style="text-align:right;">
+3.38200e+01
+</td>
+<td style="text-align:right;">
+2.3770e+01
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2.100000e+01
+</td>
+<td style="text-align:right;">
+2.500000e+01
+</td>
+<td style="text-align:right;">
+4.8620e+01
+</td>
+<td style="text-align:right;">
+1.150000e+02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bottle_count
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+5.37100e+01
+</td>
+<td style="text-align:right;">
+2.5127e+02
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1.000000e+00
+</td>
+<td style="text-align:right;">
+2.000000e+00
+</td>
+<td style="text-align:right;">
+1.5000e+01
+</td>
+<td style="text-align:right;">
+3.822000e+03
+</td>
 </tr>
 </tbody>
 </table>
@@ -242,29 +506,392 @@ data$manufacturer_name &lt;- factor(data$manufacturer_name)</code></pre>
 ## 5 KE                     149
 ## 6 ZA                       2
 ## 7 CH                       1</code></pre>
+<pre class="r"><code>tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;) #filter data for Tanzania (case study)</code></pre>
 <p>Note: email data collectors to query on the data discrepancy</p>
+</div>
+<div id="collapse-factors-with-variating-names" class="section level3">
+<h3>collapse factors with variating names</h3>
+<pre class="r"><code>drinking_water &lt;- c(&quot;Pure Drinking Water&quot;, &quot;Drinking Water&quot;, &quot;Drinking water&quot;, &quot;pure drinking water&quot;, &quot;Mineral Water&quot;, &quot;Mineral water&quot;, &quot;Mineral water&quot;, &quot;Agua Mineral Natural de las Sierras&quot;, &quot;Best drinking water&quot;, &quot;still drinking water&quot;, &quot;Premium Pure Drinking Water&quot;, &quot;DRINKING WATER&quot;, &quot;Natural Water&quot;, &quot;Hill Water&quot;)
+
+carbonated_soft_drinks &lt;- c(&quot;Xtra Carbonated Drink&quot;, &quot;Extra Berry Flavor Carbonated Soft Drink&quot;, &quot;Pineapple Flavoured Carbonated Soft Drink&quot;,&quot;Coke&quot;,&quot;Fanta Orange&quot;, &quot;Pineapple Carbonated Drink&quot;, &quot;Passion Flavour Carbonated Drink&quot;, &quot;Xtra Berry Flavoured Carbonated Soft Drink&quot;, &quot;Carbonated soft drink stoney Tangawizi/ ginger&quot;, &quot;Cola Carbonated Soft Drink&quot;, &quot;Malt Flavoured&quot;, &quot;Non Alcoholic Malt Drink&quot;, &quot;Fruity Flavoured Soft Drink&quot;, &quot;Energy drink&quot;,&quot;CARBONATED FLAVOURED DRINK&quot;, &quot;Afiya Berries Flavour&quot;,&quot;Chungwa&quot;,&quot;Pepsi&quot;, &quot;Pepsi Max&quot;, &quot;Apple punch&quot;, &quot;Mo Xtra Energy&quot;, &quot;Twist Spark&quot;, &quot;Afiya Orange Flavour&quot;, &quot;Diet Coke&quot;, &quot;Soda Water&quot;, &quot;Tonic Water&quot;, &quot;Energy Drink&quot;, &quot;Grand Malt Non-alcohol can&quot;, &quot;Fanta Orange Flavoured Drink&quot;,&quot;Lemon-lime Flavoured Drink&quot;, &quot;Azam Passion&quot;, &quot;Novida Nanasi Flavoured&quot;, &quot;Indian Tonic&quot;, &quot;Apple and Malt Flavoured&quot;, &quot;Indian Tonic&quot;)
+
+
+alcohol &lt;- c(&quot;K-Vant Spirit&quot;, &quot;Gin&quot;, &quot;Castle Lite&quot;, &quot;Potable cane spirit&quot;, &quot;Kilimanjaro Premium Lager&quot;, &quot;Savanna&quot;, &quot;Premium Lager&quot;, &quot;Premium Spirit&quot;, &quot;Lager Beer&quot;, &quot;Fortified Wine&quot;, &quot;Lager&quot;, &quot;Redds&quot;, &quot;Heineken&quot;, &quot;Valeur Superior Brandy&quot;, &quot;smart gi&quot;)
+
+juice &lt;- c(&quot;Mango juice drink&quot;, &quot;Fruit drink&quot;,&quot;Orange Dairy Blend Concentrate&quot;, &quot;Lemon-Lime Flavoured Drink&quot;, &quot;Mango Fruit Juice Drink (Azam Embe)&quot;, &quot;Ukwaju Tamarind Juice Drink&quot;, &quot;Ubuyu / Baobab Fruit Drink&quot;, &quot;Orange Flavored Drink&quot;, &quot;Mango juice drink&quot;, &quot;Tunda Embe / Mango Juice Drink&quot;, &quot;Delight Mango Flavoured Drink&quot;, &quot;Embe Flavoured Drink&quot;, &quot;Jembe Drink&quot;, &quot;Ukwaju&quot;, &quot;Embe Fruit juice&quot;, &quot;Tunda Mix&quot;, &quot;Mango&quot;)
+
+household_items &lt;- c(&quot;Lemon fresh Cleaner&quot;, &quot;Mouthwash total Care&quot;, &quot;Nourishing conditioner&quot;, &quot;plain yoghurt&quot;, &quot;Pure Sunflower Oil&quot;, &quot;Table vinegar&quot;, &quot;Sunflower seed oil&quot;, &quot;Sunflower oil&quot;, &quot;Mouthwash total Care&quot;, &quot;Nourishing conditioner&quot;, &quot;Coconut Oil&quot;, &quot;Body Lotion&quot;, &quot;Anti-bacterial Mouthwash&quot;, &quot;Antiseptic Desinfectant&quot;, &quot;boncabe&quot;, &quot;Calcium and Magnesium&quot;, &quot;Chewy vites&quot;, &quot;Chicken Masala Spice Seasoning&quot;, &quot;ciclo farma&quot;, &quot;Fish oil&quot;, &quot;LAVA LOUCAS CONCENTRADO&quot;, &quot;Coffee&quot;, &quot;White Board Cleaner&quot;, &quot;acid&quot;, &quot;Plain Yoghurt&quot;)
+
+tz_data_collapsed &lt;- tz_data %&gt;% 
+  mutate(product_label_collapsed = 
+           fct_collapse(product_label,
+                        &quot;Drinking Water&quot; = drinking_water, 
+                        &quot;Carbonated Soft Drinks&quot; = carbonated_soft_drinks,
+                        &quot;Household Items&quot; = household_items, 
+                        &quot;Juice&quot; = juice, 
+                        &quot;Alcoholic Drinks&quot; = alcohol)) 
+
+
+tz_data_collapsed %&gt;% 
+  group_by(product_label_collapsed) %&gt;% 
+  summarise(total = sum(bottle_count)) %&gt;% 
+  arrange(desc(total)) %&gt;% 
+  kbl(col.names = c(&quot;Product Category&quot;, &quot;Total&quot;),
+      align = &quot;lr&quot;,
+      caption = &quot;Categories of Waste with respect to Product Type&quot;) %&gt;% 
+  kable_minimal(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;), 
+                full_width = F, 
+                position = &quot;float_right&quot;)</code></pre>
+<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; float: right; margin-left: 10px;">
+<caption>
+(#tab:collapsing factors)Categories of Waste with respect to Product Type
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Product Category
+</th>
+<th style="text-align:right;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Drinking Water
+</td>
+<td style="text-align:right;">
+862
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Carbonated Soft Drinks
+</td>
+<td style="text-align:right;">
+765
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alcoholic Drinks
+</td>
+<td style="text-align:right;">
+351
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Juice
+</td>
+<td style="text-align:right;">
+316
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Household Items
+</td>
+<td style="text-align:right;">
+34
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="total-count-of-bottles-produced-per-manufacturer-in-tanzania" class="section level3">
 <h3>Total count of bottles produced per manufacturer in Tanzania</h3>
-<pre class="r"><code>tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;)
-tz_data %&gt;%
-  group_by(manufacturer_name) %&gt;%
-  summarise(total_bottles = sum(bottle_count)) %&gt;%
+<pre class="r"><code>manufacturers &lt;- tz_data %&gt;% 
+  group_by(manufacturer_name, manufacturer_country) %&gt;% 
+  summarise(total_bottles = sum(bottle_count)) %&gt;% 
   arrange(desc(total_bottles))</code></pre>
-<pre><code>## # A tibble: 39 x 2
-##    manufacturer_name        total_bottles
-##    &lt;fct&gt;                            &lt;dbl&gt;
-##  1 BAKHRESA GROUP DIVISIONS           460
-##  2 METL Group                         434
-##  3 Coca-Cola                          289
-##  4 UNKNOWN_ORG                        210
-##  5 Hill Group                         131
-##  6 Watercom (T) Ltd                   124
-##  7 Motisun Group                      107
-##  8 Dew Drop Drinks Co.Ltd              87
-##  9 HAKIKA BREWERIES LIMITED            80
-## 10 Pepsico, Inc                        55
-## # ... with 29 more rows</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>kbl(manufacturers[1:18,], 
+    col.names = c(&quot;Manufacterers&quot;,&quot;Country&quot;, &quot;Total&quot;),
+      align = &quot;lrc&quot;,
+      caption = &quot;List of Manufacturers Producing the Plastic Containers&quot;) %&gt;% 
+  kable_minimal(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+                full_width = F , 
+                position = &quot;left&quot;, 
+                fixed_thead = TRUE) %&gt;% 
+    row_spec(0, 
+             background = &quot;yellow&quot;,
+             color = &quot;black&quot;)</code></pre>
+<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; width: auto !important; ">
+<caption>
+(#tab:total per manufacturer in TZ)List of Manufacturers Producing the Plastic Containers
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;color: black !important;background-color: yellow !important;">
+Manufacterers
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;color: black !important;background-color: yellow !important;">
+Country
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;color: black !important;background-color: yellow !important;">
+Total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+BAKHRESA GROUP DIVISIONS
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+460
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+METL Group
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+434
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Coca-Cola
+</td>
+<td style="text-align:right;">
+US
+</td>
+<td style="text-align:center;">
+289
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+UNKNOWN_ORG
+</td>
+<td style="text-align:right;">
+UK
+</td>
+<td style="text-align:center;">
+210
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hill Group
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+131
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Watercom (T) Ltd
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+124
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Motisun Group
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+107
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dew Drop Drinks Co.Ltd
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+87
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+HAKIKA BREWERIES LIMITED
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+80
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Pepsico, Inc
+</td>
+<td style="text-align:right;">
+US
+</td>
+<td style="text-align:center;">
+55
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canada Pure Water Company Ltd
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Coca Cola Kwanza Ltd
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+43
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Coca Cola Sabco (Mozambique) SARL
+</td>
+<td style="text-align:right;">
+MZ
+</td>
+<td style="text-align:center;">
+41
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mega Beverages Company Co Ltd. 
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+37
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Anheuser-Busch InBev
+</td>
+<td style="text-align:right;">
+BE
+</td>
+<td style="text-align:center;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Sayona Drink Limited
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kibo Breweries Ltd
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Savannah Cider
+</td>
+<td style="text-align:right;">
+ZA
+</td>
+<td style="text-align:center;">
+19
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>palette &lt;- brewer.pal(n = 5,
+                      name = &quot;RdYlBu&quot;)
+
+manufacturers[1:18,] %&gt;% 
+  ggplot(aes(x = total_bottles, 
+             y = reorder(manufacturer_name,total_bottles), 
+             color = total_bottles)) +
+  geom_segment(aes(yend = manufacturer_name), 
+             xend = 0,
+             size = 2) + 
+  geom_point(size = 4) +
+             # shape = 21) +
+             # fill = &quot;#4E7FBF&quot;,
+             # color = &quot;#4E7FBF&quot;) +
+  geom_text(aes(label = total_bottles), color = &quot;white&quot;, size = 1.5) + 
+  scale_x_continuous(&quot;&quot;, limits = c(0,600), position = &quot;top&quot;) +
+  scale_color_gradientn(colors = palette) +
+  geom_curve(aes(x = 60, 
+                 y = 4,
+                 xend = 200,
+                 yend = 7), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5,
+             color = &quot;black&quot;,
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, &quot;cm&quot;), 
+                           ends = &quot;first&quot;, 
+                           type = &quot;open&quot;))+
+  geom_vline(xintercept = mean(manufacturers$total_bottles), 
+             linetype=&quot;longdash&quot;,
+             color = &quot;#F2A03D&quot;, 
+             size = 1.1) +
+  theme_minimal() +
+  theme(
+    axis.line.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+     # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
+     # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
+     panel.grid.major.y = element_blank(),
+     legend.position=&quot;none&quot;,
+     axis.text = element_text(color = &quot;black&quot;)
+  )  +
+  labs(title = &quot;20 Manufacturers with the most litter collected, 2021&quot;,
+       caption = &quot;Source: Wastebase.org&quot;) +
+  xlab(&quot;total quantity of bottles collected&quot;) +
+  ylab(&quot;&quot;) +
+  annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 300, 
+    y = 9, 
+    label = &quot;Average amount\n of litter produced\n per manufacturer&quot;
+  )</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/total%20per%20manufacturer%20in%20TZ-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="total-count-of-bottles-as-per-manufacturer-country" class="section level3">
 <h3>Total count of bottles as per manufacturer country</h3>
@@ -296,7 +923,7 @@ tz_data %&gt;%
 <pre class="r"><code>glimpse(tz_data)</code></pre>
 <pre><code>## Rows: 131
 ## Columns: 10
-## $ product_barcode      &lt;chr&gt; &quot;0076280045314&quot;, &quot;3155930006015&quot;, &quot;6009702811178&quot;~
+## $ product_barcode      &lt;dbl&gt; 7.628005e+10, 3.155930e+12, 6.009703e+12, 6.16110~
 ## $ product_label        &lt;chr&gt; &quot;Calcium and Magnesium&quot;, &quot;Lager Beer&quot;, &quot;Chewy vit~
 ## $ product_size         &lt;chr&gt; &quot;1.600ml&quot;, &quot;330ml&quot;, &quot;1.0ml&quot;, &quot;500g&quot;, &quot;500ml&quot;, &quot;20~
 ## $ brand_name           &lt;chr&gt; &quot;Solaray Dietary supplement&quot;, &quot;Desperados Origina~
@@ -343,242 +970,110 @@ tz_data %&gt;%
 ## 10 Fanta Orange                                49
 ## # ... with 91 more rows</code></pre>
 </div>
-<div id="collapse-factors-with-variating-names" class="section level3">
-<h3>collapse factors with variating names</h3>
-<pre class="r"><code>drinking_water &lt;- c(&quot;Pure Drinking Water&quot;, &quot;Drinking Water&quot;, &quot;Drinking water&quot;, &quot;pure drinking water&quot;, &quot;Mineral Water&quot;, &quot;Mineral water&quot;, &quot;Mineral water&quot;, &quot;Agua Mineral Natural de las Sierras&quot;, &quot;Best drinking water&quot;, &quot;still drinking water&quot;, &quot;Premium Pure Drinking Water&quot;, &quot;DRINKING WATER&quot;, &quot;Natural Water&quot;)
+<div id="for-analysis-on-the-product-size" class="section level3">
+<h3>for analysis on the product size</h3>
+<pre class="r"><code>ml_pattern &lt;- capture(DGT %R% 
+                        DGT %R% 
+                        DGT %R% 
+                        optional(DGT)) %R% 
+  optional(SPC) %R% 
+  or(&quot;ml&quot;,&quot;g&quot;)
 
-carbonated_soft_drinks &lt;- c(&quot;Xtra Carbonated Drink&quot;, &quot;Extra Berry Flavor Carbonated Soft Drink&quot;, &quot;Pineapple Flavoured Carbonated Soft Drink&quot;,&quot;Coke&quot;,&quot;Fanta Orange&quot;, &quot;Pineapple Carbonated Drink&quot;, &quot;Passion Flavour Carbonated Drink&quot;, &quot;Xtra Berry Flavoured Carbonated Soft Drink&quot;, &quot;Carbonated soft drink stoney Tangawizi/ ginger&quot;, &quot;Cola Carbonated Soft Drink&quot;, &quot;Malt Flavoured&quot;, &quot;Non Alcoholic Malt Drink&quot;, &quot;Fruity Flavoured Soft Drink&quot;, &quot;Energy drink&quot;,&quot;CARBONATED FLAVOURED DRINK&quot;, &quot;Afiya Berries Flavour&quot;,&quot;Chungwa&quot;,&quot;Pepsi&quot;, &quot;Pepsi Max&quot;, &quot;Apple punch&quot;, &quot;Mo Xtra Energy&quot;)
+l_pattern &lt;- capture(DGT %R% 
+                       (DOT) %R% 
+                       optional(DGT) %R% 
+                       optional(DGT)) %R% 
+  optional(DGT) %R% 
+  optional(SPC) %R% 
+  or(&quot;l&quot;,&quot;L&quot;,&quot;ml&quot;)
 
-wine &lt;- c(&quot;Fortified Wine&quot;)
+liters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, l_pattern)[,2])
+mliters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, ml_pattern)[,2])
 
-alcohol &lt;- c(&quot;K-Vant Spirit&quot;, &quot;Gin&quot;, &quot;Castle Lite&quot;, &quot;Potable cane spirit&quot;, &quot;Kilimanjaro Premium Lager&quot;, &quot;Savanna&quot;, &quot;&quot;)
+tz_data_collapsed &lt;- tz_data_collapsed %&gt;% 
+  mutate(volumes = ifelse(is.na(mliters),liters*1000,mliters))
 
-juice &lt;- c(&quot;Mango juice drink&quot;, &quot;Fruit drink&quot;,&quot;Orange Dairy Blend Concentrate&quot;, &quot;Lemon-Lime Flavoured Drink&quot;, &quot;Mango Fruit Juice Drink (Azam Embe)&quot;, &quot;Ukwaju Tamarind Juice Drink&quot;, &quot;Ubuyu / Baobab Fruit Drink&quot;, &quot;Orange Flavored Drink&quot;, &quot;Mango juice drink&quot;, &quot;Tunda Embe / Mango Juice Drink&quot;, &quot;Delight Mango Flavoured Drink&quot;, &quot;Embe Flavoured Drink&quot;, &quot;Jembe Drink&quot;, &quot;Ukwaju&quot;)
+ggplot(tz_data_collapsed, aes(volumes)) + 
+  geom_histogram(fill = &quot;#4E7FBF&quot;,
+                 binwidth = 500, breaks = (seq(0,7000, by = 500))) + 
+  geom_curve(aes(x = 500, 
+                 y = 89,
+                 xend = 2000,
+                 yend = 80), 
+             curvature = -0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, &quot;cm&quot;), 
+                           ends = &quot;first&quot;, 
+                           type = &quot;open&quot;)) +
+   geom_curve(aes(x = 2250, 
+                 y = 2,
+                 xend = 4500,
+                 yend = 45), 
+             curvature = -0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, &quot;cm&quot;), 
+                           ends = &quot;first&quot;, 
+                           type = &quot;open&quot;)) +
+   geom_curve(aes(x = 5750, 
+                 y = 2,
+                 xend = 4500,
+                 yend = 45), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, &quot;cm&quot;), 
+                           ends = &quot;first&quot;, 
+                           type = &quot;open&quot;)) +
+  theme_minimal() +
+  theme(
+     panel.grid.minor.y = element_blank(),
+     # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
+     # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
+     panel.grid.major.y = element_blank(),
+     legend.position=&quot;none&quot;,
+     axis.text = element_text(color = &quot;black&quot;)
+  )  +
+  xlab(&quot;waste container capacity (ml)&quot;) +
+  ylab(&quot;&quot;) + 
+  annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 2500, 
+    y = 80, 
+    label = &quot;Containers\n of \n 0-500ml&quot;
+  ) + 
+   annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 4600, 
+    y = 55, 
+    label = &quot;Containers\n of \n 2-6 liters&quot;
+  )</code></pre>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wordcloud-for-article-picture" class="section level3">
+<h3>Wordcloud for Article Picture</h3>
+<pre class="r"><code>mywords &lt;- tz_data_collapsed %&gt;% 
+  group_by(brand_name) %&gt;% 
+  count() %&gt;% 
+  arrange(desc(n))
 
-tz_data_collapsed &lt;- tz_data %&gt;% mutate(product_label_collapsed = fct_collapse(product_label, &quot;Drinking Water&quot; = drinking_water, &quot;Carbonated Soft Drinks&quot; = carbonated_soft_drinks, &quot;Wine&quot; = wine, &quot;Juice&quot; = juice, &quot;Alcoholic Drinks&quot; = alcohol)) %&gt;% group_by(product_label_collapsed) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))</code></pre>
-<pre><code>## Warning: Unknown levels in `f`:</code></pre>
-<pre class="r"><code>kable(tz_data_collapsed, align = &quot;cc&quot;)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="center">product_label_collapsed</th>
-<th align="center">total</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">Drinking Water</td>
-<td align="center">855</td>
-</tr>
-<tr class="even">
-<td align="center">Carbonated Soft Drinks</td>
-<td align="center">716</td>
-</tr>
-<tr class="odd">
-<td align="center">Juice</td>
-<td align="center">300</td>
-</tr>
-<tr class="even">
-<td align="center">Alcoholic Drinks</td>
-<td align="center">211</td>
-</tr>
-<tr class="odd">
-<td align="center">Wine</td>
-<td align="center">80</td>
-</tr>
-<tr class="even">
-<td align="center">smart gi</td>
-<td align="center">31</td>
-</tr>
-<tr class="odd">
-<td align="center">Indian Tonic</td>
-<td align="center">8</td>
-</tr>
-<tr class="even">
-<td align="center">Pure Sunflower Oil</td>
-<td align="center">8</td>
-</tr>
-<tr class="odd">
-<td align="center">Tunda Mix</td>
-<td align="center">8</td>
-</tr>
-<tr class="even">
-<td align="center">Azam Passion</td>
-<td align="center">7</td>
-</tr>
-<tr class="odd">
-<td align="center">Heineken</td>
-<td align="center">7</td>
-</tr>
-<tr class="even">
-<td align="center">Hill Water</td>
-<td align="center">7</td>
-</tr>
-<tr class="odd">
-<td align="center">Energy Drink</td>
-<td align="center">6</td>
-</tr>
-<tr class="even">
-<td align="center">Premium Lager</td>
-<td align="center">6</td>
-</tr>
-<tr class="odd">
-<td align="center">Premium Spirit</td>
-<td align="center">6</td>
-</tr>
-<tr class="even">
-<td align="center">acid</td>
-<td align="center">5</td>
-</tr>
-<tr class="odd">
-<td align="center">Novida Nanasi Flavoured</td>
-<td align="center">5</td>
-</tr>
-<tr class="even">
-<td align="center">Twist Spark</td>
-<td align="center">5</td>
-</tr>
-<tr class="odd">
-<td align="center">Valeur Superior Brandy</td>
-<td align="center">5</td>
-</tr>
-<tr class="even">
-<td align="center">Embe Fruit juice</td>
-<td align="center">4</td>
-</tr>
-<tr class="odd">
-<td align="center">Grand Malt Non-alcohol can</td>
-<td align="center">4</td>
-</tr>
-<tr class="even">
-<td align="center">Mango</td>
-<td align="center">4</td>
-</tr>
-<tr class="odd">
-<td align="center">Afiya Orange Flavour</td>
-<td align="center">3</td>
-</tr>
-<tr class="even">
-<td align="center">Lager Beer</td>
-<td align="center">3</td>
-</tr>
-<tr class="odd">
-<td align="center">Apple and Malt Flavoured</td>
-<td align="center">2</td>
-</tr>
-<tr class="even">
-<td align="center">Diet Coke</td>
-<td align="center">2</td>
-</tr>
-<tr class="odd">
-<td align="center">Fanta Orange Flavoured Drink</td>
-<td align="center">2</td>
-</tr>
-<tr class="even">
-<td align="center">Soda Water</td>
-<td align="center">2</td>
-</tr>
-<tr class="odd">
-<td align="center">Tonic Water</td>
-<td align="center">2</td>
-</tr>
-<tr class="even">
-<td align="center">Anti-bacterial Mouthwash</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Antiseptic Desinfectant</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Body Lotion</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">boncabe</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Calcium and Magnesium</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Chewy vites</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Chicken Masala Spice Seasoning</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">ciclo farma</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Coconut Oil</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Coffee</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Fish oil</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Lager</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">LAVA LOUCAS CONCENTRADO</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Lemon-lime Flavoured Drink</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Lemon fresh Cleaner</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Mouthwash total Care</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Nourishing conditioner</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">plain yoghurt</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Plain Yoghurt</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Redd’s</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Sunflower oil</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">Sunflower seed oil</td>
-<td align="center">1</td>
-</tr>
-<tr class="even">
-<td align="center">Table vinegar</td>
-<td align="center">1</td>
-</tr>
-<tr class="odd">
-<td align="center">White Board Cleaner</td>
-<td align="center">1</td>
-</tr>
-</tbody>
-</table>
+wordcloud2(mywords, 
+           minRotation = -pi/16, 
+           maxRotation = -pi/16,
+           backgroundColor = &quot;white&quot;, 
+           color=&quot;random-dark&quot;, 
+           shape = &#39;triangle&#39;, 
+           ellipticity = 0.9)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"word":["Afya","Azam","Mo","Coca-Cola","Sayona","Fanta","Hill Water","Kilimanjaro","Uhai","Dew Drop","K-Vant","Malt drink","Sprite","Castle Lite","Dasani","Dettol","Drop of Zanzibar","Krest","Listerine","Minute Maid","Pepsi","Asas Diaries","Biowash","Boncabe Original","Canadian Drinking Water","Cantu","cotanak","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Fizz","Flamingo","Heineken","industria Quimica","Jembe","Leader's Ananasi","Lucozade","Maisha","Masafi","Mega We care","Milk Com","Mirinda","Pangani","Parachute","Pera fresh produce of Tanzania","Precious","Red Bull","Redd's","Safari","Savanna","Sayona Twist","Schweppes","SeQua","Sierra de los Padres","Simba Table Vinegar","smart gin","Solaray Dietary supplement","Sundrop","Super Burudani","Tropical Heat","Uhuru Peak","Valeur","Vim","vitamic c","Windhoek","Zan Aqua"],"freq":[11,10,8,6,6,4,4,4,4,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":16.3636363636364,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
 </div>
 </div>

@@ -1,26 +1,26 @@
-﻿product_barcode,product_label,product_size,brand_name,manufacturer_country,manufacturer_name,scan_country,data_url,bottle_weight,bottle_count
-00415668,Extra Virgin Olive Oil,1.0 L,Sainsbury's,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-00643764,Still Mountain Water from Scotland,500 ml,M&S Food,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0076280045314,Calcium and Magnesium,1.600ml,Solaray Dietary supplement,UK,UNKNOWN_ORG,TZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-008080150059,Fiery Pink Pepper Body Lotion,300 ml,Molton Brown,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0096619381784,Spring Water,500 ml,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0096619482016,Spring Water,500 ml,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-01125382,Scottish Fresh Semi-Skimmed Milk,2.272 L,Sainsbury's,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0606110701099,Água Purificada,500 ml,Recheio,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
-0610696090768,Vimto Gasificado,350 ml,Vimto,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,14
-0621033967506,Água Purificada,500 ml,Crystalina,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,47
-0701698525010,Agua Mineral,500ml,Matisana,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,58
-0701698525027,Agua Mineral,1.5 L,Matisana,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,26
-0781159624544,Água purificada,6.5L,Vitale,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,58
-0781718086073,natural pure water,1.5 l,Pure Water,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0781718777377,Kargasok Safi,300ml,Appolo Wine Limited,UK,UNKNOWN_ORG,ZM,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
-0792382342730,Drinking Water,500 ml,Mbaruk Springs,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0792382352296,Drinking Water,1.5 L,Karigen,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0792382409518,Drinking Water,500 ml,Oceanic,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0792382409532,Drinking Water,1.0 L,Oceanic,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-0792382497843,Purified Drinking Water,1.0 L,Pure Life,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
-0792382500710,Taste the Purity Water,1.0 L,Madini,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-096619297542,Whole Black Peppercorns,399 g,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+product_barcode,product_label,product_size,brand_name,manufacturer_country,manufacturer_name,scan_country,data_url,bottle_weight,bottle_count
+415668,Extra Virgin Olive Oil,1.0 L,Sainsbury's,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+643764,Still Mountain Water from Scotland,500 ml,M&S Food,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+76280045314,Calcium and Magnesium,1.600ml,Solaray Dietary supplement,UK,UNKNOWN_ORG,TZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+8080150059,Fiery Pink Pepper Body Lotion,300 ml,Molton Brown,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+96619381784,Spring Water,500 ml,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+96619482016,Spring Water,500 ml,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+1125382,Scottish Fresh Semi-Skimmed Milk,2.272 L,Sainsbury's,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+606110701099,Água Purificada,500 ml,Recheio,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
+610696090768,Vimto Gasificado,350 ml,Vimto,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,14
+621033967506,Água Purificada,500 ml,Crystalina,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,47
+701698525010,Agua Mineral,500ml,Matisana,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,58
+701698525027,Agua Mineral,1.5 L,Matisana,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,26
+781159624544,Água purificada,6.5L,Vitale,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,58
+781718086073,natural pure water,1.5 l,Pure Water,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+781718777377,Kargasok Safi,300ml,Appolo Wine Limited,UK,UNKNOWN_ORG,ZM,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
+792382342730,Drinking Water,500 ml,Mbaruk Springs,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+792382352296,Drinking Water,1.5 L,Karigen,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+792382409518,Drinking Water,500 ml,Oceanic,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+792382409532,Drinking Water,1.0 L,Oceanic,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+792382497843,Purified Drinking Water,1.0 L,Pure Life,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
+792382500710,Taste the Purity Water,1.0 L,Madini,UK,UNKNOWN_ORG,KE,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
+96619297542,Whole Black Peppercorns,399 g,Kirkland Signature,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
 21026034,Still Natural Mineral Water,2.0 L,Asda,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
 29087709,The Tropical One Juice,500 ml,M&S Food,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
 3057640100178,Natural Mineral Water,1.5 L,Volvic,UK,UNKNOWN_ORG,GB,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,2
@@ -162,7 +162,7 @@
 8995899250310,boncabe,500ml,Boncabe Original,UK,UNKNOWN_ORG,TZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
 90162602,Energy Drink,250ml,Red Bull,UK,UNKNOWN_ORG,TZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
 9556135421506,Drinking Water,1.5 L,Summer,UK,UNKNOWN_ORG,MZ,https://wastebase.org/#/o/00000000-0000-0000-0000-000000000001,,1
-6009646581007,Mineral Water,1.5 L,Vumba,MZ,"Sociedade Águas Vumba, SA",MZ,https://wastebase.org/#/o/027e8655-81cd-44c9-b14e-b15181f61a8f,33.000,450
+6009646581007,Mineral Water,1.5 L,Vumba,MZ,"Sociedade Águas Vumba, SA",MZ,https://wastebase.org/#/o/027e8655-81cd-44c9-b14e-b15181f61a8f,33,450
 6009646581014,Vumba Mineral Water,500ml,Vumba,MZ,"Sociedade Águas Vumba, SA",MZ,https://wastebase.org/#/o/027e8655-81cd-44c9-b14e-b15181f61a8f,,761
 6009802341988,Agua de Nascente / Spring Water,5.0 L,Vumba,MZ,"Sociedade Águas Vumba, SA",MZ,https://wastebase.org/#/o/027e8655-81cd-44c9-b14e-b15181f61a8f,,68
 80922377,Agua Vumba,1.5 L,Vumba,MZ,"Sociedade Águas Vumba, SA",MZ,https://wastebase.org/#/o/027e8655-81cd-44c9-b14e-b15181f61a8f,,224
@@ -189,7 +189,7 @@
 6203011061716,Ukwaju Tamarind Juice Drink,500 ml,Azam,TZ,BAKHRESA GROUP DIVISIONS,ZM,https://wastebase.org/#/o/0c76efb4-4008-4677-aba1-e10a6e3ef026,,1
 6203011061747,Ubuyu / Baobab Fruit Drink,300 ml,Azam,TZ,BAKHRESA GROUP DIVISIONS,TZ,https://wastebase.org/#/o/0c76efb4-4008-4677-aba1-e10a6e3ef026,,14
 40822099,Lemon lime flavoured drink,350 ml,Sprite,TZ,Coca Cola Kwanza Ltd,KE,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,,8
-42380771,Sprite zero,280ml,Sprite,TZ,Coca Cola Kwanza Ltd,MZ,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,20.500,50
+42380771,Sprite zero,280ml,Sprite,TZ,Coca Cola Kwanza Ltd,MZ,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,20.5,50
 5449000028976,Lemon-lime Flavoured Drink,1.25 L,Sprite,TZ,Coca Cola Kwanza Ltd,KE,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,,2
 5449000028976,Lemon-lime Flavoured Drink,1.25 L,Sprite,TZ,Coca Cola Kwanza Ltd,TZ,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,,1
 5449000234612,Sprite,1.0 L,Sprite,TZ,Coca Cola Kwanza Ltd,MZ,https://wastebase.org/#/o/140be07e-cc74-45ea-a7ff-d463a01b5342,,209
@@ -220,17 +220,17 @@
 6201100060954,Lager,375ml,Safari,BE,Anheuser-Busch InBev,TZ,https://wastebase.org/#/o/3c5a74ee-5738-453a-8bf6-e5a95674c168,,1
 6201100062002,Castle Lite,330ml,Castle Lite,BE,Anheuser-Busch InBev,TZ,https://wastebase.org/#/o/3c5a74ee-5738-453a-8bf6-e5a95674c168,,31
 6201100062019,Castle Lite,330ml,Castle Lite,BE,Anheuser-Busch InBev,TZ,https://wastebase.org/#/o/3c5a74ee-5738-453a-8bf6-e5a95674c168,,1
-6201100062026,Redd's,330ml,Redd's,BE,Anheuser-Busch InBev,TZ,https://wastebase.org/#/o/3c5a74ee-5738-453a-8bf6-e5a95674c168,,1
+6201100062026,Redds,330ml,Redd's,BE,Anheuser-Busch InBev,TZ,https://wastebase.org/#/o/3c5a74ee-5738-453a-8bf6-e5a95674c168,,1
 6161101571739,Table vinegar,1.0 L,Simba Table Vinegar,TZ,CHEMICOTEX,TZ,https://wastebase.org/#/o/3e3488e6-c0e7-4b8e-92a9-ca6ff32eaed7,,1
 6161109781345,Energy Drink,400ml,Juicy Ginger,ZM,Revin Zambia Limited,ZM,https://wastebase.org/#/o/3f5c635b-cc6d-45a6-905e-b4b461c1d8a0,,1
 6009661170262,Fiesta,2.0 L,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,70
-6009661170279,Morango Refresco,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26.000,203
+6009661170279,Morango Refresco,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26,203
 6009661170323,Fiesta,2.0 L,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,125
-6009661170330,Fiesta Limão,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26.000,557
+6009661170330,Fiesta Limão,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26,557
 6009661170347,Fiesta,2.0 L,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,2
-6009661170354,Ananas/Pineapple Carbonated Soft Drink,500ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26.000,1193
+6009661170354,Ananas/Pineapple Carbonated Soft Drink,500ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26,1193
 6009661170361,Fiesta,2.0 L,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,1
-6009661170378,Grape - Carbonated Soft Drink,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26.000,211
+6009661170378,Grape - Carbonated Soft Drink,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,26,211
 781159624551,Refrigerante de maçà / Apple Drink,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,17
 781159624582,Açai,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,6
 781159921117,Fiesta Laranja,500 ml,Fiesta,MZ,Fiesta Moçambique Lda.,MZ,https://wastebase.org/#/o/3ff05ee7-f22a-410f-9f5c-3e6ce3c8a8c8,,105
@@ -256,8 +256,8 @@
 6009900076737,Frozy,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,,59
 6009900076744,Orange Drink,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,,7
 6009900076768,Frozy,2.0 L,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,,2
-6161101450591,Energy Drink,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,25.000,325
-6161105450597,Energy Drink,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,25.000,766
+6161101450591,Energy Drink,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,25,325
+6161105450597,Energy Drink,350 ml,Frozy,MZ,Yaafico Industrial Lda,MZ,https://wastebase.org/#/o/4d807269-db16-4aaf-a454-934634c8c319,25,766
 817513015472,Nourishing conditioner,237ml,Cantu,US,PDC Brands,TZ,https://wastebase.org/#/o/4eafceed-b6f5-46a6-a2fb-3ecf4f447b70,,1
 8850769017021,Fish oil,1000ml,Mega We care,TH,Mega Lifesciences Public Company Limited,TZ,https://wastebase.org/#/o/4ff327f9-f56d-410d-97b6-f79c2cc6cf9c,,1
 7798065730033,Agua Mineral Natural de las Sierras,2.0 L,Sierra de los Padres,AR,Nutreco Alimentos S.A,TZ,https://wastebase.org/#/o/5930d3b7-8ded-4ce8-bfa3-34dc4b38a835,,1
@@ -268,13 +268,13 @@
 6161100950047,acid,500 ml,Dettol,GB,Reckitt Benckiser Group PLC,TZ,https://wastebase.org/#/o/59e1b4f2-776f-4c60-8f22-a59a506ce7b6,,5
 7162106950047,Antiseptic Desinfectant,500 ml,Dettol,GB,Reckitt Benckiser Group PLC,TZ,https://wastebase.org/#/o/59e1b4f2-776f-4c60-8f22-a59a506ce7b6,,1
 6009612470694,Mineral Water,500 ml,aQuellé,ZA,Aquelle,MZ,https://wastebase.org/#/o/61f57f57-efe7-40c6-a777-6ad20799ed51,,21
-0792382471089,Drinking Water,1.0 L,Brook Fresh,IN,KUNNUMPURATHU GROUP OF BUSINESS PRIVATE LIMITED,KE,https://wastebase.org/#/o/622073c4-2822-4cdc-9a1e-b831fa805141,,5
+792382471089,Drinking Water,1.0 L,Brook Fresh,IN,KUNNUMPURATHU GROUP OF BUSINESS PRIVATE LIMITED,KE,https://wastebase.org/#/o/622073c4-2822-4cdc-9a1e-b831fa805141,,5
 6203004570201,Fortified Wine,200ml,Super Burudani,TZ,HAKIKA BREWERIES LIMITED,TZ,https://wastebase.org/#/o/6239068b-f169-454d-aad3-04bf8e298022,,80
 6203008950245,Pure Sunflower Oil,1.0 L,Sundrop,TZ,Alaska Tanzania Industries,MZ,https://wastebase.org/#/o/6c9706c2-2edf-4594-8755-f91c1d6d67a1,,11
 6203008950245,Pure Sunflower Oil,1.0 L,Sundrop,TZ,Alaska Tanzania Industries,TZ,https://wastebase.org/#/o/6c9706c2-2edf-4594-8755-f91c1d6d67a1,,8
 6203018120027,Drinking water,1.25 L,Canadian Drinking Water,TZ,Canada Pure Water Company Ltd,TZ,https://wastebase.org/#/o/6d0a1e6b-677e-4466-9db9-d4abd9fc8e40,,51
 5601024335670,Oleo Alimentar,1.0 L,Fula,PT,Sovena Group,MZ,https://wastebase.org/#/o/6e05264e-5883-4458-a054-570e906be105,,4
-6001878004033,Lavender Air Freshener,180 ml,Air Scents,ZA,Shield Chemicals,MZ,https://wastebase.org/#/o/70fdfecd-0cf2-478a-bfa0-2ff2aac3d589,0.000,1
+6001878004033,Lavender Air Freshener,180 ml,Air Scents,ZA,Shield Chemicals,MZ,https://wastebase.org/#/o/70fdfecd-0cf2-478a-bfa0-2ff2aac3d589,0,1
 6009660903816,Indian Tonic,200ml,Fitch and leedes,ZA,Chill Beverages International,TZ,https://wastebase.org/#/o/72f6a8ff-d8d5-47e8-8f6f-8604320c0e22,,8
 5601312063261,Equilibrio Jam 4 Frutos Vermelhos,340g,Continente,PT,"MODELO CONTINENTE HIPERMERCADOS, S.A.",MZ,https://wastebase.org/#/o/754c219b-ba38-453c-8616-08b9c55ab10e,,1
 5601312069805,Cafe Descadeinado Moagem Fina,250 g,Continente,PT,"MODELO CONTINENTE HIPERMERCADOS, S.A.",MZ,https://wastebase.org/#/o/754c219b-ba38-453c-8616-08b9c55ab10e,,1
@@ -285,7 +285,7 @@
 6001240200018,Apple Juice,200 ml,Ceres,ZA,Pioneer Foods (Pty),MZ,https://wastebase.org/#/o/7aeb1e28-56bf-4b5b-8252-d8e7b18e5921,,1
 6001285007122,Orange Dairy Blend Concentrate,1.0 L,Ceres,ZA,Pioneer Foods (Pty),MZ,https://wastebase.org/#/o/7aeb1e28-56bf-4b5b-8252-d8e7b18e5921,,1
 6009633160055,Água Montemor,500 ml,Montemor,MZ,Montemor SARL,MZ,https://wastebase.org/#/o/7e3e82c9-dcc1-4eb6-8ff6-be01c2481dc4,,43
-6009633160154,Agua Mineral,1.5 L,Montemor,MZ,Montemor SARL,MZ,https://wastebase.org/#/o/7e3e82c9-dcc1-4eb6-8ff6-be01c2481dc4,20.000,59
+6009633160154,Agua Mineral,1.5 L,Montemor,MZ,Montemor SARL,MZ,https://wastebase.org/#/o/7e3e82c9-dcc1-4eb6-8ff6-be01c2481dc4,20,59
 2020558253855,Spar Lemonade,330ml,Spar,ZA,The Spar Group Ltd,GB,https://wastebase.org/#/o/81df74c6-4116-41c9-b96f-0b4943e6411d,,1
 6002004001360,Mayo Vanilla Fudge Dairy Snack,250 g,Danone,FR,Danone S.A.,MZ,https://wastebase.org/#/o/833c3669-9353-4c41-9948-a1d8cfeec1b6,,3
 6009616040558,Double Cream Plain Yoghurt,1.0 L,Nutriday,FR,Danone S.A.,MZ,https://wastebase.org/#/o/833c3669-9353-4c41-9948-a1d8cfeec1b6,,3
@@ -303,16 +303,16 @@
 6203003260110,Drinking water,1.0 litre,Afya,TZ,Watercom (T) Ltd,TZ,https://wastebase.org/#/o/888420e1-1259-4c47-adfe-30740e9afa49,,20
 6203003260141,Drinking Water,13 L,Afya,TZ,Watercom (T) Ltd,TZ,https://wastebase.org/#/o/888420e1-1259-4c47-adfe-30740e9afa49,,3
 50096190,Original Anti-Perspirant,50 ml,Dove,GB,Unilever Plc,GB,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,1
-6001085010346,Lemon Dishwashing Liquid,1.5 L,Sunlight,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,90.000,2
+6001085010346,Lemon Dishwashing Liquid,1.5 L,Sunlight,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,90,2
 6001085013156,Javel Multipurpose,750ml,Omo,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,2
 6001087006057,Handy Andy Cream,750 ml,Handy Andy,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,1
 6001087006095,Creme de Limpeza,750 ml,Handy Andy,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,1
 6001087358743,Sunlight Liquid,750 ml,Sunlight,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,37
 60016973,Essence Caramel Flavour,40 ml,Robertsons,GB,Unilever Plc,MZ,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,1
 8712561790017,Deeply Nourishing Body Wash,55 ml,Dove,GB,Unilever Plc,GB,https://wastebase.org/#/o/909d4d9f-4537-4a18-bb1b-cf8f3c8304bc,,1
-2089616370071,Agua Mineral,5.0 L,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,110.000,517
-6009670370004,Mineral Water,1.5 L,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,47.500,533
-6009670370028,Namaacha Mineral Water,500 ml,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,17.000,2287
+2089616370071,Agua Mineral,5.0 L,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,110,517
+6009670370004,Mineral Water,1.5 L,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,47.5,533
+6009670370028,Namaacha Mineral Water,500 ml,Água de Namaacha,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,17,2287
 6009670370509,Mineral Water,5.0 L,Fonte Fresca,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,,221
 6009670370523,Agua Mineral Natural,500 ml,Fonte Fresca,MZ,Sociedade de Águas de Moçambique,MZ,https://wastebase.org/#/o/90c9868b-d408-490e-b3ec-15d784b5947c,,15
 6009652782962,Frooty,350 ml,Californian,ZM,Californian Beverages Limited,ZM,https://wastebase.org/#/o/91564c9d-940c-41ac-9f16-a3ab73961b2a,,9
@@ -328,8 +328,8 @@
 5057753285807,Extracts of Eucalyptus Antibacterial Handwash,500 ml,Tesco,GB,Tesco PLC,GB,https://wastebase.org/#/o/9564612d-8467-47d1-b730-d07b25946cc6,,1
 6009660040214,Pure Drinking Water,1.5 L,Zan Aqua,TZ,Zainab Bottlers Company limited,KE,https://wastebase.org/#/o/988c8307-c778-474b-ade6-c71ebbe358f1,,1
 6009660040214,Pure Drinking Water,1.5 L,Zan Aqua,TZ,Zainab Bottlers Company limited,TZ,https://wastebase.org/#/o/988c8307-c778-474b-ade6-c71ebbe358f1,,1
-0708002401619,Grapefruit & Orange Shampoo,400ml,Faith in Nature,GB,Faith in Nature Ltd,GB,https://wastebase.org/#/o/999b86da-80f8-4f1e-9113-1c7f67c236db,,1
-0708002407727,Wild Rose Conditioner,400ml,Faith in Nature,GB,Faith in Nature Ltd,GB,https://wastebase.org/#/o/999b86da-80f8-4f1e-9113-1c7f67c236db,,1
+708002401619,Grapefruit & Orange Shampoo,400ml,Faith in Nature,GB,Faith in Nature Ltd,GB,https://wastebase.org/#/o/999b86da-80f8-4f1e-9113-1c7f67c236db,,1
+708002407727,Wild Rose Conditioner,400ml,Faith in Nature,GB,Faith in Nature Ltd,GB,https://wastebase.org/#/o/999b86da-80f8-4f1e-9113-1c7f67c236db,,1
 5000382044925,Carbonated Soft Drink,500 ml,Irn-Bru,GB,A.G. BARR PLC,GB,https://wastebase.org/#/o/9b860562-6792-415d-ae92-2877ec50154a,,4
 5000382044949,Sugar Free Carbonated Drink,500 ml,Irn-Bru,GB,A.G. BARR PLC,GB,https://wastebase.org/#/o/9b860562-6792-415d-ae92-2877ec50154a,,1
 50107452,Irn Bru Sugar Free,500 ml,Irn-Bru,GB,A.G. BARR PLC,GB,https://wastebase.org/#/o/9b860562-6792-415d-ae92-2877ec50154a,,2
@@ -341,17 +341,17 @@
 5000128766562,Fresh Whole Milk,1.136 L,Co-op,GB,CO-OPERATIVE GROUP LIMITED,GB,https://wastebase.org/#/o/9fca3aa4-e021-4b06-acff-6b8ebf36dd38,,4
 5000128767941,Organic Fresh Whole Milk,1.136 L,Co-op,GB,CO-OPERATIVE GROUP LIMITED,GB,https://wastebase.org/#/o/9fca3aa4-e021-4b06-acff-6b8ebf36dd38,,2
 6001526050047,Bond Latex Additive,1.0 L,Tal,GB,Norcros Plc,MZ,https://wastebase.org/#/o/a3456495-9623-4dea-9af6-fb4cbe37bbcb,,1
-6009832820033,Cola Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,809
-6009832820040,Lemon / Limao,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,2026
-6009832820095,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,605
-6009832820132,Carbonated Soft Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,41
-6009832820149,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,3822
+6009832820033,Cola Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,809
+6009832820040,Lemon / Limao,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,2026
+6009832820095,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,605
+6009832820132,Carbonated Soft Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,41
+6009832820149,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,3822
 6009832820156,Mineral Water,1.5 L,Aquaplus,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,,12
-6009832820163,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,457
-6009832820170,Energy Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,1929
-6009832820170,Energy Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,TZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.500,1
-6009832820507,Mineral Water,600 ml,Aquaplus,MZ,Mopani Internacional Lda,KE,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,25.000,1
-6009832820507,Mineral Water,600 ml,Aquaplus,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,25.000,447
+6009832820163,Fizz,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,457
+6009832820170,Energy Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,1929
+6009832820170,Energy Drink,350 ml,Fizz,MZ,Mopani Internacional Lda,TZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,21.5,1
+6009832820507,Mineral Water,600 ml,Aquaplus,MZ,Mopani Internacional Lda,KE,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,25,1
+6009832820507,Mineral Water,600 ml,Aquaplus,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,25,447
 6009832820521,Aquaplus Mineral Water,6.0 L,Aquaplus,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,,583
 6009832820576,Água mineral,1.75L,Aquaplus,MZ,Mopani Internacional Lda,MZ,https://wastebase.org/#/o/a34f6bbf-55f1-46c7-82db-d13b2a8d65b8,,139
 6001760005490,Premium Lager,330 ml,Windhoek,NA,Ohlthaver & List Group of Companies,TZ,https://wastebase.org/#/o/a3ed268c-9aaa-4686-b674-9970dfbd17ef,,6
@@ -373,7 +373,7 @@
 8693275000114,Sunflower seed oil,2000ml,cotanak,TR,Cotanak Sunflower Oil,TZ,https://wastebase.org/#/o/b6e5169c-41bd-4f31-a644-f39e98098e11,,1
 6009801332055,Turpentine,5.0 L,B&R,ZA,B & R Products (Pty) Ltd.,MZ,https://wastebase.org/#/o/b8379625-5917-4fe5-87ad-b823a361bdb6,,1
 8712000900663,Heineken,330ml,Heineken,NL,Heineken N.V.,TZ,https://wastebase.org/#/o/b93246c4-e1e4-4722-b477-9928a73d4984,,7
-0284613110015,Hill Water,1.0 L,Hill Water,TZ,Hill Group,TZ,https://wastebase.org/#/o/bd4f2b11-425f-4423-a549-89741c8c5318,,7
+284613110015,Hill Water,1.0 L,Hill Water,TZ,Hill Group,TZ,https://wastebase.org/#/o/bd4f2b11-425f-4423-a549-89741c8c5318,,7
 6203013770005,Mineral Water,500 ml,Hill Water,TZ,Hill Group,TZ,https://wastebase.org/#/o/bd4f2b11-425f-4423-a549-89741c8c5318,,13
 6203013770012,Pure Drinking Water,1.0 L,Hill Water,TZ,Hill Group,TZ,https://wastebase.org/#/o/bd4f2b11-425f-4423-a549-89741c8c5318,,108
 6203013770029,Mineral water,1.5 L,Hill Water,TZ,Hill Group,TZ,https://wastebase.org/#/o/bd4f2b11-425f-4423-a549-89741c8c5318,,3
@@ -381,7 +381,7 @@
 4005808247431,Body Lotion 48h,400 ml,NIVEA,DE,Beiersdorf AG,MZ,https://wastebase.org/#/o/c03f3db6-9425-4fae-a809-20ae281ff84f,,3
 6001051002023,Oil In Lotion,400ml,NIVEA,DE,Beiersdorf AG,ZM,https://wastebase.org/#/o/c03f3db6-9425-4fae-a809-20ae281ff84f,,1
 6001051003433,Care Shower Lemongrass & Oil,250 ml,NIVEA,DE,Beiersdorf AG,MZ,https://wastebase.org/#/o/c03f3db6-9425-4fae-a809-20ae281ff84f,,1
-0412008130274,Sparletta,1.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,34
+412008130274,Sparletta,1.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,34
 40822426,Bonaqua Mineral Water,500 ml,Bonaqua,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,353
 40822938,Fanta Orange,500ml,Fanta,US,Coca-Cola,GB,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 40822938,Fanta Orange,500ml,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,6
@@ -391,35 +391,35 @@
 42117131,Coca-Cola,330 ml,Coca-Cola,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,3
 42117131,Coca-Cola,330 ml,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,14
 42117131,Coca-Cola,330 ml,Coca-Cola,US,Coca-Cola,ZM,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
-42380665,Fanta Litchi,280 ml,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.500,38
+42380665,Fanta Litchi,280 ml,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.5,38
 42380672,Lemon Drink,280 ml,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,13
-42380696,Fanta Orange,280ml,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.500,346
-42381105,Coke Zero,280 ml,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.500,1203
+42380696,Fanta Orange,280ml,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.5,346
+42381105,Coke Zero,280 ml,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,20.5,1203
 5000112649864,Coke Zero,500 ml,Coca-Cola,US,Coca-Cola,GB,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 5000112649871,Diet Coke,500ml,Coca-Cola,US,Coca-Cola,GB,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 5018907194802,Mineral Water,1.0 L,Keringet,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 5018907197803,Mineral Water,500 ml,Keringet,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 54490000,Purified Water,1.0 L,Dasani,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
-5449000000286,Coca-Cola,2.0 L,Coca-Cola,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,52.500,1
-5449000000286,Coca-Cola,2.0 L,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,52.500,937
+5449000000286,Coca-Cola,2.0 L,Coca-Cola,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,52.5,1
+5449000000286,Coca-Cola,2.0 L,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,52.5,937
 5449000000996,Coca Cola Cans 330ml Pk24 A00768,0.33L,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,277
-5449000004840,Fanta Orange,2.0 L,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,2
-5449000004840,Fanta Orange,2.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,289
+5449000004840,Fanta Orange,2.0 L,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,2
+5449000004840,Fanta Orange,2.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,289
 5449000006271,Fanta,1.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,264
-5449000010070,Fanta Grape,2.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,61
+5449000010070,Fanta Grape,2.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,61
 5449000028921,Coke,1.25L,Coca-Cola,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,6
 5449000028921,Coke,1.25L,Coca-Cola,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,5
 5449000028938,Orange Flavored Drink,1.25 L,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 5449000028938,Orange Flavored Drink,1.25 L,Fanta,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 5449000045478,Mineral Water,1.5 L,Bonaqua,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,85
-5449000054227,Coca Cola,1.0 L,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,37.500,835
+5449000054227,Coca Cola,1.0 L,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,37.5,835
 5449000062215,Purified Water,2.0 L,Bonaqua,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,19
 5449000098504,still drinking water,1.5 L,Dasani,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,23
 5449000098764,Purified Water,1.0 L,Dasani,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,6
 5449000103079,Carbonated soft drink stoney Tangawizi/ ginger,500ml,Coca-Cola,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
-5449000105660,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,173
+5449000105660,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,173
 5449000113467,Blackcurrant Flavour Carbonated Drink,1.25 L,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
-5449000117977,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,8
+5449000117977,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,8
 5449000118615,DRINKING WATER,2.5 L,Kilimanjaro,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,28
 5449000118745,Drinking Water,500 ml,Kilimanjaro,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,54
 5449000120984,Fanta Orange Zero,2.0 L,Fanta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,111
@@ -432,7 +432,7 @@
 5449000139030,Bitter Lemon,500ml,Krest,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,3
 5449000139474,Strawberry / Morango Carbonated Soft Drink,1.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,79
 5449000165978,Drinking Water,1.0 L,Kilimanjaro,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,4
-5449000180056,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49.000,14
+5449000180056,Sparletta,2.0 L,Sparletta,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,49,14
 5449000196903,Bitter lemon,1.25 L,Krest,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 5449000221780,Diet Coke,750ml,Coca-Cola,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
 5449000230089,Fanta Grape,500 ml,Fanta,US,Coca-Cola,ZM,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
@@ -445,7 +445,7 @@
 54491496,Diet Coke,330 ml,Coca-Cola,US,Coca-Cola,GB,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 54491496,Diet Coke,330 ml,Coca-Cola,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 54493353,Passion Flavour Carbonated Drink,500 ml,Fanta,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,4
-6009801423050,Mineral Water,750ml,Aquasavana,US,Coca-Cola,ZM,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,10.000,13
+6009801423050,Mineral Water,750ml,Aquasavana,US,Coca-Cola,ZM,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,10,13
 6201100062040,Kilimanjaro Premium Lager,330ml,Kilimanjaro,US,Coca-Cola,TZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,20
 6291103084132,CREAM SODA,345ml,NINJA,US,Coca-Cola,ZM,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 87303322,Drinking Water,500 ml,Dasani,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,4
@@ -463,7 +463,7 @@
 90418013,Novida,350ml,Schweppes,US,Coca-Cola,MZ,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,16
 90418297,Bitter lemon,350 ml,Krest,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,2
 90418303,Tangawizi / Ginger Beer,350 ml,Stoney,US,Coca-Cola,KE,https://wastebase.org/#/o/c3710738-2999-4396-a284-6b70bf737fe6,,1
-0817939012079,Anti-Bac All Purpose Cleaner,828ml,Method,US,Method Products pbc,GB,https://wastebase.org/#/o/cb2a0f45-314c-4fd0-9d92-3b774edf019e,,2
+817939012079,Anti-Bac All Purpose Cleaner,828ml,Method,US,Method Products pbc,GB,https://wastebase.org/#/o/cb2a0f45-314c-4fd0-9d92-3b774edf019e,,2
 817939005118,French Lavender Plant-based hand wash,354 ml,Method,US,Method Products pbc,GB,https://wastebase.org/#/o/cb2a0f45-314c-4fd0-9d92-3b774edf019e,,1
 817939012413,non-toxic surface cleaner,828 ml,Method,US,Method Products pbc,GB,https://wastebase.org/#/o/cb2a0f45-314c-4fd0-9d92-3b774edf019e,,1
 6001565009020,Pure Cooking Oil,750ml,d'lite,ZM,Trade Kings Group,ZM,https://wastebase.org/#/o/cb94d9c2-2f62-4ad8-ad86-a189701b370c,,1
@@ -506,11 +506,11 @@
 9716188532134,Agua Purificada,1.5 L,Nevada,MZ,"Nevada General Supplies Co, Lda",MZ,https://wastebase.org/#/o/dd241782-fd94-4a13-9d32-bc9871355dd2,,12
 9716188532141,Agua Purificada,5.0 L,Nevada,MZ,"Nevada General Supplies Co, Lda",MZ,https://wastebase.org/#/o/dd241782-fd94-4a13-9d32-bc9871355dd2,,16
 9716188532196,Agua Purificada,500ml,Nevada,MZ,"Nevada General Supplies Co, Lda",MZ,https://wastebase.org/#/o/dd241782-fd94-4a13-9d32-bc9871355dd2,,50
-0606110288088,HAVANA COLA,350ml,ACACIA FOOD BEVERAGES LTD,ZM,Acacia Food and Beverages Ltd,ZM,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,2
-0606110288095,Tango Orange Soft Drink,350 ml,Flamingo,ZM,Acacia Food and Beverages Ltd,ZM,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,8
+606110288088,HAVANA COLA,350ml,ACACIA FOOD BEVERAGES LTD,ZM,Acacia Food and Beverages Ltd,ZM,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,2
+606110288095,Tango Orange Soft Drink,350 ml,Flamingo,ZM,Acacia Food and Beverages Ltd,ZM,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,8
 6009644921003,YESS,500ml,Acacia Food & Beverages Ltd,ZM,Acacia Food and Beverages Ltd,ZM,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,3
 6920583012570,White Board Cleaner,250 ml,Flamingo,ZM,Acacia Food and Beverages Ltd,TZ,https://wastebase.org/#/o/de81ec8b-41a9-493a-9345-ca1cc44a0e80,,1
-42380573,Minute Maid Orange,280ml,Minute Maid,MZ,Coca Cola Sabco (Mozambique) SARL,MZ,https://wastebase.org/#/o/e04f17af-7127-4364-8804-a364df27e690,20.500,14
+42380573,Minute Maid Orange,280ml,Minute Maid,MZ,Coca Cola Sabco (Mozambique) SARL,MZ,https://wastebase.org/#/o/e04f17af-7127-4364-8804-a364df27e690,20.5,14
 42380580,Orange flavored drink,350 ml,Minute Maid,MZ,Coca Cola Sabco (Mozambique) SARL,KE,https://wastebase.org/#/o/e04f17af-7127-4364-8804-a364df27e690,,1
 5449000180292,Delight Apple,1.0 L,Minute Maid,MZ,Coca Cola Sabco (Mozambique) SARL,KE,https://wastebase.org/#/o/e04f17af-7127-4364-8804-a364df27e690,,1
 5449000274359,"Nutridefenses,nectar tropical",1.0 L,Minute Maid,MZ,Coca Cola Sabco (Mozambique) SARL,KE,https://wastebase.org/#/o/e04f17af-7127-4364-8804-a364df27e690,,1
@@ -539,14 +539,14 @@
 6203018220130,Extra Berry Flavor Carbonated Soft Drink,400 ml,Mo,TZ,METL Group,TZ,https://wastebase.org/#/o/ead953e7-a526-4ced-970d-f403daaf9c7a,,81
 6001065601069,Dairy Milk Chocolate,80 g,Cadbury,US,"Mondelēz International, Inc.",KE,https://wastebase.org/#/o/ed1ea69c-519a-43c6-8bfa-72d34c987d5d,,3
 6001065601069,Dairy Milk Chocolate,80 g,Cadbury,US,"Mondelēz International, Inc.",MZ,https://wastebase.org/#/o/ed1ea69c-519a-43c6-8bfa-72d34c987d5d,,1
-6001374013331,Peach Blossom Bubble Bath,2.0 L,Satiskin,ZA,Amka Products (Pty) Ltd,MZ,https://wastebase.org/#/o/eeda84ab-c055-4477-9752-9d1e644ba1db,115.000,2
+6001374013331,Peach Blossom Bubble Bath,2.0 L,Satiskin,ZA,Amka Products (Pty) Ltd,MZ,https://wastebase.org/#/o/eeda84ab-c055-4477-9752-9d1e644ba1db,115,2
 6203003250210,Jembe Drink,400ml,Jembe,TZ,WATERCOM (T) LIMITED,TZ,https://wastebase.org/#/o/f1ea0f0b-a65c-46ae-ad89-b0ee6746842f,,5
 6009880106011,Izy Laranja,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,15
-6009880106035,IZY Lemon Dew,340ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21.000,117
-6009880106066,Cola,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21.000,166
+6009880106035,IZY Lemon Dew,340ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21,117
+6009880106066,Cola,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21,166
 6009880106073,Cream Soda,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,14
 6009880106097,Litchi Drink,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,32
-6009880106110,Izy Coco Pine,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21.000,117
+6009880106110,Izy Coco Pine,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,21,117
 6009880106134,Apple / Maça Carbonated Soft Drink,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,6
 6009880106172,Bovinto,330 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,21
 6009880106295,Strawberry,340 ml,Izy,MZ,Moz Beverages Lda,MZ,https://wastebase.org/#/o/f66aacf8-5f3f-4a41-8240-376962c3aaff,,15

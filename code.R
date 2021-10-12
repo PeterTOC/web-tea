@@ -27,7 +27,7 @@ blogdown::serve_site()
 blogdown::check_site()
 n
 blogdown::stop_server()
-
+blogdown::update_hugo()
 # new post ----------------------------------------------------------------
 
 blogdown::new_post(title = 'Popular Pollutants of The Public')
