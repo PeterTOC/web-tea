@@ -3,9 +3,8 @@ title: "Popular Pollutants of The Public"
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'
-slug: []
-categories: ["R"]
-tags: ["R programming","Visualization","Data Analysis"]
+categories: ["Socio-eco Welfare"]
+tags: ["DataViz", "Unguided Project", "E.D.A"]
 output:
   blogdown::html_page:
     toc: true
@@ -14,13 +13,17 @@ summary: "Who are the leading pollutants of our state? you probably have a good 
 draft: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', collapse = FALSE)
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
 ```
 ## Load The Data Set
 
 The data was collected by [Wastebase's Data Partner](https://www.unwaste.io/partners) by methods decribed on this [source page](https://www.kaggle.com/wastebase/plastic-bottle-waste)
 
 ```{r data, warning=FALSE, message=FALSE}
+# clear environment 
+rm(list = ls())
+
+# setting environment
 require(tidyverse)
 require(skimr)
 require(forcats)
@@ -29,6 +32,8 @@ require(kableExtra)
 require(rebus)
 require(RColorBrewer)
 require(wordcloud2)
+
+# loading data 
 data <- read_csv("wastebase_scan_summary_20210815.csv")
 ```
 
@@ -110,7 +115,7 @@ manufacturers <- tz_data %>%
   arrange(desc(total_bottles))
 
 
-kbl(manufacturers[1:18,], 
+kbl(manufacturers[1:20,], 
     col.names = c("Manufacterers","Country", "Total"),
       align = "lrc",
       caption = "List of Manufacturers Producing the Plastic Containers") %>% 
@@ -125,15 +130,14 @@ kbl(manufacturers[1:18,],
 palette <- brewer.pal(n = 5,
                       name = "RdYlBu")
 
-manufacturers[1:18,] %>% 
+manufacturers[1:20,] %>% 
   ggplot(aes(x = total_bottles, 
              y = reorder(manufacturer_name,total_bottles), 
              color = total_bottles)) +
   geom_segment(aes(yend = manufacturer_name), 
              xend = 0,
              size = 2) + 
-  geom_point(size = 4) +
-             # shape = 21) +
+  geom_point(size = 4) +   # shape = 21) +
              # fill = "#4E7FBF",
              # color = "#4E7FBF") +
   geom_text(aes(label = total_bottles), color = "white", size = 1.5) + 

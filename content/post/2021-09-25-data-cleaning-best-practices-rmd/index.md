@@ -1,12 +1,13 @@
 ---
-title: 'Data Cleaning in R: Best Practices'
-author: 'Peter Boshe'
+title: "Data Cleaning in R: Best Practices"
+author: "Peter Boshe"
 date: '2021-09-25'
 slug: []
-categories: []
-tags: []
+categories: ["Educational"]
+tags: ["Guide"]
 images: []
-authors: []
+summary: "This is a living document where I will be compiling what I consider best practices when it comes to data cleaning. The idea is to prepare an optimized checklist"
+draft: true
 ---
 
 #### **Data Type Constraints;**
@@ -144,3 +145,4 @@ Tools
 Note: for ambiguous dates like 6/7/2021, which might be July or June depending whether you got your data from Europe or USA respectively
 
 #### Cross Field Validation (sanity check)
+

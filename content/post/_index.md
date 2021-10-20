@@ -10,3 +10,4 @@ tags:
 - index
 title: Posts
 ---
+This is the collection of the posts I have published so far.

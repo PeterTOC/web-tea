@@ -30,7 +30,7 @@ blogdown::stop_server()
 blogdown::update_hugo()
 # new post ----------------------------------------------------------------
 
-blogdown::new_post(title = 'Popular Pollutants of The Public')
+blogdown::new_post(title = 'Tanzania Mainland Championships: 1965 - 2020')
 
 # learning material  link-------------------------------------------------------
 

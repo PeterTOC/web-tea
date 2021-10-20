@@ -1,13 +1,12 @@
 ---
-title: "COVID OUTBREAK ANALYSIS"
+title: "COVID-19 Outbreak Analysis"
 description: "DataCamp's Guided Project visualizing the trends of the spread and cummulative increase"
 author: "Peter Boshe"
 date: '2021-09-18'
-categories: ["R"]
-tags: ["R programming","Visualization","Data Analysis"]
+categories: ["Socio-eco Welfare"]
+tags: ["DataViz", "Guided project", "E.D.A"]
 output:
   blogdown::html_page:
-    css: customCSS
     toc: true
     toc_depth: 2
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"

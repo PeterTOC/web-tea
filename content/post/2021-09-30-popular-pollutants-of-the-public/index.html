@@ -3,9 +3,8 @@ title: "Popular Pollutants of The Public"
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'
-slug: []
-categories: ["R"]
-tags: ["R programming","Visualization","Data Analysis"]
+categories: ["Socio-eco Welfare"]
+tags: ["DataViz", "Unguided Project", "E.D.A"]
 output:
   blogdown::html_page:
     toc: true
@@ -34,7 +33,11 @@ draft: true
 <div id="load-the-data-set" class="section level2">
 <h2>Load The Data Set</h2>
 <p>The data was collected by <a href="https://www.unwaste.io/partners">Wastebase’s Data Partner</a> by methods decribed on this <a href="https://www.kaggle.com/wastebase/plastic-bottle-waste">source page</a></p>
-<pre class="r"><code>require(tidyverse)
+<pre class="r"><code># clear environment 
+rm(list = ls())
+
+# setting environment
+require(tidyverse)
 require(skimr)
 require(forcats)
 require(knitr)
@@ -42,6 +45,8 @@ require(kableExtra)
 require(rebus)
 require(RColorBrewer)
 require(wordcloud2)
+
+# loading data 
 data &lt;- read_csv(&quot;wastebase_scan_summary_20210815.csv&quot;)</code></pre>
 </div>
 <div id="inspect-the-data" class="section level2">
@@ -495,8 +500,8 @@ data$manufacturer_name &lt;- factor(data$manufacturer_name)</code></pre>
 <pre class="r"><code>data %&gt;%
   group_by(scan_country) %&gt;%
   summarise(total_bottles = sum(bottle_count)) %&gt;%
-  arrange(desc(total_bottles))</code></pre>
-<pre><code>## # A tibble: 7 x 2
+  arrange(desc(total_bottles))
+## # A tibble: 7 x 2
 ##   scan_country total_bottles
 ##   &lt;fct&gt;                &lt;dbl&gt;
 ## 1 MZ                   27615
@@ -505,8 +510,8 @@ data$manufacturer_name &lt;- factor(data$manufacturer_name)</code></pre>
 ## 4 GB                     187
 ## 5 KE                     149
 ## 6 ZA                       2
-## 7 CH                       1</code></pre>
-<pre class="r"><code>tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;) #filter data for Tanzania (case study)</code></pre>
+## 7 CH                       1
+tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;) #filter data for Tanzania (case study)</code></pre>
 <p>Note: email data collectors to query on the data discrepancy</p>
 </div>
 <div id="collapse-factors-with-variating-names" class="section level3">
@@ -605,9 +610,9 @@ Household Items
 <pre class="r"><code>manufacturers &lt;- tz_data %&gt;% 
   group_by(manufacturer_name, manufacturer_country) %&gt;% 
   summarise(total_bottles = sum(bottle_count)) %&gt;% 
-  arrange(desc(total_bottles))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>kbl(manufacturers[1:18,], 
+  arrange(desc(total_bottles))
+## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.
+kbl(manufacturers[1:20,], 
     col.names = c(&quot;Manufacterers&quot;,&quot;Country&quot;, &quot;Total&quot;),
       align = &quot;lrc&quot;,
       caption = &quot;List of Manufacturers Producing the Plastic Containers&quot;) %&gt;% 
@@ -834,20 +839,41 @@ ZA
 19
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Alaska Tanzania Industries
+</td>
+<td style="text-align:right;">
+TZ
+</td>
+<td style="text-align:center;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Chill Beverages International
+</td>
+<td style="text-align:right;">
+ZA
+</td>
+<td style="text-align:center;">
+8
+</td>
+</tr>
 </tbody>
 </table>
 <pre class="r"><code>palette &lt;- brewer.pal(n = 5,
                       name = &quot;RdYlBu&quot;)
 
-manufacturers[1:18,] %&gt;% 
+manufacturers[1:20,] %&gt;% 
   ggplot(aes(x = total_bottles, 
              y = reorder(manufacturer_name,total_bottles), 
              color = total_bottles)) +
   geom_segment(aes(yend = manufacturer_name), 
              xend = 0,
              size = 2) + 
-  geom_point(size = 4) +
-             # shape = 21) +
+  geom_point(size = 4) +   # shape = 21) +
              # fill = &quot;#4E7FBF&quot;,
              # color = &quot;#4E7FBF&quot;) +
   geom_text(aes(label = total_bottles), color = &quot;white&quot;, size = 1.5) + 
@@ -898,8 +924,8 @@ manufacturers[1:18,] %&gt;%
 <pre class="r"><code>tz_data %&gt;%
   group_by(manufacturer_country) %&gt;%
   summarise(total_bottles = sum(bottle_count)) %&gt;%
-  arrange(desc(total_bottles))</code></pre>
-<pre><code>## # A tibble: 15 x 2
+  arrange(desc(total_bottles))
+## # A tibble: 15 x 2
 ##    manufacturer_country total_bottles
 ##    &lt;fct&gt;                        &lt;dbl&gt;
 ##  1 TZ                            1643
@@ -920,8 +946,8 @@ manufacturers[1:18,] %&gt;%
 </div>
 <div id="inspect-tz-data" class="section level3">
 <h3>Inspect TZ data</h3>
-<pre class="r"><code>glimpse(tz_data)</code></pre>
-<pre><code>## Rows: 131
+<pre class="r"><code>glimpse(tz_data)
+## Rows: 131
 ## Columns: 10
 ## $ product_barcode      &lt;dbl&gt; 7.628005e+10, 3.155930e+12, 6.009703e+12, 6.16110~
 ## $ product_label        &lt;chr&gt; &quot;Calcium and Magnesium&quot;, &quot;Lager Beer&quot;, &quot;Chewy vit~
@@ -936,8 +962,8 @@ manufacturers[1:18,] %&gt;%
 </div>
 <div id="get-ranking-of-bottlecount-as-per-brand-name" class="section level3">
 <h3>get ranking of bottlecount as per brand name</h3>
-<pre class="r"><code>tz_data %&gt;% group_by(brand_name) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))</code></pre>
-<pre><code>## # A tibble: 67 x 2
+<pre class="r"><code>tz_data %&gt;% group_by(brand_name) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))
+## # A tibble: 67 x 2
 ##    brand_name       total
 ##    &lt;chr&gt;            &lt;dbl&gt;
 ##  1 Mo                 346
@@ -954,8 +980,8 @@ manufacturers[1:18,] %&gt;%
 </div>
 <div id="get-ranking-of-bottle-count-as-per-product-label" class="section level3">
 <h3>get ranking of bottle count as per product label</h3>
-<pre class="r"><code>tz_data %&gt;% group_by(product_label) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))</code></pre>
-<pre><code>## # A tibble: 101 x 2
+<pre class="r"><code>tz_data %&gt;% group_by(product_label) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))
+## # A tibble: 101 x 2
 ##    product_label                            total
 ##    &lt;chr&gt;                                    &lt;dbl&gt;
 ##  1 Pure Drinking Water                        467
@@ -1055,8 +1081,8 @@ ggplot(tz_data_collapsed, aes(volumes)) +
     x = 4600, 
     y = 55, 
     label = &quot;Containers\n of \n 2-6 liters&quot;
-  )</code></pre>
-<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
+  )
+## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="wordcloud-for-article-picture" class="section level3">

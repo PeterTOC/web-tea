@@ -1,0 +1,79 @@
+---
+title: 'Tanzania Mainland Football Championships: 1965 - 2020'
+author: 'Peter Boshe'
+date: '2021-10-19'
+categories: ["Sports"]
+tags: ["DataViz", "Unguided project"]
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+images: []
+summary: "This is a racing bar chart of the male football championships and the respective teams that have won over the past half century"
+draft: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
+```
+This is a racing bar chart of the championships and the respective teams that have won over the past half century(acc. to [Data](http://www.rsssf.com/tablest/tanzchamp.html)),
+
+Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup?
+
+
+## setting up the environment
+```{r environment, warning=FALSE, message=FALSE}
+# clear environment 
+rm(list = ls())
+
+# setting environment 
+library(readxl)
+library(tidyverse)
+library(gganimate)
+library(lubridate)
+
+# loading data 
+df <- read_excel("Tanzania mainland championships.xlsx")
+
+```
+
+## inspecting the dataset
+
+```{r inspection}
+skimr::skim(df)
+```
+## create the racing bar chart
+Note: data with incomplete detail was removed
+```{r main code}
+data_df <- df %>% 
+  select(Team, Year) %>% 
+  group_by(Team) %>% 
+  mutate(cups = 1:n())  %>% 
+  # mutate(rank = 1:n())  %>% 
+  # pivot_wider(names_from = "Year", values_from = "cups") %>% 
+  # pivot
+  ungroup() %>% 
+  group_by(Year) %>% 
+  arrange(-cups) %>% 
+  ggplot(aes(x = cups, y = Team, group = Team,
+             fill = as.factor(Team))) +
+  geom_col() +
+  # geom_rect(aes(xmin = 0, 
+  #               xmax = cups,
+  #               ymin = Team[cups > 0] ,
+  #               ymax = Team[cups > 0],
+  #               y = Team[cups > 0]))+
+  facet_wrap(~ Year) +
+  scale_x_continuous(limits = c(0,30),
+                     breaks = 1:30) +
+  ggtitle("Mainland Championships since inception") +
+  labs(x = "Cups") +
+  labs(y = "Teams that have won") +
+  labs(fill = NULL) +
+  theme_classic() +
+  facet_null() +
+  geom_text(col = "darkblue", size = 12,
+            aes(group = Team, label = as.character(Year), x = 27, y = 3 )) +
+  transition_time(Year)
+
+```
+
