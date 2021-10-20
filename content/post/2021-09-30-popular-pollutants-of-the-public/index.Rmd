@@ -39,7 +39,7 @@ data <- read_csv("wastebase_scan_summary_20210815.csv")
 
 ## inspect the data
 
-
+{{< table_of_contents >}}
 
 ```{r inspect data, echo=FALSE}
 skim_without_charts(data)

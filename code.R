@@ -35,3 +35,13 @@ blogdown::new_post(title = 'Tanzania Mainland Championships: 1965 - 2020')
 # learning material  link-------------------------------------------------------
 
 https://www.youtube.com/watch?v=0GZxidrlaRM&list=PLLAZ4kZ9dFpOnyRlyS-liKL5ReHDcj4G3&index=6
+
+
+
+df1 <- df %>% 
+  group_by(Team) %>% 
+  mutate(cups = 1:n()) %>% 
+  ungroup() %>% 
+  group_by(Year) %>% 
+  spread(Year, cups) %>% 
+  replace_na(list(df1[,2:57]))

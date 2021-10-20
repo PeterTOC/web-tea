@@ -42,6 +42,8 @@ df <- read_excel("Tanzania mainland championships.xlsx")
 skimr::skim(df)
 ```
 ## create the racing bar chart
+
+
 Note: data with incomplete detail was removed
 ```{r main code}
 data_df <- df %>% 

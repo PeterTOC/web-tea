@@ -9,7 +9,16 @@
 	color: #4E7FBF;
 	font-family: Calibri;
 	font-size: 16px;
+	font-weight:bold;
 	border-color: #613242;
+	position: fixed;
+	left: 2em;
+	top: 5em;
+	background-color:#FFF;
+	padding: 5em 1em;
+	margin: 0 0 0.5em 0.5em;
+	border: 1px solid #aaa;
+	width: 20%;
 }
 body{
 	color: #000000;
