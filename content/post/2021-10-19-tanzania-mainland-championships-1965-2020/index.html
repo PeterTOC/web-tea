@@ -177,4 +177,47 @@ df &lt;- read_excel(&quot;Tanzania mainland championships.xlsx&quot;)</code></pr
   geom_text(col = &quot;darkblue&quot;, size = 12,
             aes(group = Team, label = as.character(Year), x = 27, y = 3 )) +
   transition_time(Year)</code></pre>
+<pre class="r"><code> df1 &lt;- df %&gt;% 
+     group_by(Team) %&gt;% 
+     mutate(cups = 1:n()) %&gt;% 
+     ungroup() %&gt;% 
+     group_by(Year) %&gt;% spread(Year, cups) %&gt;% 
+     replace(is.na(.),0) %&gt;% pivot_longer(-Team) %&gt;% mutate(rank = min_rank(-value) * 1) %&gt;%
+     ungroup()</code></pre>
+<pre class="r"><code>p &lt;- ggplot(data = df1, 
+            aes(rank, 
+                group = Team, 
+                fill = as.factor(Team), 
+                color = as.factor(Team))) +
+    geom_tile(aes(y = value/2, 
+                  height = value, 
+                  width = 0.9), 
+              alpha = 0.8, color = NA) +
+    
+     # text in x-axis (requires clip = &quot;off&quot; in coord_*)
+     # paste(country, &quot; &quot;)  is a hack to make pretty spacing, since hjust &gt; 1 
+    #   leads to weird artifacts in text spacing.
+    geom_text(aes(y = 0, 
+                  label = paste(Team, &quot; &quot;)), 
+              vjust = 0.2, 
+              hjust = 1) +
+    coord_flip(clip = &quot;off&quot;, expand = FALSE) +
+    scale_y_continuous(labels = scales::comma) +
+    scale_x_reverse() +
+    guides(color = FALSE, fill = FALSE) +
+    labs(title=&#39;Mainland Championship&#39;, 
+         x = &quot;&quot;, 
+         y = &quot;value&quot;) +
+    theme(plot.title = element_text(hjust = 0, 
+                                    size = 22),
+          axis.ticks.y = element_blank(),  # These relate to the axes post-flip
+          axis.text.y  = element_blank(),  # These relate to the axes post-flip
+          plot.margin = margin(1,1,1,4, &quot;cm&quot;)) +
+  
+     transition_states(name, transition_length = 4, state_length = 1) +
+     ease_aes(&#39;cubic-in-out&#39;)
+## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
+## &quot;none&quot;)` instead.
+animate(p, fps = 55, duration = 55, width = 800, height = 600)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.gif" style="display: block; margin: auto;" /></p>
 </div>
