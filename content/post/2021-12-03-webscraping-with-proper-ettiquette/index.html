@@ -11,7 +11,7 @@ output:
     toc_depth: 2
 images: []
 summary: "In this article we take a look at how we can scrape raw information/data from websites without the hassle of copying and pasting and clicking and retyping whole data tables and ~then~ analysing your data."
-draft: true
+draft: false
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
@@ -162,7 +162,7 @@ Click for Code
 <pre class="r"><code>datatable(gainers_losers)</code></pre>
 </details>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["JATU","NMG","NICO","EABL","TOL","KCB","JHL"],[435,370,290,3100,550,880,6950],["-3.33%","+1.37%","+7.41%","+1.31%","+7.84%","+4.76%","+0.72%"],[-3.33,1.37,7.41,1.31,7.84,4.76,0.72],[false,true,true,true,true,true,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>company<\/th>\n      <th>price<\/th>\n      <th>change<\/th>\n      <th>percent_change<\/th>\n      <th>pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7"],["JATU","NMG","NICO","TOL","KCB","EABL","JHL"],[435,370,290,550,880,3100,6950],["-3.33%","+1.37%","+7.41%","+7.84%","+4.76%","+1.31%","+0.72%"],[-3.33,1.37,7.41,7.84,4.76,1.31,0.72],[false,true,true,true,true,true,true]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>company<\/th>\n      <th>price<\/th>\n      <th>change<\/th>\n      <th>percent_change<\/th>\n      <th>pos<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>Now that we have our data in a format that is convenient for analysis we can get to the fun part, exploration!</p>
 <ol style="list-style-type: decimal">
 <li>Sample Plot 1</li>

@@ -9,6 +9,7 @@ tags:
   - Guided Project
   - DataViz
 output: html_document
+summary: '"The scientist does not study nature because it is useful; he studies it because he delights in it, and he delights in it because it is beautiful."-(Henri Poincaré)'
 ---
 
 ## 1. Patterns in nature

@@ -11,7 +11,7 @@ output:
     toc_depth: 2
 images: []
 summary: "In this article we take a look at how we can scrape raw information/data from websites without the hassle of copying and pasting and clicking and retyping whole data tables and ~then~ analysing your data."
-draft: true
+draft: false
 ---
 
 ```{r setup, include=FALSE}
