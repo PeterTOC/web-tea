@@ -315,28 +315,27 @@ ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
 <pre class="r"><code># Read in datasets/confirmed_cases_china_vs_world.csv
 confirmed_cases_china_vs_world &lt;- read_csv(&quot;datasets/confirmed_cases_china_vs_world.csv&quot;)
 ## Rows: 112 Columns: 4
-## -- Column specification --------------------------------------------------------
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): is_china
 ## dbl  (2): cases, cum_cases
 ## date (1): date
 ## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 # See the result
 glimpse(confirmed_cases_china_vs_world)
 ## Rows: 112
 ## Columns: 4
-## $ is_china  &lt;chr&gt; &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China~
-## $ date      &lt;date&gt; 2020-01-22, 2020-01-23, 2020-01-24, 2020-01-25, 2020-01-26,~
-## $ cases     &lt;dbl&gt; 548, 95, 277, 486, 669, 802, 2632, 578, 2054, 1661, 2089, 47~
-## $ cum_cases &lt;dbl&gt; 548, 643, 920, 1406, 2075, 2877, 5509, 6087, 8141, 9802, 118~
+## $ is_china  &lt;chr&gt; &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China&quot;, &quot;China…
+## $ date      &lt;date&gt; 2020-01-22, 2020-01-23, 2020-01-24, 2020-01-25, 2020-01-26,…
+## $ cases     &lt;dbl&gt; 548, 95, 277, 486, 669, 802, 2632, 578, 2054, 1661, 2089, 47…
+## $ cum_cases &lt;dbl&gt; 548, 643, 920, 1406, 2075, 2877, 5509, 6087, 8141, 9802, 118…
 # Draw a line plot of cumulative cases vs. date, colored by is_china
 # Define aesthetics within the line geom
 plt_cum_confirmed_cases_china_vs_world &lt;- ggplot(confirmed_cases_china_vs_world) +
   geom_line(aes(x = date, y = cum_cases, color = is_china)) +
   ylab(&quot;Cumulative confirmed cases&quot;)
-
 # See the plot
 plt_cum_confirmed_cases_china_vs_world</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/china%20vs%20world-1.png" width="50%" style="display: block; margin: auto 0 auto auto;" /></p>
@@ -359,7 +358,6 @@ plt_cum_confirmed_cases_china_vs_world</code></pre>
   &quot;2020-02-13&quot;, &quot;China reporting\nchange&quot;
 ) %&gt;%
   mutate(date = as.Date(date))
-
 # Using who_events, add vertical dashed lines with an xintercept at date
 # and text at date, labeled by event, and at 100000 on the y-axis
 plt_cum_confirmed_cases_china_vs_world +
@@ -378,8 +376,6 @@ plt_cum_confirmed_cases_china_vs_world +
 <pre class="r"><code># Filter for China, from Feb 15
 china_after_feb15 &lt;- confirmed_cases_china_vs_world %&gt;%
  filter(is_china == &quot;China&quot;, date &gt;= &quot;2020-02-15&quot;)
-
-
 # Using china_after_feb15, draw a line plot cum_cases vs. date
 # Add a smooth trend line using linear regression, no error bars
 ggplot(china_after_feb15, aes(date,cum_cases)) +
@@ -405,7 +401,6 @@ plt_not_china_trend_lin &lt;- ggplot(not_china, aes(date,cum_cases)) +
   geom_line() +
   geom_smooth(method = &quot;lm&quot;,se = FALSE) +
   ylab(&quot;Cumulative confirmed cases&quot;)
-
 # See the result
 plt_not_china_trend_lin 
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
@@ -433,22 +428,22 @@ plt_not_china_trend_lin +
 <pre class="r"><code># Run this to get the data for each country
 confirmed_cases_by_country &lt;- read_csv(&quot;datasets/confirmed_cases_by_country.csv&quot;)
 ## Rows: 13272 Columns: 5
-## -- Column specification --------------------------------------------------------
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (2): country, province
 ## dbl  (2): cases, cum_cases
 ## date (1): date
 ## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 glimpse(confirmed_cases_by_country)
 ## Rows: 13,272
 ## Columns: 5
-## $ country   &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Albania&quot;, &quot;Algeria&quot;, &quot;Andorra&quot;, &quot;Antigua and~
-## $ province  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ~
-## $ date      &lt;date&gt; 2020-01-22, 2020-01-22, 2020-01-22, 2020-01-22, 2020-01-22,~
-## $ cases     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
-## $ cum_cases &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
+## $ country   &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Albania&quot;, &quot;Algeria&quot;, &quot;Andorra&quot;, &quot;Antigua and…
+## $ province  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ date      &lt;date&gt; 2020-01-22, 2020-01-22, 2020-01-22, 2020-01-22, 2020-01-22,…
+## $ cases     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ cum_cases &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
 # Group by country, summarize to calculate total cases, find the top 7
 top_countries_by_total_cases &lt;- confirmed_cases_by_country %&gt;%
   group_by(country)  %&gt;% 
@@ -457,7 +452,7 @@ top_countries_by_total_cases &lt;- confirmed_cases_by_country %&gt;%
 ## Selecting by total_cases
 # See the result
 top_countries_by_total_cases
-## # A tibble: 7 x 2
+## # A tibble: 7 × 2
 ##   country      total_cases
 ##   &lt;chr&gt;              &lt;dbl&gt;
 ## 1 France              7699
@@ -479,21 +474,21 @@ top_countries_by_total_cases
 <pre class="r"><code># Read in the dataset from datasets/confirmed_cases_top7_outside_china.csv
 confirmed_cases_top7_outside_china &lt;- read_csv(&quot;datasets/confirmed_cases_top7_outside_china.csv&quot;)
 ## Rows: 2030 Columns: 3
-## -- Column specification --------------------------------------------------------
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): country
 ## dbl  (1): cum_cases
 ## date (1): date
 ## 
-## i Use `spec()` to retrieve the full column specification for this data.
-## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 # Glimpse at the contents of confirmed_cases_top7_outside_china
 glimpse(confirmed_cases_top7_outside_china)
 ## Rows: 2,030
 ## Columns: 3
-## $ country   &lt;chr&gt; &quot;Germany&quot;, &quot;Iran&quot;, &quot;Italy&quot;, &quot;Korea, South&quot;, &quot;Spain&quot;, &quot;US&quot;, &quot;~
-## $ date      &lt;date&gt; 2020-02-18, 2020-02-18, 2020-02-18, 2020-02-18, 2020-02-18,~
-## $ cum_cases &lt;dbl&gt; 16, 0, 3, 31, 2, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,~
+## $ country   &lt;chr&gt; &quot;Germany&quot;, &quot;Iran&quot;, &quot;Italy&quot;, &quot;Korea, South&quot;, &quot;Spain&quot;, &quot;US&quot;, &quot;…
+## $ date      &lt;date&gt; 2020-02-18, 2020-02-18, 2020-02-18, 2020-02-18, 2020-02-18,…
+## $ cum_cases &lt;dbl&gt; 16, 0, 3, 31, 2, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,…
 # Using confirmed_cases_top7_outside_china, draw a line plot of
 # cum_cases vs. date, colored by country
 ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country))+

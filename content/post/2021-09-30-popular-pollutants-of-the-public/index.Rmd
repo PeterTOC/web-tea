@@ -28,10 +28,10 @@ require(tidyverse)
 require(skimr)
 require(forcats)
 require(knitr)
-require(kableExtra)
 require(rebus)
 require(RColorBrewer)
 require(wordcloud2)
+require(DT)
 
 # loading data 
 data <- read_csv("wastebase_scan_summary_20210815.csv")
@@ -61,7 +61,7 @@ data %>%
   summarise(total_bottles = sum(bottle_count)) %>%
   arrange(desc(total_bottles))
 
-tz_data <- data %>% filter(scan_country == "TZ") #filter data for Tanzania (case study)
+tz_data <- data %>% filter(scan_country == "TZ")#filter data for Tanzania (case study)
 ```
 
 Note: email data collectors to query on the data discrepancy
@@ -95,12 +95,7 @@ tz_data_collapsed %>%
   group_by(product_label_collapsed) %>% 
   summarise(total = sum(bottle_count)) %>% 
   arrange(desc(total)) %>% 
-  kbl(col.names = c("Product Category", "Total"),
-      align = "lr",
-      caption = "Categories of Waste with respect to Product Type") %>% 
-  kable_minimal(bootstrap_options = c("striped", "hover"), 
-                full_width = F, 
-                position = "float_right")
+  datatable()
 ```
 
 ### Total count of bottles produced per manufacturer in Tanzania
@@ -113,17 +108,17 @@ manufacturers <- tz_data %>%
   arrange(desc(total_bottles))
 
 
-kbl(manufacturers[1:20,], 
-    col.names = c("Manufacterers","Country", "Total"),
-      align = "lrc",
-      caption = "List of Manufacturers Producing the Plastic Containers") %>% 
-  kable_minimal(bootstrap_options = c("striped", "hover", "condensed"),
-                full_width = F , 
-                position = "left", 
-                fixed_thead = TRUE) %>% 
-    row_spec(0, 
-             background = "yellow",
-             color = "black")
+# kbl(manufacturers[1:20,], 
+#     col.names = c("Manufacterers","Country", "Total"),
+#       align = "lrc",
+#       caption = "List of Manufacturers Producing the Plastic Containers") %>% 
+#   kable_minimal(bootstrap_options = c("striped", "hover", "condensed"),
+#                 full_width = F , 
+#                 position = "left", 
+#                 fixed_thead = TRUE) %>% 
+#     row_spec(0, 
+#              background = "yellow",
+#              color = "black")
 
 palette <- brewer.pal(n = 5,
                       name = "RdYlBu")
