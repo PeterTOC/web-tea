@@ -46,7 +46,7 @@ The following are three staples for scraping politeness;
 
 2.  **Throttle your requests**
 
-    As web scraping by code does not offer the natural buffer between requests to a website like one would do when retrieving the data manually, and while servers for websites like Wikipedia would likely not feel a thing. One can easily overload a server if the frequency of requests is not supported, especially when dealing with large amounts of data.
+    As web scraping by code does not offer the natural buffer between requests to a website like one would do when retrieving the data manually, and while servers for websites like Wikipedia would likely not feel a thing. One can easily overload a server if the frequency of requests is not supported, especially when dealing with large amounts of data. If many people are simultaneously trying to get a massive amount of data this could easily overwhelm the system which can hurt a service provider, we do not want that..
 
     ```{r}
 
