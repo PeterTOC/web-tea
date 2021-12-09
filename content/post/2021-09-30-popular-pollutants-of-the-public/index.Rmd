@@ -70,16 +70,65 @@ Note: email data collectors to query on the data discrepancy
 
 ```{r collapsing factors}
 
-drinking_water <- c("Pure Drinking Water", "Drinking Water", "Drinking water", "pure drinking water", "Mineral Water", "Mineral water", "Mineral water", "Agua Mineral Natural de las Sierras", "Best drinking water", "still drinking water", "Premium Pure Drinking Water", "DRINKING WATER", "Natural Water", "Hill Water")
+drinking_water <- c("Pure Drinking Water", "Drinking Water", 
+                    "Drinking water", "pure drinking water", 
+                    "Mineral Water", "Mineral water", 
+                    "Mineral water", "Agua Mineral Natural de las Sierras", 
+                    "Best drinking water", "still drinking water", 
+                    "Premium Pure Drinking Water", "DRINKING WATER", 
+                    "Natural Water", "Hill Water")
 
-carbonated_soft_drinks <- c("Xtra Carbonated Drink", "Extra Berry Flavor Carbonated Soft Drink", "Pineapple Flavoured Carbonated Soft Drink","Coke","Fanta Orange", "Pineapple Carbonated Drink", "Passion Flavour Carbonated Drink", "Xtra Berry Flavoured Carbonated Soft Drink", "Carbonated soft drink stoney Tangawizi/ ginger", "Cola Carbonated Soft Drink", "Malt Flavoured", "Non Alcoholic Malt Drink", "Fruity Flavoured Soft Drink", "Energy drink","CARBONATED FLAVOURED DRINK", "Afiya Berries Flavour","Chungwa","Pepsi", "Pepsi Max", "Apple punch", "Mo Xtra Energy", "Twist Spark", "Afiya Orange Flavour", "Diet Coke", "Soda Water", "Tonic Water", "Energy Drink", "Grand Malt Non-alcohol can", "Fanta Orange Flavoured Drink","Lemon-lime Flavoured Drink", "Azam Passion", "Novida Nanasi Flavoured", "Indian Tonic", "Apple and Malt Flavoured", "Indian Tonic")
+carbonated_soft_drinks <- c("Xtra Carbonated Drink", 
+                            "Extra Berry Flavor Carbonated Soft Drink", 
+                            "Pineapple Flavoured Carbonated Soft Drink", 
+                            "Coke","Fanta Orange", "Pineapple Carbonated Drink", 
+                            "Passion Flavour Carbonated Drink", 
+                            "Xtra Berry Flavoured Carbonated Soft Drink", 
+                            "Carbonated soft drink stoney Tangawizi/ ginger", 
+                            "Cola Carbonated Soft Drink", "Malt Flavoured", 
+                            "Non Alcoholic Malt Drink", 
+                            "Fruity Flavoured Soft Drink", 
+                            "Energy drink","CARBONATED FLAVOURED DRINK", 
+                            "Afiya Berries Flavour","Chungwa","Pepsi", 
+                            "Pepsi Max", "Apple punch", "Mo Xtra Energy", 
+                            "Twist Spark", "Afiya Orange Flavour", 
+                            "Diet Coke", "Soda Water", "Tonic Water", 
+                            "Energy Drink", "Grand Malt Non-alcohol can", 
+                            "Fanta Orange Flavoured Drink",
+                            "Lemon-lime Flavoured Drink","Azam Passion", 
+                            "Novida Nanasi Flavoured", "Indian Tonic", 
+                            "Apple and Malt Flavoured", "Indian Tonic")
 
 
-alcohol <- c("K-Vant Spirit", "Gin", "Castle Lite", "Potable cane spirit", "Kilimanjaro Premium Lager", "Savanna", "Premium Lager", "Premium Spirit", "Lager Beer", "Fortified Wine", "Lager", "Redds", "Heineken", "Valeur Superior Brandy", "smart gi")
+alcohol <- c("K-Vant Spirit", "Gin", "Castle Lite", 
+             "Potable cane spirit", "Kilimanjaro Premium Lager", 
+             "Savanna", "Premium Lager", "Premium Spirit", 
+             "Lager Beer", "Fortified Wine", "Lager", 
+             "Redds", "Heineken", "Valeur Superior Brandy", 
+             "smart gi")
 
-juice <- c("Mango juice drink", "Fruit drink","Orange Dairy Blend Concentrate", "Lemon-Lime Flavoured Drink", "Mango Fruit Juice Drink (Azam Embe)", "Ukwaju Tamarind Juice Drink", "Ubuyu / Baobab Fruit Drink", "Orange Flavored Drink", "Mango juice drink", "Tunda Embe / Mango Juice Drink", "Delight Mango Flavoured Drink", "Embe Flavoured Drink", "Jembe Drink", "Ukwaju", "Embe Fruit juice", "Tunda Mix", "Mango")
+juice <- c("Mango juice drink", "Fruit drink", 
+           "Orange Dairy Blend Concentrate", 
+           "Lemon-Lime Flavoured Drink", 
+           "Mango Fruit Juice Drink (Azam Embe)", 
+           "Ukwaju Tamarind Juice Drink", "Ubuyu / Baobab Fruit Drink", 
+           "Orange Flavored Drink", "Mango juice drink", 
+           "Tunda Embe / Mango Juice Drink", "Delight Mango Flavoured Drink", 
+           "Embe Flavoured Drink", "Jembe Drink", "Ukwaju", 
+           "Embe Fruit juice", "Tunda Mix", "Mango")
 
-household_items <- c("Lemon fresh Cleaner", "Mouthwash total Care", "Nourishing conditioner", "plain yoghurt", "Pure Sunflower Oil", "Table vinegar", "Sunflower seed oil", "Sunflower oil", "Mouthwash total Care", "Nourishing conditioner", "Coconut Oil", "Body Lotion", "Anti-bacterial Mouthwash", "Antiseptic Desinfectant", "boncabe", "Calcium and Magnesium", "Chewy vites", "Chicken Masala Spice Seasoning", "ciclo farma", "Fish oil", "LAVA LOUCAS CONCENTRADO", "Coffee", "White Board Cleaner", "acid", "Plain Yoghurt")
+household_items <- c("Lemon fresh Cleaner", "Mouthwash total Care", 
+                     "Nourishing conditioner", "plain yoghurt", 
+                     "Pure Sunflower Oil", "Table vinegar", 
+                     "Sunflower seed oil", "Sunflower oil", 
+                     "Mouthwash total Care", "Nourishing conditioner", 
+                     "Coconut Oil", "Body Lotion", "Anti-bacterial Mouthwash", 
+                     "Antiseptic Desinfectant", "boncabe", 
+                     "Calcium and Magnesium", "Chewy vites", 
+                     "Chicken Masala Spice Seasoning", 
+                     "ciclo farma", "Fish oil", "LAVA LOUCAS CONCENTRADO", 
+                     "Coffee", "White Board Cleaner", "acid", 
+                     "Plain Yoghurt")
 
 tz_data_collapsed <- tz_data %>% 
   mutate(product_label_collapsed = 
@@ -99,13 +148,25 @@ tz_data_collapsed %>%
 ```
 
 ### Total count of bottles produced per manufacturer in Tanzania
-```{r total per manufacturer in TZ}
 
-
+#### Top amount of bottles by manufacterer
+```{r top20}
 manufacturers <- tz_data %>% 
   group_by(manufacturer_name, manufacturer_country) %>% 
   summarise(total_bottles = sum(bottle_count)) %>% 
-  arrange(desc(total_bottles))
+  arrange(desc(total_bottles)) %>% 
+  top_n(20)
+
+datatable(manufacturers)
+```
+
+
+
+#### Chart of the top 20
+
+```{r total per manufacturer in TZ}
+
+
 
 
 # kbl(manufacturers[1:20,], 

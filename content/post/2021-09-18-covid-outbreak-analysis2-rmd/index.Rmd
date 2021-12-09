@@ -10,12 +10,14 @@ output:
     toc: true
     toc_depth: 2
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"
-draft: true
+draft: false
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
 ```
+
+<script src="js/hideOutput.js"></script>
 
 ## 1. From epidemic to pandemic
 
@@ -55,18 +57,21 @@ In this notebook, you will visualize COVID-19 data from the first several weeks 
 
 </p>
 
-```{r data, echo=FALSE, warning=FALSE, message=FALSE}
+<div class="toggle"><button>Code</button>
+```{r data, warning=FALSE, message=FALSE}
 # Load the readr, ggplot2, and dplyr packages
 library(readr)
 library(ggplot2)
 library(dplyr)
 library(knitr)
+library(DT)
 # Read datasets/confirmed_cases_worldwide.csv into confirmed_cases_worldwide
-confirmed_cases_worldwide <- read_csv("datasets/confirmed_cases_worldwide.csv")
-kable(confirmed_cases_worldwide, 
-      col.names = c("Date","Cummulative Confirmed Cases"),
-      align = "cc")
+confirmed_cases_worldwide <- read_csv("~/Portfolio/web-tea/content/post/2020-09-18-covid-outbreak-analysis2-rmd/datasets/confirmed_cases_worldwide.csv")
+datatable(confirmed_cases_worldwide)
 ```
+</div>
+
+
 
 ## 2. Confirmed cases throughout the world
 
@@ -76,13 +81,16 @@ The table above shows the cumulative confirmed cases of COVID-19 worldwide by da
 
 </p>
 
-```{r confirmed cases, fig.dim =c(3,3), fig.cap = 'Figure 1.1 confirmed cases throughout the world'}
+<div class="toggle"><button>Code</button>
+```{r confirmed cases,message=FALSE}
 # Draw a line plot of cumulative cases vs. date
 # Label the y-axis
 ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
   geom_line() +
   ylab("Cumulative confirmed cases")
 ```
+</div>
+
 
 ## 3. China compared to the rest of the world
 
@@ -104,7 +112,9 @@ Early on in the outbreak, the COVID-19 cases were primarily centered in China. L
 
 </p>
 
-```{r china vs world, out.width='50%', fig.align='right'}
+
+<button type="button" class="btn btn-default">
+```{r china vs world,message=FALSE}
 # Read in datasets/confirmed_cases_china_vs_world.csv
 confirmed_cases_china_vs_world <- read_csv("datasets/confirmed_cases_china_vs_world.csv")
 # See the result
@@ -117,6 +127,8 @@ plt_cum_confirmed_cases_china_vs_world <- ggplot(confirmed_cases_china_vs_world)
 # See the plot
 plt_cum_confirmed_cases_china_vs_world
 ```
+</button>
+
 
 ## 4. Let's annotate!
 
@@ -138,7 +150,8 @@ By annotating events like this, we can better interpret changes in the plot.
 
 </p>
 
-```{r significant events}
+<button type="button" class="btn btn-default">Code</button>
+```{r significant events,message=FALSE}
 who_events <- tribble(
   ~ date, ~ event,
   "2020-01-30", "Global health\nemergency declared",
@@ -152,6 +165,8 @@ plt_cum_confirmed_cases_china_vs_world +
   geom_vline(data = who_events, aes(xintercept = date), linetype = "dashed") +
   geom_text(data = who_events, aes(date, label = event),y = 1e5  )
 ```
+
+
 
 ## 5. Adding a trend line to China
 
@@ -167,7 +182,9 @@ There is a clear surge of cases around February 13, 2020, with the reporting cha
 
 </p>
 
-```{r }
+
+<button type="button" class="btn btn-default">
+```{r, message=FALSE}
 # Filter for China, from Feb 15
 china_after_feb15 <- confirmed_cases_china_vs_world %>%
  filter(is_china == "China", date >= "2020-02-15")
@@ -178,6 +195,9 @@ ggplot(china_after_feb15, aes(date,cum_cases)) +
   geom_smooth(method = "lm", se = FALSE) +
   ylab("Cumulative confirmed cases")
 ```
+</button>
+
+
 
 ## 6. And the rest of the world?
 
@@ -193,7 +213,7 @@ How does the rest of the world compare to linear growth?
 
 </p>
 
-```{r}
+```{r, message=FALSE}
 # Filter confirmed_cases_china_vs_world for not China
 not_china <-  confirmed_cases_china_vs_world %>% filter(is_china == "Not China")
 # Using not_china, draw a line plot cum_cases vs. date
@@ -214,11 +234,14 @@ From the plot above, we can see a straight line does not fit well at all, and th
 
 </p>
 
-```{r}
+<div class="fold s">
+```{r, message=FALSE}
 # Modify the plot to use a logarithmic scale on the y-axis
 plt_not_china_trend_lin + 
   scale_y_log10()
 ```
+</div>
+
 
 ## 8. Which countries outside of China have been hit hardest?
 
@@ -234,7 +257,7 @@ Not all countries are being affected by COVID-19 equally, and it would be helpfu
 
 </p>
 
-```{r}
+```{r, message=FALSE}
 # Run this to get the data for each country
 confirmed_cases_by_country <- read_csv("datasets/confirmed_cases_by_country.csv")
 glimpse(confirmed_cases_by_country)
@@ -242,9 +265,9 @@ glimpse(confirmed_cases_by_country)
 top_countries_by_total_cases <- confirmed_cases_by_country %>%
   group_by(country)  %>% 
   summarize(total_cases = max(cum_cases))  %>% 
-  top_n(7)
+  top_n(10)
 # See the result
-top_countries_by_total_cases
+datatable(top_countries_by_total_cases)
 ```
 
 ## 9. Plotting hardest hit countries as of Mid-March 2020
@@ -261,7 +284,9 @@ Finally, congratulations on getting to the last step! If you would like to conti
 
 </p>
 
-```{r}
+
+<div class="fold o">
+```{r, message=FALSE}
 # Read in the dataset from datasets/confirmed_cases_top7_outside_china.csv
 confirmed_cases_top7_outside_china <- read_csv("datasets/confirmed_cases_top7_outside_china.csv")
 # Glimpse at the contents of confirmed_cases_top7_outside_china
@@ -271,3 +296,7 @@ glimpse(confirmed_cases_top7_outside_china)
 ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country))+
     geom_line()
 ```
+</div>
+
+
+

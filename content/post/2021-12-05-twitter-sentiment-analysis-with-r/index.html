@@ -1,0 +1,529 @@
+---
+title: "Twitter Sentiment Analysis with R"
+author: "Peter Boshe"
+date: '2021-12-05'
+slug: []
+categories:
+- R
+- Educational
+tags:
+- Data Mining
+- E.D.A
+- Data Analysis
+- Unguided project
+- R programming
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+draft: true
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="{{< blogdown/postref >}}index_files/plotly-binding/plotly.js"></script>
+<script src="{{< blogdown/postref >}}index_files/typedarray/typedarray.min.js"></script>
+<script src="{{< blogdown/postref >}}index_files/jquery/jquery.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/crosstalk/js/crosstalk.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/plotly-htmlwidgets-css/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/plotly-main/plotly-latest.min.js"></script>
+<script src="{{< blogdown/postref >}}index_files/d3/d3.min.js"></script>
+<script src="{{< blogdown/postref >}}index_files/forceNetwork-binding/forceNetwork.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#sentiment-analysis">Sentiment Analysis</a></li>
+</ul>
+</div>
+
+<div id="sentiment-analysis" class="section level2">
+<h2>Sentiment Analysis</h2>
+<p>Sentiment analysis gives us insight into the things that automate mining of attitudes, opinions, views and emotions from text, speech, tweets and database sources. However, to fully explore the possibilities of this text analysis technique, we need data visualization tools to help organize the results. Visually representing the content of a text document is one of the most important tasks in the field of text mining.</p>
+<p>However, there are some gaps between visualizing unstructured (text) data and structured data. Many text visualizations do not represent the text directly, they represent an output of a language model. In this post, we will use tweets extracted using Twitter API, store tweets as text data, classify opinions in text into categories like positive, or negative or neutral, create a function to calculate the score of each type of opinion in the text and try to explore and visualize as much as we can, using R libraries.</p>
+<p>Tweets can be imported into R using Twitter API, then the text data has to be cleaned before analysis, for example removing emoticons, removing URLs, etc.</p>
+<div id="set-up-environment" class="section level4">
+<h4>Set up environment</h4>
+<pre class="r"><code>library(rtweet)
+library(twitteR)
+library(ROAuth)
+library(hms)
+library(lubridate) 
+library(tidytext)
+library(tm)
+library(wordcloud)
+library(igraph)
+library(glue)
+library(networkD3)
+library(plyr)
+library(stringr)
+library(ggplot2)
+library(ggeasy)
+library(plotly)
+library(dplyr)  
+library(hms)
+library(lubridate) 
+library(magrittr)
+library(tidyverse)
+library(janeaustenr)
+library(widyr)
+library(rvest)
+library(httr)</code></pre>
+</div>
+<div id="authorization-to-the-twitter-api" class="section level4">
+<h4>Authorization to the twitter API</h4>
+<ol style="list-style-type: decimal">
+<li>using web-browser -rtweet</li>
+</ol>
+<pre class="r"><code>## store api keys (these are fake example values; replace with your own keys)
+api_key &lt;- &quot;5xhi6DEejn9LFUugzOnJv0iQi&quot;
+api_secret_key &lt;- &quot;vzNWoflXr7XhxMTSBXJ6DJAFhquJvxrPj29EnuW6VSyhBgq6tN&quot;
+access_token &lt;- &quot;258913035-Q6qHwCQcrw4msCfzJxvHFT5EfEgyMnMTvXaFyCFx&quot;
+access_token_secret &lt;- &quot;iG3nnZSPEmWdbrtoEJYczX1yqr6RooFcqIUCEQblo7Y6U&quot;
+
+## authenticate via web browser
+# token &lt;- create_token(
+#   app = &quot;twitter-tea&quot;,
+#   consumer_key = api_key,
+#   consumer_secret = api_secret_key,
+#   access_token = access_token,
+#   access_secret = access_token_secret)
+
+#The create_token() function should automatically save your token as an environment variable for you. So next time you start an R session [on the same machine], rtweet should automatically find your token. or use get_token() to locate</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>using access tokens (Direct Authentication) -twitteR</li>
+</ol>
+<pre class="r"><code>#Note: This will ask us permission for direct authentication, type &#39;1&#39; for yes:
+setup_twitter_oauth(api_key,api_secret_key,access_token,access_token_secret)
+## [1] &quot;Using direct authentication&quot;
+
+#to be called during each session</code></pre>
+</div>
+<div id="extracting-global-warming-tweets" class="section level4">
+<h4>Extracting Global Warming tweets</h4>
+<pre class="r"><code># extracting 4000 tweets related to global warming topic
+tweets &lt;- searchTwitter(&quot;#globalwarming&quot;, n=4000, lang=&quot;en&quot;)
+n.tweet &lt;- length(tweets)
+
+# convert tweets to a data frame
+tweets.df &lt;- twListToDF(tweets)
+
+tweets.txt &lt;- sapply(tweets, function(t)t$getText())
+# Ignore graphical Parameters to avoid input errors
+tweets.txt &lt;- str_replace_all(tweets.txt,&quot;[^[:graph:]]&quot;, &quot; &quot;)
+
+## pre-processing text:
+clean.text = function(x)
+{
+  # convert to lower case
+  x = tolower(x)
+  # remove rt
+  x = gsub(&quot;rt&quot;, &quot;&quot;, x)
+  # remove at
+  x = gsub(&quot;@\\w+&quot;, &quot;&quot;, x)
+  # remove punctuation
+  x = gsub(&quot;[[:punct:]]&quot;, &quot;&quot;, x)
+  # remove numbers
+  x = gsub(&quot;[[:digit:]]&quot;, &quot;&quot;, x)
+  # remove links http
+  x = gsub(&quot;http\\w+&quot;, &quot;&quot;, x)
+  # remove tabs
+  x = gsub(&quot;[ |\t]{2,}&quot;, &quot;&quot;, x)
+  # remove blank spaces at the beginning
+  x = gsub(&quot;^ &quot;, &quot;&quot;, x)
+  # remove blank spaces at the end
+  x = gsub(&quot; $&quot;, &quot;&quot;, x)
+  # some other cleaning text
+  x = gsub(&#39;https://&#39;,&#39;&#39;,x)
+  x = gsub(&#39;http://&#39;,&#39;&#39;,x)
+  x = gsub(&#39;[^[:graph:]]&#39;, &#39; &#39;,x)
+  x = gsub(&#39;[[:punct:]]&#39;, &#39;&#39;, x)
+  x = gsub(&#39;[[:cntrl:]]&#39;, &#39;&#39;, x)
+  x = gsub(&#39;\\d+&#39;, &#39;&#39;, x)
+  x = str_replace_all(x,&quot;[^[:graph:]]&quot;, &quot; &quot;)
+  return(x)
+}
+
+cleanText &lt;- clean.text(tweets.txt)
+# remove empty results (if any)
+idx &lt;- which(cleanText == &quot; &quot;)
+cleanText &lt;- cleanText[cleanText != &quot; &quot;]
+
+BRRR::skrrrahh(44)</code></pre>
+</div>
+<div id="frequency-of-tweets" class="section level4">
+<h4>Frequency of Tweets</h4>
+<pre class="r"><code>tweets.df %&lt;&gt;% 
+  mutate(
+    created = created %&gt;% 
+      # Remove zeros.
+      str_remove_all(pattern = &#39;\\+0000&#39;) %&gt;%
+      # Parse date.
+      parse_date_time(orders = &#39;%y-%m-%d %H%M%S&#39;)
+  )
+
+tweets.df %&lt;&gt;% 
+  mutate(Created_At_Round = created%&gt;% round(units = &#39;hours&#39;) %&gt;% as.POSIXct())
+
+tweets.df %&gt;% pull(created) %&gt;% min()
+## [1] &quot;2021-11-30 22:51:06 UTC&quot;
+
+tweets.df %&gt;% pull(created) %&gt;% max()
+## [1] &quot;2021-12-06 02:00:01 UTC&quot;
+
+plt &lt;- tweets.df %&gt;% 
+  dplyr::count(Created_At_Round) %&gt;% 
+  ggplot(mapping = aes(x = Created_At_Round, y = n)) +
+  theme_light() +
+  geom_line() +
+  xlab(label = &#39;Date&#39;) +
+  ylab(label = NULL) +
+  ggtitle(label = &#39;Number of Tweets per Hour&#39;)
+
+plt %&gt;% ggplotly()</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"data":[{"x":[1638313200,1638316800,1638320400,1638324000,1638327600,1638331200,1638334800,1638338400,1638342000,1638345600,1638349200,1638352800,1638356400,1638360000,1638363600,1638367200,1638370800,1638374400,1638378000,1638381600,1638385200,1638388800,1638392400,1638396000,1638399600,1638403200,1638406800,1638410400,1638414000,1638417600,1638421200,1638424800,1638428400,1638432000,1638435600,1638439200,1638442800,1638446400,1638450000,1638453600,1638457200,1638460800,1638464400,1638468000,1638471600,1638475200,1638478800,1638482400,1638486000,1638489600,1638493200,1638496800,1638500400,1638504000,1638507600,1638511200,1638514800,1638518400,1638522000,1638525600,1638529200,1638532800,1638536400,1638540000,1638543600,1638547200,1638550800,1638554400,1638558000,1638561600,1638565200,1638568800,1638572400,1638576000,1638579600,1638583200,1638586800,1638590400,1638594000,1638597600,1638601200,1638604800,1638608400,1638612000,1638615600,1638619200,1638622800,1638626400,1638630000,1638633600,1638637200,1638640800,1638644400,1638648000,1638651600,1638655200,1638658800,1638662400,1638666000,1638669600,1638673200,1638676800,1638680400,1638684000,1638687600,1638691200,1638694800,1638698400,1638702000,1638705600,1638709200,1638712800,1638716400,1638720000,1638723600,1638727200,1638730800,1638734400,1638738000,1638741600,1638745200,1638748800,1638752400,1638756000],"y":[24,16,20,14,29,20,27,28,56,22,31,46,31,21,32,30,64,36,53,58,44,33,37,41,30,19,17,42,20,41,38,37,39,38,42,42,50,63,37,39,45,38,43,81,35,56,49,26,33,40,52,21,27,26,24,19,22,30,26,24,27,27,32,29,38,52,52,36,29,37,47,16,10,8,16,26,21,44,23,24,20,9,11,17,25,32,50,32,45,59,43,40,38,50,76,22,28,16,26,20,15,30,24,16,27,14,22,33,23,37,23,18,25,41,22,42,32,24,31,47,27,18,24,8],"text":["Created_At_Round: 2021-11-30 23:00:00<br />n: 24","Created_At_Round: 2021-12-01 00:00:00<br />n: 16","Created_At_Round: 2021-12-01 01:00:00<br />n: 20","Created_At_Round: 2021-12-01 02:00:00<br />n: 14","Created_At_Round: 2021-12-01 03:00:00<br />n: 29","Created_At_Round: 2021-12-01 04:00:00<br />n: 20","Created_At_Round: 2021-12-01 05:00:00<br />n: 27","Created_At_Round: 2021-12-01 06:00:00<br />n: 28","Created_At_Round: 2021-12-01 07:00:00<br />n: 56","Created_At_Round: 2021-12-01 08:00:00<br />n: 22","Created_At_Round: 2021-12-01 09:00:00<br />n: 31","Created_At_Round: 2021-12-01 10:00:00<br />n: 46","Created_At_Round: 2021-12-01 11:00:00<br />n: 31","Created_At_Round: 2021-12-01 12:00:00<br />n: 21","Created_At_Round: 2021-12-01 13:00:00<br />n: 32","Created_At_Round: 2021-12-01 14:00:00<br />n: 30","Created_At_Round: 2021-12-01 15:00:00<br />n: 64","Created_At_Round: 2021-12-01 16:00:00<br />n: 36","Created_At_Round: 2021-12-01 17:00:00<br />n: 53","Created_At_Round: 2021-12-01 18:00:00<br />n: 58","Created_At_Round: 2021-12-01 19:00:00<br />n: 44","Created_At_Round: 2021-12-01 20:00:00<br />n: 33","Created_At_Round: 2021-12-01 21:00:00<br />n: 37","Created_At_Round: 2021-12-01 22:00:00<br />n: 41","Created_At_Round: 2021-12-01 23:00:00<br />n: 30","Created_At_Round: 2021-12-02 00:00:00<br />n: 19","Created_At_Round: 2021-12-02 01:00:00<br />n: 17","Created_At_Round: 2021-12-02 02:00:00<br />n: 42","Created_At_Round: 2021-12-02 03:00:00<br />n: 20","Created_At_Round: 2021-12-02 04:00:00<br />n: 41","Created_At_Round: 2021-12-02 05:00:00<br />n: 38","Created_At_Round: 2021-12-02 06:00:00<br />n: 37","Created_At_Round: 2021-12-02 07:00:00<br />n: 39","Created_At_Round: 2021-12-02 08:00:00<br />n: 38","Created_At_Round: 2021-12-02 09:00:00<br />n: 42","Created_At_Round: 2021-12-02 10:00:00<br />n: 42","Created_At_Round: 2021-12-02 11:00:00<br />n: 50","Created_At_Round: 2021-12-02 12:00:00<br />n: 63","Created_At_Round: 2021-12-02 13:00:00<br />n: 37","Created_At_Round: 2021-12-02 14:00:00<br />n: 39","Created_At_Round: 2021-12-02 15:00:00<br />n: 45","Created_At_Round: 2021-12-02 16:00:00<br />n: 38","Created_At_Round: 2021-12-02 17:00:00<br />n: 43","Created_At_Round: 2021-12-02 18:00:00<br />n: 81","Created_At_Round: 2021-12-02 19:00:00<br />n: 35","Created_At_Round: 2021-12-02 20:00:00<br />n: 56","Created_At_Round: 2021-12-02 21:00:00<br />n: 49","Created_At_Round: 2021-12-02 22:00:00<br />n: 26","Created_At_Round: 2021-12-02 23:00:00<br />n: 33","Created_At_Round: 2021-12-03 00:00:00<br />n: 40","Created_At_Round: 2021-12-03 01:00:00<br />n: 52","Created_At_Round: 2021-12-03 02:00:00<br />n: 21","Created_At_Round: 2021-12-03 03:00:00<br />n: 27","Created_At_Round: 2021-12-03 04:00:00<br />n: 26","Created_At_Round: 2021-12-03 05:00:00<br />n: 24","Created_At_Round: 2021-12-03 06:00:00<br />n: 19","Created_At_Round: 2021-12-03 07:00:00<br />n: 22","Created_At_Round: 2021-12-03 08:00:00<br />n: 30","Created_At_Round: 2021-12-03 09:00:00<br />n: 26","Created_At_Round: 2021-12-03 10:00:00<br />n: 24","Created_At_Round: 2021-12-03 11:00:00<br />n: 27","Created_At_Round: 2021-12-03 12:00:00<br />n: 27","Created_At_Round: 2021-12-03 13:00:00<br />n: 32","Created_At_Round: 2021-12-03 14:00:00<br />n: 29","Created_At_Round: 2021-12-03 15:00:00<br />n: 38","Created_At_Round: 2021-12-03 16:00:00<br />n: 52","Created_At_Round: 2021-12-03 17:00:00<br />n: 52","Created_At_Round: 2021-12-03 18:00:00<br />n: 36","Created_At_Round: 2021-12-03 19:00:00<br />n: 29","Created_At_Round: 2021-12-03 20:00:00<br />n: 37","Created_At_Round: 2021-12-03 21:00:00<br />n: 47","Created_At_Round: 2021-12-03 22:00:00<br />n: 16","Created_At_Round: 2021-12-03 23:00:00<br />n: 10","Created_At_Round: 2021-12-04 00:00:00<br />n:  8","Created_At_Round: 2021-12-04 01:00:00<br />n: 16","Created_At_Round: 2021-12-04 02:00:00<br />n: 26","Created_At_Round: 2021-12-04 03:00:00<br />n: 21","Created_At_Round: 2021-12-04 04:00:00<br />n: 44","Created_At_Round: 2021-12-04 05:00:00<br />n: 23","Created_At_Round: 2021-12-04 06:00:00<br />n: 24","Created_At_Round: 2021-12-04 07:00:00<br />n: 20","Created_At_Round: 2021-12-04 08:00:00<br />n:  9","Created_At_Round: 2021-12-04 09:00:00<br />n: 11","Created_At_Round: 2021-12-04 10:00:00<br />n: 17","Created_At_Round: 2021-12-04 11:00:00<br />n: 25","Created_At_Round: 2021-12-04 12:00:00<br />n: 32","Created_At_Round: 2021-12-04 13:00:00<br />n: 50","Created_At_Round: 2021-12-04 14:00:00<br />n: 32","Created_At_Round: 2021-12-04 15:00:00<br />n: 45","Created_At_Round: 2021-12-04 16:00:00<br />n: 59","Created_At_Round: 2021-12-04 17:00:00<br />n: 43","Created_At_Round: 2021-12-04 18:00:00<br />n: 40","Created_At_Round: 2021-12-04 19:00:00<br />n: 38","Created_At_Round: 2021-12-04 20:00:00<br />n: 50","Created_At_Round: 2021-12-04 21:00:00<br />n: 76","Created_At_Round: 2021-12-04 22:00:00<br />n: 22","Created_At_Round: 2021-12-04 23:00:00<br />n: 28","Created_At_Round: 2021-12-05 00:00:00<br />n: 16","Created_At_Round: 2021-12-05 01:00:00<br />n: 26","Created_At_Round: 2021-12-05 02:00:00<br />n: 20","Created_At_Round: 2021-12-05 03:00:00<br />n: 15","Created_At_Round: 2021-12-05 04:00:00<br />n: 30","Created_At_Round: 2021-12-05 05:00:00<br />n: 24","Created_At_Round: 2021-12-05 06:00:00<br />n: 16","Created_At_Round: 2021-12-05 07:00:00<br />n: 27","Created_At_Round: 2021-12-05 08:00:00<br />n: 14","Created_At_Round: 2021-12-05 09:00:00<br />n: 22","Created_At_Round: 2021-12-05 10:00:00<br />n: 33","Created_At_Round: 2021-12-05 11:00:00<br />n: 23","Created_At_Round: 2021-12-05 12:00:00<br />n: 37","Created_At_Round: 2021-12-05 13:00:00<br />n: 23","Created_At_Round: 2021-12-05 14:00:00<br />n: 18","Created_At_Round: 2021-12-05 15:00:00<br />n: 25","Created_At_Round: 2021-12-05 16:00:00<br />n: 41","Created_At_Round: 2021-12-05 17:00:00<br />n: 22","Created_At_Round: 2021-12-05 18:00:00<br />n: 42","Created_At_Round: 2021-12-05 19:00:00<br />n: 32","Created_At_Round: 2021-12-05 20:00:00<br />n: 24","Created_At_Round: 2021-12-05 21:00:00<br />n: 31","Created_At_Round: 2021-12-05 22:00:00<br />n: 47","Created_At_Round: 2021-12-05 23:00:00<br />n: 27","Created_At_Round: 2021-12-06 00:00:00<br />n: 18","Created_At_Round: 2021-12-06 01:00:00<br />n: 24","Created_At_Round: 2021-12-06 02:00:00<br />n:  8"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":22.648401826484},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Number of Tweets per Hour","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[1638291060,1638778140],"tickmode":"array","ticktext":["Dec 02","Dec 04","Dec 06"],"tickvals":[1638403200,1638576000,1638748800],"categoryorder":"array","categoryarray":["Dec 02","Dec 04","Dec 06"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"y","title":{"text":"Date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[4.35,84.65],"tickmode":"array","ticktext":["20","40","60","80"],"tickvals":[20,40,60,80],"categoryorder":"array","categoryarray":["20","40","60","80"],"nticks":null,"ticks":"outside","tickcolor":"rgba(179,179,179,1)","ticklen":3.65296803652968,"tickwidth":0.33208800332088,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(222,222,222,1)","gridwidth":0.33208800332088,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(179,179,179,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e0ce1ae610f5":{"x":{},"y":{},"type":"scatter"}},"cur_data":"1e0ce1ae610f5","visdat":{"1e0ce1ae610f5":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+
+BRRR::skrrrahh(44)
+</div>
+<div id="estimating-sentiment-score" class="section level4">
+<h4>Estimating Sentiment Score</h4>
+<p>There are many resources describing methods to estimate sentiment. For the purpose of this tutorial, we will use a very simple algorithm which assigns sentiment score of the text by simply counting the number of occurrences of “positive” and “negative” words in a tweet.</p>
+<p>Hu &amp; Liu have published an “Opinion Lexicon” that categorizes approximately 6,800 words as positive or negative, which can be downloaded from this link:</p>
+<p><a href="http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html" class="uri">http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html</a></p>
+<div id="loading-sentiment-word-lists" class="section level5">
+<h5>Loading sentiment word lists</h5>
+<pre class="r"><code>positive = scan(&#39;/home/pedro/Portfolio/web-tea/content/post/2021-12-05-twitter-sentiment-analysis-with-r/positive-words.txt&#39;, what = &#39;character&#39;, comment.char = &#39;;&#39;)
+negative = scan(&#39;/home/pedro/Portfolio/web-tea/content/post/2021-12-05-twitter-sentiment-analysis-with-r/negative-words.txt&#39;, what = &#39;character&#39;, comment.char = &#39;;&#39;)
+# add your list of words below as you wish if missing in above read lists
+pos.words = c(positive,&#39;upgrade&#39;,&#39;Congrats&#39;,&#39;prizes&#39;,&#39;prize&#39;,&#39;thanks&#39;,&#39;thnx&#39;,
+              &#39;Grt&#39;,&#39;gr8&#39;,&#39;plz&#39;,&#39;trending&#39;,&#39;recovering&#39;,&#39;brainstorm&#39;,&#39;leader&#39;)
+neg.words = c(negative,&#39;wtf&#39;,&#39;wait&#39;,&#39;waiting&#39;,&#39;epicfail&#39;,&#39;Fight&#39;,&#39;fighting&#39;,
+              &#39;arrest&#39;,&#39;no&#39;,&#39;not&#39;)
+
+BRRR::skrrrahh(44)</code></pre>
+</div>
+<div id="sentiment-scoring-function" class="section level5">
+<h5>Sentiment scoring function</h5>
+<pre class="r"><code>
+score.sentiment = function(sentences, pos.words, neg.words, .progress=&#39;none&#39;)
+{
+  require(plyr)
+  require(stringr)
+  
+  # we are giving vector of sentences as input. 
+  # plyr will handle a list or a vector as an &quot;l&quot; for us
+  # we want a simple array of scores back, so we use &quot;l&quot; + &quot;a&quot; + &quot;ply&quot; = laply:
+  scores = laply(sentences, function(sentence, pos.words, neg.words) {
+    
+    # clean up sentences with R&#39;s regex-driven global substitute, gsub() function:
+    sentence = gsub(&#39;https://&#39;,&#39;&#39;,sentence)
+    sentence = gsub(&#39;http://&#39;,&#39;&#39;,sentence)
+    sentence = gsub(&#39;[^[:graph:]]&#39;, &#39; &#39;,sentence)
+    sentence = gsub(&#39;[[:punct:]]&#39;, &#39;&#39;, sentence)
+    sentence = gsub(&#39;[[:cntrl:]]&#39;, &#39;&#39;, sentence)
+    sentence = gsub(&#39;\\d+&#39;, &#39;&#39;, sentence)
+    sentence = str_replace_all(sentence,&quot;[^[:graph:]]&quot;, &quot; &quot;)
+    # and convert to lower case:
+    sentence = tolower(sentence)
+    
+    # split into words. str_split is in the stringr package
+    word.list = str_split(sentence, &#39;\\s+&#39;)
+    # sometimes a list() is one level of hierarchy too much
+    words = unlist(word.list)
+    
+    # compare our words to the dictionaries of positive &amp; negative terms
+    pos.matches = match(words, pos.words)
+    neg.matches = match(words, neg.words)
+    
+    # match() returns the position of the matched term or NA
+    # we just want a TRUE/FALSE:
+    pos.matches = !is.na(pos.matches)
+    neg.matches = !is.na(neg.matches)
+    
+    # TRUE/FALSE will be treated as 1/0 by sum():
+    score = sum(pos.matches) - sum(neg.matches)
+    
+    return(score)
+  }, pos.words, neg.words, .progress=.progress )
+  
+  scores.df = data.frame(score=scores, text=sentences)
+  return(scores.df)
+}
+
+BRRR::skrrrahh(44)</code></pre>
+</div>
+<div id="calculating-the-sentiment-score" class="section level5">
+<h5>Calculating the sentiment score</h5>
+<pre class="r"><code>analysis &lt;- score.sentiment(cleanText, pos.words, neg.words)
+# sentiment score frequency table
+table(analysis$score)
+## 
+##   -4   -3   -2   -1    0    1    2    3    4 
+##   10   54  235  795 2044  730   92   37    3</code></pre>
+</div>
+</div>
+<div id="histogram-of-sentiment-scores" class="section level4">
+<h4>Histogram of sentiment scores</h4>
+<pre class="r"><code>analysis %&gt;%
+  ggplot(aes(x=score)) + 
+  geom_histogram(binwidth = 1, fill = &quot;lightblue&quot;)+ 
+  ylab(&quot;Frequency&quot;) + 
+  xlab(&quot;sentiment score&quot;) +
+  ggtitle(&quot;Distribution of Sentiment scores of the tweets&quot;) +
+  ggeasy::easy_center_title()</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Analysis: From the Histogram of Sentiment scores, we can see that around half of the tweets have sentiment score as zero i.e. Neutral and overall as expected, the distribution depicts negative sentiment in the tweets related to global warming, since it is a major issue of concern.</p>
+</div>
+<div id="barplot-of-sentiment-type" class="section level4">
+<h4>Barplot of sentiment type</h4>
+<pre class="r"><code>neutral &lt;- length(which(analysis$score == 0))
+positive &lt;- length(which(analysis$score &gt; 0))
+negative &lt;- length(which(analysis$score &lt; 0))
+Sentiment &lt;- c(&quot;Positive&quot;,&quot;Neutral&quot;,&quot;Negative&quot;)
+Count &lt;- c(positive,neutral,negative)
+output &lt;- data.frame(Sentiment,Count)
+output$Sentiment&lt;-factor(output$Sentiment,levels=Sentiment)
+ggplot(output, aes(x=Sentiment,y=Count))+
+  geom_bar(stat = &quot;identity&quot;, aes(fill = Sentiment))+
+  ggtitle(&quot;Barplot of Sentiment type of 4000 tweets&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(44)</code></pre>
+<p>Analysis: It is also clear from this barplot of sentiment type that around half of the tweets have sentiment score as zero i.e. Neutral and there are more negative sentiment tweets than that of positive sentiment. This barplot helps us to identify overall opinion of the people about global warming.</p>
+</div>
+<div id="wordcloud" class="section level4">
+<h4>Wordcloud</h4>
+<pre class="r"><code>text_corpus &lt;- Corpus(VectorSource(cleanText))
+text_corpus &lt;- tm_map(text_corpus, content_transformer(tolower))
+## Warning in tm_map.SimpleCorpus(text_corpus, content_transformer(tolower)):
+## transformation drops documents
+text_corpus &lt;- tm_map(text_corpus, function(x)removeWords(x,stopwords(&quot;english&quot;)))
+## Warning in tm_map.SimpleCorpus(text_corpus, function(x) removeWords(x,
+## stopwords(&quot;english&quot;))): transformation drops documents
+text_corpus &lt;- tm_map(text_corpus, removeWords, c(&quot;global&quot;,&quot;globalwarming&quot;))
+## Warning in tm_map.SimpleCorpus(text_corpus, removeWords, c(&quot;global&quot;,
+## &quot;globalwarming&quot;)): transformation drops documents
+tdm &lt;- TermDocumentMatrix(text_corpus)
+tdm &lt;- as.matrix(tdm)
+tdm &lt;- sort(rowSums(tdm), decreasing = TRUE)
+tdm &lt;- data.frame(word = names(tdm), freq = tdm)
+set.seed(123)
+wordcloud(text_corpus, min.freq = 1, max.words = 100, scale = c(2.2,1),
+          colors=brewer.pal(8, &quot;Dark2&quot;), random.color = T, random.order = F)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(44)</code></pre>
+<p>Analysis: Wordcloud helps us to visually understand the important terms frequently used in the tweets related to global warming, here for example, “climate change”, “environmental”, “temperature”, “emissions”, etc.</p>
+</div>
+<div id="word-frequency-plot" class="section level4">
+<h4>Word Frequency plot</h4>
+<pre class="r"><code>ggplot(tdm[1:20,], aes(x=reorder(word, freq), y=freq)) + 
+  geom_bar(stat=&quot;identity&quot;) +
+  xlab(&quot;Terms&quot;) + 
+  ylab(&quot;Count&quot;) + 
+  coord_flip() +
+  theme(axis.text=element_text(size=7)) +
+  ggtitle(&#39;Most common word frequency plot&#39;) +
+  ggeasy::easy_center_title()</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(44)</code></pre>
+<p>Analysis: we can infer that the most frequently used terms in the tweets related to global warming are, “climate”, “climatechange”, “since”, “biggest”, “hoax”, etc.</p>
+</div>
+<div id="network-analysis" class="section level4">
+<h4>Network Analysis</h4>
+<p>We are using a weighted network (graph) to describe how to encode and visualize text data. In this section we are counting pairwise relative occurrence of words.</p>
+<div id="bigram-analysis-and-network-definition" class="section level5">
+<h5>Bigram analysis and Network definition</h5>
+<p>*Bigram counts pairwise occurrences of words which appear together in the text.</p>
+<pre class="r"><code>#bigram
+bi.gram.words &lt;- tweets.df %&gt;% 
+  unnest_tokens(
+    input = text, 
+    output = bigram, 
+    token = &#39;ngrams&#39;, 
+    n = 2
+  ) %&gt;% 
+  filter(! is.na(bigram))
+
+bi.gram.words %&gt;% 
+  select(bigram) %&gt;% 
+  head(10)
+##               bigram
+## 1            what is
+## 2             is the
+## 3           the true
+## 4         true cause
+## 5           cause of
+## 6          of global
+## 7     global warming
+## 8  warming telepathy
+## 9     telepathy said
+## 10    said something
+
+
+extra.stop.words &lt;- c(&#39;https&#39;)
+stopwords.df &lt;- tibble(
+  word = c(stopwords(kind = &#39;es&#39;),
+           stopwords(kind = &#39;en&#39;),
+           extra.stop.words)
+)
+
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>*Next, we filter for stop words and remove white spaces.</p>
+<pre class="r"><code>bi.gram.words %&lt;&gt;% 
+  separate(col = bigram, into = c(&#39;word1&#39;, &#39;word2&#39;), sep = &#39; &#39;) %&gt;% 
+  filter(! word1 %in% stopwords.df$word) %&gt;% 
+  filter(! word2 %in% stopwords.df$word) %&gt;% 
+  filter(! is.na(word1)) %&gt;% 
+  filter(! is.na(word2)) </code></pre>
+<p>*Finally, we group and count by bigram.</p>
+<pre class="r"><code>bi.gram.count &lt;- bi.gram.words %&gt;% 
+  dplyr::count(word1, word2, sort = TRUE) %&gt;% 
+  dplyr::rename(weight = n)
+
+bi.gram.count %&gt;% head()
+##           word1         word2 weight
+## 1 globalwarming climatechange    319
+## 2       climate        change    272
+## 3        global       warming    271
+## 4  globalcrisis    time4truth    214
+## 5            rt     drgem2015    154
+## 6          t.co    aqtl0bico4    145
+
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>Let us plot the distribution of the weightvalues:</p>
+<pre class="r"><code>bi.gram.count %&gt;% 
+  ggplot(mapping = aes(x = weight)) +
+  theme_light() +
+  geom_histogram() +
+  labs(title = &quot;Bigram Weight Distribution&quot;)
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>Note that it is very skewed, for visualization purposes it might be a good idea to perform a transformation, eg log transform:</p>
+<pre class="r"><code>bi.gram.count %&gt;% 
+  mutate(weight = log(weight + 1)) %&gt;% 
+  ggplot(mapping = aes(x = weight)) +
+  theme_light() +
+  geom_histogram() +
+  labs(title = &quot;Bigram log-Weight Distribution&quot;)
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>In order to define weighted network from a bigram count we used the following structure.</p>
+<p><em>Each word is going to represent a node.
+</em>Two words are going to be connected if they appear as a bigram.
+*The weight of an edge is the number of times the bigram appears in the corpus.</p>
+</div>
+<div id="network-visualization" class="section level5">
+<h5>Network visualization</h5>
+<pre class="r"><code>threshold &lt;- 50
+
+# For visualization purposes we scale by a global factor. 
+ScaleWeight &lt;- function(x, lambda) {
+  x / lambda
+}
+
+network &lt;-  bi.gram.count %&gt;%
+  filter(weight &gt; threshold) %&gt;%
+  mutate(weight = ScaleWeight(x = weight, lambda = 2E3)) %&gt;% 
+  graph_from_data_frame(directed = FALSE)
+
+plot(
+  network, 
+  vertex.size = 1,
+  vertex.label.color = &#39;black&#39;, 
+  vertex.label.cex = 0.7, 
+  vertex.label.dist = 1,
+  edge.color = &#39;gray&#39;, 
+  main = &#39;Bigram Count Network&#39;, 
+  sub = glue(&#39;Weight Threshold: {threshold}&#39;), 
+  alpha = 50
+)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>We can even improve the representation by setting the sizes of the nodes and the edges by the degree and weight respectively.</p>
+<pre class="r"><code>V(network)$degree &lt;- strength(graph = network)
+
+# Compute the weight shares.
+E(network)$width &lt;- E(network)$weight/max(E(network)$weight)
+
+plot(
+  network, 
+  vertex.color = &#39;lightblue&#39;,
+  # Scale node size by degree.
+  vertex.size = 2*V(network)$degree,
+  vertex.label.color = &#39;black&#39;, 
+  vertex.label.cex = 0.6, 
+  vertex.label.dist = 1.6,
+  edge.color = &#39;gray&#39;, 
+  # Set edge width proportional to the weight relative value.
+  edge.width = 3*E(network)$width ,
+  main = &#39;Bigram Count Network&#39;, 
+  sub = glue(&#39;Weight Threshold: {threshold}&#39;), 
+  alpha = 50
+)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+BRRR::skrrrahh(&quot;44&quot;)
+## Warning in BRRR::skrrrahh(&quot;44&quot;): &quot;44&quot; is not a valid sound nor path.</code></pre>
+<p>We can go a step further and make our visualization more dynamic using the networkD3 library.</p>
+<pre class="r"><code>threshold &lt;- 50
+
+network &lt;-  bi.gram.count %&gt;%
+  filter(weight &gt; threshold) %&gt;%
+  graph_from_data_frame(directed = FALSE)
+
+# Store the degree.
+V(network)$degree &lt;- strength(graph = network)
+# Compute the weight shares.
+E(network)$width &lt;- E(network)$weight/max(E(network)$weight)
+
+# Create networkD3 object.
+network.D3 &lt;- igraph_to_networkD3(g = network)
+# Define node size.
+network.D3$nodes %&lt;&gt;% mutate(Degree = (1E-2)*V(network)$degree)
+# Define color group
+network.D3$nodes %&lt;&gt;% mutate(Group = 1)
+# Define edges width. 
+network.D3$links$Width &lt;- 10*E(network)$width
+
+forceNetwork(
+  Links = network.D3$links, 
+  Nodes = network.D3$nodes, 
+  Source = &#39;source&#39;, 
+  Target = &#39;target&#39;,
+  NodeID = &#39;name&#39;,
+  Group = &#39;Group&#39;, 
+  opacity = 0.9,
+  Value = &#39;Width&#39;,
+  Nodesize = &#39;Degree&#39;, 
+  # We input a JavaScript function.
+  linkWidth = JS(&quot;function(d) { return Math.sqrt(d.value); }&quot;), 
+  fontSize = 12,
+  zoom = TRUE, 
+  opacityNoHover = 1
+)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="forceNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"links":{"source":[20,3,16,2,21,0,5,27,17,1,13,11,0,0,16,8,11,9,2,4,13,10,0,23,17,8,4,13,28,19,7,3,12,2,4,26],"target":[25,25,28,22,22,6,6,40,18,31,38,13,13,13,36,20,24,24,7,33,15,35,30,26,37,12,39,23,29,29,34,9,14,32,41,27],"value":[10,8.52664576802508,8.49529780564263,6.70846394984326,4.82758620689655,4.54545454545454,4.35736677115987,4.13793103448276,4.01253918495298,3.38557993730408,3.22884012539185,3.13479623824451,3.07210031347962,3.07210031347962,3.00940438871473,2.69592476489028,2.47648902821317,2.44514106583072,2.35109717868339,2.35109717868339,2.35109717868339,2.35109717868339,2.25705329153605,2.25705329153605,2.16300940438871,2.13166144200627,2.06896551724138,1.97492163009404,1.78683385579937,1.69278996865204,1.69278996865204,1.69278996865204,1.66144200626959,1.66144200626959,1.66144200626959,1.63009404388715],"colour":["#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666","#666"]},"nodes":{"name":["globalwarming","climate","global","globalcrisis","rt","t.co","aqtl0bico4","crisis","online","time4truth","will","climatecrisis","international","climatechange","truth","environment","approx","average","c","temperature","conference","part","2","nytimes","creativesociety","04.12.2021","guardian","wsj","1975","since","gpwx","change","warming","drgem2015","time","gain","climatedata","increase","climateaction","neilrkaye","bloomb","waterinno"],"group":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"nodesize":[5.96,2.72,4.72,2.71,2.61,1.45,2.84,2.6,2.06,3.17,1,1.61,1.77,7.45,0.79,0.78,1.28,1.5,0.75,0.75,1.8,0.72,1.41,1.62,1.66,1.29,1.2,1.08,1.06,1.28,0.52,2.72,2.71,1.54,1.28,1,0.75,0.75,0.68,0.54,0.54,0.53]},"options":{"NodeID":"name","Group":"Group","colourScale":"d3.scaleOrdinal(d3.schemeCategory20);","fontSize":12,"fontFamily":"serif","clickTextSize":30,"linkDistance":50,"linkWidth":"function(d) { return Math.sqrt(d.value); }","charge":-30,"opacity":0.9,"zoom":true,"legend":false,"arrows":false,"nodesize":true,"radiusCalculation":" Math.sqrt(d.nodesize)+6","bounded":false,"opacityNoHover":1,"clickAction":null}},"evals":[],"jsHooks":[]}</script>
+
+BRRR::skrrrahh("44")
+## Warning in BRRR::skrrrahh("44"): "44" is not a valid sound nor path.
+<p>In this blog, we explored how to extract data and insights from Twitter. We presented how to clean text data and perform sentiment analysis. Secondly, we saw how pairwise word counts give information about the relations of the input text. Lastly, we studied how to use networks to represent bigram count measures.</p>
+</div>
+</div>
+<div id="references" class="section level4">
+<h4>References</h4>
+<p>Bing Liu, Minqing Hu and Junsheng Cheng. “Opinion Observer: Analyzing and Comparing Opinions on the Web.” Proceedings of the 14th International World Wide Web conference (WWW-2005), May 10-14, 2005, Chiba, Japan.</p>
+</div>
+</div>

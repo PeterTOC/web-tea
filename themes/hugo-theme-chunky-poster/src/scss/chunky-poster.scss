@@ -19,7 +19,7 @@ blockquote {
 }
 
 code {
-    background-color: $gray-100;
+    background-color: $light-blue;
     border-radius: $border-radius-sm;
     padding: .125rem .2rem;
 }
@@ -33,12 +33,12 @@ figure.highlight pre:not([class*=language-]) {
     padding: 1em;
     margin: .5em 0;
     overflow: auto;
-    background-color: $gray-100;
+    background-color: $light-blue;
 }
 
 pre code {
     padding: 0;
-    background-color: transparent;
+    background-color: $light-blue;
 }
 
 .latest h2 a, .navbar a, .card > a, a.badge {
@@ -129,4 +129,35 @@ footer a:not(.icons) {
 	bottom: 10px;
 	background-color: white;
 	right: 200px;
+}
+
+/* attempt one at toggle buttons*/
+.toggle {
+  height: 1.55em;
+  overflow: hidden;
+}
+.toggle.open{
+  height: auto;
+}
+
+/* attempt two at toggle buttons*/
+.showopt {
+  background-color: #004c93;
+  color: #FFFFFF; 
+  width: 100px;
+  height: 20px;
+  text-align: center;
+  vertical-align: middle !important;
+  float: right;
+  font-family: sans-serif;
+  border-radius: 8px;
+}
+
+.showopt:hover {
+    background-color: #dfe4f2;
+    color: #004c93;
+}
+
+pre.plot {
+  background-color: white !important;
 }

@@ -10,10 +10,19 @@ output:
     toc: true
     toc_depth: 2
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"
-draft: true
+draft: false
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+<script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
+<link href="{{< blogdown/postref >}}index_files/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/datatables-binding/datatables.js"></script>
+<script src="{{< blogdown/postref >}}index_files/jquery/jquery-3.6.0.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="{{< blogdown/postref >}}index_files/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="{{< blogdown/postref >}}index_files/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/crosstalk/js/crosstalk.min.js"></script>
 
 <div id="TOC">
 <ul>
@@ -29,6 +38,7 @@ draft: true
 </ul>
 </div>
 
+<script src="js/hideOutput.js"></script>
 <div id="from-epidemic-to-pandemic" class="section level2">
 <h2>1. From epidemic to pandemic</h2>
 <p>
@@ -49,256 +59,38 @@ draft: true
 <p>
 <p><em>Please note that information and data regarding COVID-19 is frequently being updated. The data used in this project was pulled on March 17, 2020, and should not be considered to be the most up to date data available.</em></p>
 </p>
-<table>
-<thead>
-<tr class="header">
-<th align="center">Date</th>
-<th align="center">Cummulative Confirmed Cases</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">2020-01-22</td>
-<td align="center">555</td>
-</tr>
-<tr class="even">
-<td align="center">2020-01-23</td>
-<td align="center">653</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-01-24</td>
-<td align="center">941</td>
-</tr>
-<tr class="even">
-<td align="center">2020-01-25</td>
-<td align="center">1434</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-01-26</td>
-<td align="center">2118</td>
-</tr>
-<tr class="even">
-<td align="center">2020-01-27</td>
-<td align="center">2927</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-01-28</td>
-<td align="center">5578</td>
-</tr>
-<tr class="even">
-<td align="center">2020-01-29</td>
-<td align="center">6166</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-01-30</td>
-<td align="center">8234</td>
-</tr>
-<tr class="even">
-<td align="center">2020-01-31</td>
-<td align="center">9927</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-01</td>
-<td align="center">12038</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-02</td>
-<td align="center">16787</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-03</td>
-<td align="center">19881</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-04</td>
-<td align="center">23892</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-05</td>
-<td align="center">27635</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-06</td>
-<td align="center">30817</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-07</td>
-<td align="center">34391</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-08</td>
-<td align="center">37120</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-09</td>
-<td align="center">40150</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-10</td>
-<td align="center">42762</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-11</td>
-<td align="center">44802</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-12</td>
-<td align="center">45221</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-13</td>
-<td align="center">60368</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-14</td>
-<td align="center">66885</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-15</td>
-<td align="center">69030</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-16</td>
-<td align="center">71224</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-17</td>
-<td align="center">73258</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-18</td>
-<td align="center">75136</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-19</td>
-<td align="center">75639</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-20</td>
-<td align="center">76197</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-21</td>
-<td align="center">76823</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-22</td>
-<td align="center">78579</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-23</td>
-<td align="center">78965</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-24</td>
-<td align="center">79568</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-25</td>
-<td align="center">80413</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-26</td>
-<td align="center">81395</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-27</td>
-<td align="center">82754</td>
-</tr>
-<tr class="even">
-<td align="center">2020-02-28</td>
-<td align="center">84120</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-02-29</td>
-<td align="center">86011</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-01</td>
-<td align="center">88369</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-02</td>
-<td align="center">90306</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-03</td>
-<td align="center">92840</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-04</td>
-<td align="center">95120</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-05</td>
-<td align="center">97882</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-06</td>
-<td align="center">101784</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-07</td>
-<td align="center">105821</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-08</td>
-<td align="center">109795</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-09</td>
-<td align="center">113561</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-10</td>
-<td align="center">118592</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-11</td>
-<td align="center">125865</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-12</td>
-<td align="center">128343</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-13</td>
-<td align="center">145193</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-14</td>
-<td align="center">156097</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-15</td>
-<td align="center">167449</td>
-</tr>
-<tr class="odd">
-<td align="center">2020-03-16</td>
-<td align="center">181531</td>
-</tr>
-<tr class="even">
-<td align="center">2020-03-17</td>
-<td align="center">197146</td>
-</tr>
-</tbody>
-</table>
+<div class="toggle">
+<button>
+Code
+</button>
+<pre class="r"><code># Load the readr, ggplot2, and dplyr packages
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(knitr)
+library(DT)
+# Read datasets/confirmed_cases_worldwide.csv into confirmed_cases_worldwide
+confirmed_cases_worldwide &lt;- read_csv(&quot;~/Portfolio/web-tea/content/post/2021-09-18-covid-outbreak-analysis2-rmd/datasets/confirmed_cases_worldwide.csv&quot;)
+datatable(confirmed_cases_worldwide)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56"],["2020-01-22","2020-01-23","2020-01-24","2020-01-25","2020-01-26","2020-01-27","2020-01-28","2020-01-29","2020-01-30","2020-01-31","2020-02-01","2020-02-02","2020-02-03","2020-02-04","2020-02-05","2020-02-06","2020-02-07","2020-02-08","2020-02-09","2020-02-10","2020-02-11","2020-02-12","2020-02-13","2020-02-14","2020-02-15","2020-02-16","2020-02-17","2020-02-18","2020-02-19","2020-02-20","2020-02-21","2020-02-22","2020-02-23","2020-02-24","2020-02-25","2020-02-26","2020-02-27","2020-02-28","2020-02-29","2020-03-01","2020-03-02","2020-03-03","2020-03-04","2020-03-05","2020-03-06","2020-03-07","2020-03-08","2020-03-09","2020-03-10","2020-03-11","2020-03-12","2020-03-13","2020-03-14","2020-03-15","2020-03-16","2020-03-17"],[555,653,941,1434,2118,2927,5578,6166,8234,9927,12038,16787,19881,23892,27635,30817,34391,37120,40150,42762,44802,45221,60368,66885,69030,71224,73258,75136,75639,76197,76823,78579,78965,79568,80413,81395,82754,84120,86011,88369,90306,92840,95120,97882,101784,105821,109795,113561,118592,125865,128343,145193,156097,167449,181531,197146]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>date<\/th>\n      <th>cum_cases<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
 </div>
 <div id="confirmed-cases-throughout-the-world" class="section level2">
 <h2>2. Confirmed cases throughout the world</h2>
 <p>
 <p>The table above shows the cumulative confirmed cases of COVID-19 worldwide by date. Just reading numbers in a table makes it hard to get a sense of the scale and growth of the outbreak. Let’s draw a line plot to visualize the confirmed cases worldwide.</p>
 </p>
+<div class="toggle">
+<button>
+Code
+</button>
 <pre class="r"><code># Draw a line plot of cumulative cases vs. date
 # Label the y-axis
 ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
   geom_line() +
   ylab(&quot;Cumulative confirmed cases&quot;)</code></pre>
-<div class="figure" style="text-align: center">
-<img src="{{< blogdown/postref >}}index_files/figure-html/confirmed%20cases-1.png" alt="Figure 1.1 confirmed cases throughout the world" width="288" />
-<p class="caption">
-(#fig:confirmed cases)Figure 1.1 confirmed cases throughout the world
-</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/confirmed%20cases-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="china-compared-to-the-rest-of-the-world" class="section level2">
@@ -312,17 +104,9 @@ ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
 <p>
 <p><em>We’ll build on this plot in future tasks. One thing that will be important for the following tasks is that you add aesthetics within the line geometry of your ggplot, rather than making them global aesthetics.</em></p>
 </p>
+<button type="button" class="btn btn-default">
 <pre class="r"><code># Read in datasets/confirmed_cases_china_vs_world.csv
 confirmed_cases_china_vs_world &lt;- read_csv(&quot;datasets/confirmed_cases_china_vs_world.csv&quot;)
-## Rows: 112 Columns: 4
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (1): is_china
-## dbl  (2): cases, cum_cases
-## date (1): date
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 # See the result
 glimpse(confirmed_cases_china_vs_world)
 ## Rows: 112
@@ -338,7 +122,8 @@ plt_cum_confirmed_cases_china_vs_world &lt;- ggplot(confirmed_cases_china_vs_wor
   ylab(&quot;Cumulative confirmed cases&quot;)
 # See the plot
 plt_cum_confirmed_cases_china_vs_world</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/china%20vs%20world-1.png" width="50%" style="display: block; margin: auto 0 auto auto;" /></p>
+<img src="{{< blogdown/postref >}}index_files/figure-html/china%20vs%20world-1.png" width="672" style="display: block; margin: auto;" />
+</button>
 </div>
 <div id="lets-annotate" class="section level2">
 <h2>4. Let’s annotate!</h2>
@@ -351,6 +136,9 @@ plt_cum_confirmed_cases_china_vs_world</code></pre>
 <p>
 <p>By annotating events like this, we can better interpret changes in the plot.</p>
 </p>
+<button type="button" class="btn btn-default">
+Code
+</button>
 <pre class="r"><code>who_events &lt;- tribble(
   ~ date, ~ event,
   &quot;2020-01-30&quot;, &quot;Global health\nemergency declared&quot;,
@@ -373,6 +161,7 @@ plt_cum_confirmed_cases_china_vs_world +
 <p>
 <p>There is a clear surge of cases around February 13, 2020, with the reporting change in China. However, a couple of days after, the growth of cases in China slows down. How can we describe COVID-19’s growth in China after February 15, 2020?</p>
 </p>
+<button type="button" class="btn btn-default">
 <pre class="r"><code># Filter for China, from Feb 15
 china_after_feb15 &lt;- confirmed_cases_china_vs_world %&gt;%
  filter(is_china == &quot;China&quot;, date &gt;= &quot;2020-02-15&quot;)
@@ -381,9 +170,9 @@ china_after_feb15 &lt;- confirmed_cases_china_vs_world %&gt;%
 ggplot(china_after_feb15, aes(date,cum_cases)) +
   geom_line() +
   geom_smooth(method = &quot;lm&quot;, se = FALSE) +
-  ylab(&quot;Cumulative confirmed cases&quot;)
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+  ylab(&quot;Cumulative confirmed cases&quot;)</code></pre>
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" />
+</button>
 </div>
 <div id="and-the-rest-of-the-world" class="section level2">
 <h2>6. And the rest of the world?</h2>
@@ -402,8 +191,7 @@ plt_not_china_trend_lin &lt;- ggplot(not_china, aes(date,cum_cases)) +
   geom_smooth(method = &quot;lm&quot;,se = FALSE) +
   ylab(&quot;Cumulative confirmed cases&quot;)
 # See the result
-plt_not_china_trend_lin 
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+plt_not_china_trend_lin </code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="adding-a-logarithmic-scale" class="section level2">
@@ -411,11 +199,12 @@ plt_not_china_trend_lin
 <p>
 <p>From the plot above, we can see a straight line does not fit well at all, and the rest of the world is growing much faster than linearly. What if we added a logarithmic scale to the y-axis?</p>
 </p>
+<div class="fold s">
 <pre class="r"><code># Modify the plot to use a logarithmic scale on the y-axis
 plt_not_china_trend_lin + 
-  scale_y_log10()
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+  scale_y_log10()</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 <div id="which-countries-outside-of-china-have-been-hit-hardest" class="section level2">
 <h2>8. Which countries outside of China have been hit hardest?</h2>
@@ -427,15 +216,6 @@ plt_not_china_trend_lin +
 </p>
 <pre class="r"><code># Run this to get the data for each country
 confirmed_cases_by_country &lt;- read_csv(&quot;datasets/confirmed_cases_by_country.csv&quot;)
-## Rows: 13272 Columns: 5
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (2): country, province
-## dbl  (2): cases, cum_cases
-## date (1): date
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 glimpse(confirmed_cases_by_country)
 ## Rows: 13,272
 ## Columns: 5
@@ -448,20 +228,11 @@ glimpse(confirmed_cases_by_country)
 top_countries_by_total_cases &lt;- confirmed_cases_by_country %&gt;%
   group_by(country)  %&gt;% 
   summarize(total_cases = max(cum_cases))  %&gt;% 
-  top_n(7)
-## Selecting by total_cases
+  top_n(10)
 # See the result
-top_countries_by_total_cases
-## # A tibble: 7 × 2
-##   country      total_cases
-##   &lt;chr&gt;              &lt;dbl&gt;
-## 1 France              7699
-## 2 Germany             9257
-## 3 Iran               16169
-## 4 Italy              31506
-## 5 Korea, South        8320
-## 6 Spain              11748
-## 7 US                  6421</code></pre>
+datatable(top_countries_by_total_cases)</code></pre>
+<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["France","Germany","Iran","Italy","Korea, South","Netherlands","Spain","Switzerland","United Kingdom","US"],[7699,9257,16169,31506,8320,1708,11748,2700,1960,6421]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>country<\/th>\n      <th>total_cases<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="plotting-hardest-hit-countries-as-of-mid-march-2020" class="section level2">
 <h2>9. Plotting hardest hit countries as of Mid-March 2020</h2>
@@ -471,17 +242,9 @@ top_countries_by_total_cases
 <p>
 <p>Finally, congratulations on getting to the last step! If you would like to continue making visualizations or find the hardest hit countries as of today, you can do your own analyses with the latest data available <a href="https://github.com/RamiKrispin/coronavirus">here</a>.</p>
 </p>
+<div class="fold o">
 <pre class="r"><code># Read in the dataset from datasets/confirmed_cases_top7_outside_china.csv
 confirmed_cases_top7_outside_china &lt;- read_csv(&quot;datasets/confirmed_cases_top7_outside_china.csv&quot;)
-## Rows: 2030 Columns: 3
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (1): country
-## dbl  (1): cum_cases
-## date (1): date
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 # Glimpse at the contents of confirmed_cases_top7_outside_china
 glimpse(confirmed_cases_top7_outside_china)
 ## Rows: 2,030
@@ -494,4 +257,5 @@ glimpse(confirmed_cases_top7_outside_china)
 ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country))+
     geom_line()</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
 </div>

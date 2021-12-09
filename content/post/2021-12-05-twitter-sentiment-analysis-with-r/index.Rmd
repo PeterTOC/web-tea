@@ -12,9 +12,11 @@ tags:
 - Data Analysis
 - Unguided project
 - R programming
-images: []
-authors: []
-draft: yes
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+draft: true
 ---
 
 ```{r setup, include=FALSE}
@@ -145,6 +147,8 @@ cleanText <- clean.text(tweets.txt)
 # remove empty results (if any)
 idx <- which(cleanText == " ")
 cleanText <- cleanText[cleanText != " "]
+
+BRRR::skrrrahh(44)
 ```
 
 #### Frequency of Tweets
@@ -178,7 +182,7 @@ plt <- tweets.df %>%
 
 plt %>% ggplotly()
 
-BRRR::skrrrahh("44")
+BRRR::skrrrahh(44)
 ```
 
 
@@ -190,29 +194,12 @@ Hu & Liu have published an “Opinion Lexicon” that categorizes approximately 
 
 http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html
 
-#### Webscraping the list
-
-```{r}
-#download html
-response<-GET("https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon")
-html<-content(response)
-status_code(response)
-
-#Extract required data
-
-
-
-```
-
-
-
-
 
 ##### Loading sentiment word lists
 
 ```{r}
-positive = scan('resources/twitter_sentiment_analysis/positive-words.txt', what = 'character', comment.char = ';')
-negative = scan('resources/twitter_sentiment_analysis/negative-words.txt', what = 'character', comment.char = ';')
+positive = scan('/home/pedro/Portfolio/web-tea/content/post/2021-12-05-twitter-sentiment-analysis-with-r/positive-words.txt', what = 'character', comment.char = ';')
+negative = scan('/home/pedro/Portfolio/web-tea/content/post/2021-12-05-twitter-sentiment-analysis-with-r/negative-words.txt', what = 'character', comment.char = ';')
 # add your list of words below as you wish if missing in above read lists
 pos.words = c(positive,'upgrade','Congrats','prizes','prize','thanks','thnx',
               'Grt','gr8','plz','trending','recovering','brainstorm','leader')
@@ -271,7 +258,7 @@ score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
   return(scores.df)
 }
 
-BRRR::skrrrahh("44")
+BRRR::skrrrahh(44)
 ```
 
 ##### Calculating the sentiment score
@@ -310,7 +297,7 @@ ggplot(output, aes(x=Sentiment,y=Count))+
   geom_bar(stat = "identity", aes(fill = Sentiment))+
   ggtitle("Barplot of Sentiment type of 4000 tweets")
 
-BRRR::skrrrahh("44")
+BRRR::skrrrahh(44)
 ```
 
 Analysis: It is also clear from this barplot of sentiment type that around half of the tweets have sentiment score as zero i.e. Neutral and there are more negative sentiment tweets than that of positive sentiment. This barplot helps us to identify overall opinion of the people about global warming.
@@ -331,7 +318,7 @@ set.seed(123)
 wordcloud(text_corpus, min.freq = 1, max.words = 100, scale = c(2.2,1),
           colors=brewer.pal(8, "Dark2"), random.color = T, random.order = F)
 
-BRRR::skrrrahh("44")
+BRRR::skrrrahh(44)
 ```
 
 
@@ -349,7 +336,7 @@ ggplot(tdm[1:20,], aes(x=reorder(word, freq), y=freq)) +
   ggtitle('Most common word frequency plot') +
   ggeasy::easy_center_title()
 
-BRRR::skrrrahh("44")
+BRRR::skrrrahh(44)
 ```
 
 Analysis: we can infer that the most frequently used terms in the tweets related to global warming are, “climate”, “climatechange”, “since”, “biggest”, “hoax”, etc.

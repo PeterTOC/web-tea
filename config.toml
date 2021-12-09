@@ -43,7 +43,7 @@ author = "authors"
 
   # Custom CSS and JS. Relative to /static/css and /static/js respectively.
   customCSS = ["style1.css"]
-  customJS = []
+  customJS = ["web-tea/themes/hugo-theme-chunky-poster/src/main.js"]
 
   [params.social]
     rss = true
