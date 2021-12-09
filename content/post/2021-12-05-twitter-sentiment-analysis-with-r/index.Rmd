@@ -16,7 +16,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 2
-draft: true
+draft: false 
 ---
 
 ```{r setup, include=FALSE}
@@ -68,10 +68,10 @@ library(httr)
 
 ```{r rtweet}
 ## store api keys (these are fake example values; replace with your own keys)
-api_key <- "5xhi6DEejn9LFUugzOnJv0iQi"
-api_secret_key <- "vzNWoflXr7XhxMTSBXJ6DJAFhquJvxrPj29EnuW6VSyhBgq6tN"
-access_token <- "258913035-Q6qHwCQcrw4msCfzJxvHFT5EfEgyMnMTvXaFyCFx"
-access_token_secret <- "iG3nnZSPEmWdbrtoEJYczX1yqr6RooFcqIUCEQblo7Y6U"
+# api_key <- "5xhr6DEejn9LFeugzOnJv0iQi"
+# api_secret_key <- "vzNroflXr7XhxMTSkXJ6DJAFhquJvxrPj29EnuW6VSyhBgq6tN"
+# access_token <- "258r13035-Q6qHwCQcrw4msCfJxvHFT5EfEgyMnMTvXaFyCFx"
+# access_token_secret <- "iG3nrZSPEmWdbrtoEJYpzX1yqr6RooFcqIUCEQblo7Y6U"
 
 ## authenticate via web browser
 # token <- create_token(
@@ -90,7 +90,7 @@ access_token_secret <- "iG3nnZSPEmWdbrtoEJYczX1yqr6RooFcqIUCEQblo7Y6U"
 
 ```{r twitteR}
 #Note: This will ask us permission for direct authentication, type '1' for yes:
-setup_twitter_oauth(api_key,api_secret_key,access_token,access_token_secret)
+# setup_twitter_oauth(api_key,api_secret_key,access_token,access_token_secret)
 
 #to be called during each session
 
@@ -148,7 +148,6 @@ cleanText <- clean.text(tweets.txt)
 idx <- which(cleanText == " ")
 cleanText <- cleanText[cleanText != " "]
 
-BRRR::skrrrahh(44)
 ```
 
 #### Frequency of Tweets
@@ -182,7 +181,6 @@ plt <- tweets.df %>%
 
 plt %>% ggplotly()
 
-BRRR::skrrrahh(44)
 ```
 
 
@@ -206,7 +204,6 @@ pos.words = c(positive,'upgrade','Congrats','prizes','prize','thanks','thnx',
 neg.words = c(negative,'wtf','wait','waiting','epicfail','Fight','fighting',
               'arrest','no','not')
 
-BRRR::skrrrahh(44)
 ```
 
 ##### Sentiment scoring function
@@ -258,7 +255,6 @@ score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
   return(scores.df)
 }
 
-BRRR::skrrrahh(44)
 ```
 
 ##### Calculating the sentiment score
@@ -297,7 +293,6 @@ ggplot(output, aes(x=Sentiment,y=Count))+
   geom_bar(stat = "identity", aes(fill = Sentiment))+
   ggtitle("Barplot of Sentiment type of 4000 tweets")
 
-BRRR::skrrrahh(44)
 ```
 
 Analysis: It is also clear from this barplot of sentiment type that around half of the tweets have sentiment score as zero i.e. Neutral and there are more negative sentiment tweets than that of positive sentiment. This barplot helps us to identify overall opinion of the people about global warming.
@@ -318,7 +313,6 @@ set.seed(123)
 wordcloud(text_corpus, min.freq = 1, max.words = 100, scale = c(2.2,1),
           colors=brewer.pal(8, "Dark2"), random.color = T, random.order = F)
 
-BRRR::skrrrahh(44)
 ```
 
 
@@ -336,7 +330,6 @@ ggplot(tdm[1:20,], aes(x=reorder(word, freq), y=freq)) +
   ggtitle('Most common word frequency plot') +
   ggeasy::easy_center_title()
 
-BRRR::skrrrahh(44)
 ```
 
 Analysis: we can infer that the most frequently used terms in the tweets related to global warming are, “climate”, “climatechange”, “since”, “biggest”, “hoax”, etc.
@@ -373,7 +366,6 @@ stopwords.df <- tibble(
            extra.stop.words)
 )
 
-BRRR::skrrrahh("44")
 ```
 
 *Next, we filter for stop words and remove white spaces.
@@ -396,7 +388,6 @@ bi.gram.count <- bi.gram.words %>%
 
 bi.gram.count %>% head()
 
-BRRR::skrrrahh("44")
 ```
 
 
@@ -409,7 +400,6 @@ bi.gram.count %>%
   geom_histogram() +
   labs(title = "Bigram Weight Distribution")
 
-BRRR::skrrrahh("44")
 ```
 
 Note that it is very skewed, for visualization purposes it might be a good idea to perform a transformation, eg log transform:
@@ -422,7 +412,6 @@ bi.gram.count %>%
   geom_histogram() +
   labs(title = "Bigram log-Weight Distribution")
 
-BRRR::skrrrahh("44")
 ```
 
 In order to define weighted network from a bigram count we used the following structure.
@@ -458,7 +447,6 @@ plot(
   alpha = 50
 )
 
-BRRR::skrrrahh("44")
 ```
 
 We can even improve the representation by setting the sizes of the nodes and the edges by the degree and weight respectively.
@@ -485,7 +473,6 @@ plot(
   alpha = 50
 )
 
-BRRR::skrrrahh("44")
 ```
 
 We can go a step further and make our visualization more dynamic using the networkD3 library.
@@ -528,7 +515,6 @@ forceNetwork(
   opacityNoHover = 1
 )
 
-BRRR::skrrrahh("44")
 ```
 
 In this blog, we explored how to extract data and insights from Twitter. We presented how to clean text data and perform sentiment analysis. Secondly, we saw how pairwise word counts give information about the relations of the input text. Lastly, we studied how to use networks to represent bigram count measures.
