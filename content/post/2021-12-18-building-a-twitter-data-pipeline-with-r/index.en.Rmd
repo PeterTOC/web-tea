@@ -1,0 +1,130 @@
+---
+title: Building A Twitter Data Pipeline with R
+author: Peter Boshe
+date: '2021-12-18'
+slug: []
+categories:
+  - R
+  - Educational
+tags:
+  - Data Mining
+  - Data Analysis
+  - Unguided project
+images: []
+authors: []
+---
+
+
+## Set environment and create database
+
+```{r set environment}
+# Import necessary libraries and functions
+library(RSQLite)
+library(rtweet)
+library(tm)
+library(dplyr)
+library(knitr)
+# library(wordcloud)
+library(lubridate)
+library(ggplot2)
+source("transform_clean_tweets.R")
+source("normalize_text.R")
+
+
+# Create our SQLite database
+conn <- dbConnect(RSQLite::SQLite(), "Tweet_DB.db")
+```
+
+
+## Create Table
+
+```{r}
+dbExecute(conn, "CREATE TABLE Tweet_Data(
+                  Tweet_ID INTEGER PRIMARY KEY,
+                  User TEXT,
+                  Tweet_Content TEXT,
+                  Date_Created INTEGER)")
+```
+
+## Authorizing our Twitter Listener
+
+```{r}
+token <- create_token(app = 'twitter-tea',
+                      consumer_key = '5xhi6DEejn9LFUugzOnJv0iQi',
+                      consumer_secret = 'vzNWoflXr7XhxMTSBXJ6DJAFhquJvxrPj29EnuW6VSyhBgq6tN',
+                      access_token = '258913035-V6tCsAojetJ8KvgYyRSxUweeEdHXTCRgOCF2ZDb3',
+                      access_secret = 'E2yykZmpa9WdOIQMbo6xpt8fPWvyICz5XAeC0VL2P5TmU')
+```
+
+## Stream tweets with hashtags related to data science
+
+```{r}
+keys <- "#nlp,#machinelearning,#datascience,#chatbots,#naturallanguageprocessing,#deeplearning"
+```
+
+## tweet streaming loop (https://www.datacamp.com/community/tutorials/building-a-tweet-etl-pipeline-using-r)
+
+The function stream_tweets in the rtweet package provides us with a variety of options to query the Twitter API. For example, you can stream tweets that contain one or more of a set of given hashtags or keywords (up to 400), a small random subset of all publicly available tweets, track the tweets of a group of user IDs or screen (user) names (up to 5000), or gather tweets by geographic location.
+
+follow link https://www.rdocumentation.org/packages/rtweet/versions/0.6.9/topics/stream_tweets
+
+```{r}
+# Initialize the streaming hour tally
+hour_counter <- 0
+
+# Initialize a while loop that stops when the number of hours you want to stream tweets for is exceeded
+while(hour_counter <= 4){
+  # Set the stream time to 2 hours each iteration (7200 seconds)
+  streamtime <- 7200
+  # Create the file name where the 2 hour stream will be stored. Note that the Twitter API outputs a .json file.
+  filename <- paste0("nlp_stream_",format(Sys.time(),'%d_%m_%Y__%H_%M_%S'),".json")
+  # Stream Tweets containing the desired keys for the specified amount of time
+  stream_tweets(q = keys, timeout = streamtime, file_name = filename)
+  # Clean the streamed tweets and select the desired fields
+  clean_stream <- transform_and_clean_tweets(filename, remove_rts = TRUE)
+  # Append the streamed tweets to the Tweet_Data table in the SQLite database
+  dbWriteTable(conn, "Tweet_Data", clean_stream, append = T)
+  # Delete the .json file from this 2-hour stream
+  file.remove(filename)
+  # Add the hours to the tally
+  hour_counter <- hour_counter + 2
+}
+
+BRRR::skrrrahh(44)
+```
+
+Note: Twitter API output is a JSON file
+
+
+```{r}
+
+```
+
+
+
+
+## Test
+
+to confirm that things worked properly
+
+```{r}
+data_test <- dbGetQuery(conn, "SELECT * FROM Tweet_Data LIMIT 20")
+unique_rows <- dbGetQuery(conn, "SELECT COUNT() AS Total FROM Tweet_Data")
+print(as.numeric(unique_rows))
+kable(data_test)
+```
+
+## sample analysis
+
+
+
+
+
+
+
+
+
+
+
+
+
