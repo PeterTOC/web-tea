@@ -50,10 +50,10 @@ dbExecute(conn, "CREATE TABLE Tweet_Data(
 
 ```{r}
 token <- create_token(app = 'twitter-tea',
-                      consumer_key = '5xhi6DEejn9LFUugzOnJv0iQi',
-                      consumer_secret = 'vzNWoflXr7XhxMTSBXJ6DJAFhquJvxrPj29EnuW6VSyhBgq6tN',
-                      access_token = '258913035-V6tCsAojetJ8KvgYyRSxUweeEdHXTCRgOCF2ZDb3',
-                      access_secret = 'E2yykZmpa9WdOIQMbo6xpt8fPWvyICz5XAeC0VL2P5TmU')
+                      consumer_key = '',
+                      consumer_secret = '',
+                      access_token = '',
+                      access_secret = '')
 ```
 
 ## Stream tweets with hashtags related to data science
