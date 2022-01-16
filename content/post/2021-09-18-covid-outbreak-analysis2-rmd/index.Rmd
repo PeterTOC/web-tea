@@ -14,7 +14,7 @@ draft: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler')
 ```
 
 <script src="js/hideOutput.js"></script>
@@ -86,7 +86,7 @@ The table above shows the cumulative confirmed cases of COVID-19 worldwide by da
 # Draw a line plot of cumulative cases vs. date
 # Label the y-axis
 ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
-  geom_line() +
+     geom_line() +
   ylab("Cumulative confirmed cases")
 ```
 </div>

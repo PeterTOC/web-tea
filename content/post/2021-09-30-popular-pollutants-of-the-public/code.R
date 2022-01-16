@@ -1,0 +1,340 @@
+
+
+### setting the environment
+rm(list = ls())
+require(tidyverse)
+require(glue)
+require(knitr)
+require(DT)
+require(RColorBrewer)
+require(wordcloud2)
+
+palette <- brewer.pal(n = 4,
+                      name = "RdYlBu")
+
+
+setwd("~/Portfolio/web-tea/content/post/2021-09-30-popular-pollutants-of-the-public/index_files")
+files <- list.files(pattern = "*F.csv")
+all_files <- map(files, read_csv)
+
+names(all_files) <- month.abb[3:12] #to name the data according to month created which in our case is march to december
+
+combined_file <- bind_rows(all_files, .id = "batch")
+
+## cleaning our dataset
+
+df <- combined_file %>%
+#remove the bottle weight column
+#remove the url column
+  select(-bottle_weight, -data_url, -product_label, -product_barcode)
+
+#convert batch, manufacturer_name, manufacturer_country, scan_country into factors, months
+df$batch <- as.factor(df$batch)
+df$manufacturer_country <- as.factor(df$manufacturer_country)
+df$manufacturer_name <- as.factor(df$manufacturer_name)
+df$scan_country <- as.factor(df$scan_country)
+df$brand_name <- as.factor(df$brand_name)
+
+#parse product_size for uniform measurements
+number_pattern <- "^\\d\\s?\\.?\\d*"
+unit_pattern <- "\\D+$"
+
+df1 <- df %>%
+  mutate(product_size_extracted = str_extract(product_size, number_pattern)) %>%
+  mutate(units = str_extract(product_size, unit_pattern)) %>%
+  drop_na(units)
+
+df1$units <- str_trim(df1$units)
+df1$product_size_extracted <- as.numeric(str_trim(df1$product_size_extracted))
+
+df1$units <- ifelse(df1$units == "litre", "l", df1$units)
+df1$units <- ifelse(df1$units == "ltrs", "l", df1$units)
+df1$units <- ifelse(df1$units == "ltr", "l", df1$units)
+df1$units <- ifelse(df1$units == "Litres", "l", df1$units)
+df1$units <- ifelse(df1$units == "L", "l", df1$units)
+df1$units <- ifelse(df1$units == "gm", "g", df1$units)
+df1$units <- ifelse(df1$units == "m", "ml", df1$units)
+
+
+df2 <- df1 %>%
+  mutate(
+    amount = case_when(
+      units == "l" ~ product_size_extracted * 1000,
+      units == "kg" ~ product_size_extracted * 1000,
+      TRUE ~ product_size_extracted
+    )
+    )
+
+df2$units <- ifelse(df2$units == "l", "ml", df2$units)
+df2$units <- ifelse(df2$units == "kg", "g", df2$units)
+
+data <- df2 %>%
+  select(batch,
+         brand_name,
+         manufacturer_name,
+         manufacturer_country,
+         scan_country,
+         amount,
+         units,
+         bottle_count) %>%
+ mutate(units = as.factor(units))
+
+# we are left with columns
+glue("We are left with the columns; {columns}",
+     columns = glue_collapse(colnames(data),
+                             sep = ", ",
+                             last = ", and ")
+)
+
+# clean our environment
+
+rm(list = c("all_files",
+            "combined_file",
+            "df",
+            "df1",
+            "df2",
+            "number_pattern",
+            "unit_pattern"))
+
+
+# Total bottles per country
+
+data %>%
+  group_by(scan_country) %>%
+  summarise(total_bottles = sum(bottle_count)) %>%
+  arrange(desc(total_bottles))
+
+# From the entire dataset we see that my beautiful country comes in second while
+# Mozambique holds the lead with more than 200,000 bottles scanned.
+
+
+
+tz_data <- data %>%
+        filter(scan_country == "TZ")   #filter data for Tanzania (case study)
+
+
+tz_manufacturer_country  <-  tz_data %>%
+  group_by(manufacturer_name, manufacturer_country) %>%
+  summarise(total_bottles = sum(bottle_count)) %>%
+  arrange(desc(total_bottles)) %>% 
+  head(20)
+
+
+datatable(tz_manufacturer_country)
+
+ # From the table above we can see that it is a two-horse race on the beverage 
+# heavy weights, METL and BAHKHRESA., lets visualize the contrast between 
+# numbers
+
+
+
+
+tz_manufacturer_country %>% 
+  ggplot(aes(x = total_bottles, 
+             y = reorder(manufacturer_name,total_bottles), 
+             color = total_bottles)) +
+  geom_segment(aes(yend = manufacturer_name), 
+               xend = 0,
+               size = 2) + 
+  geom_point(size = 9) +   # shape = 21) +
+  geom_text(aes(label = total_bottles), 
+            color = "black",
+            size = 2.5) + 
+  scale_color_gradientn(colors = palette, 
+                        trans = "reverse") +
+  geom_curve(aes(x = 2000, 
+                 y = 5,
+                 xend = 4000,
+                 yend = 8), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5,
+             color = "black",
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open"))+
+  geom_vline(xintercept = mean(tz_manufacturer_country$total_bottles), 
+             linetype="dotdash",
+             color = "#4E7FBF", 
+             size = 0.5) +
+  theme_minimal() +
+  theme(
+    axis.line.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position="none",
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.line.x = element_blank(), 
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank())  +
+  labs(title = "20 Manufacturers with the most litter collected, 2021",
+       caption = "Source: Wastebase.org") +
+  xlab("total quantity of bottles collected") +
+  ylab("") +
+  annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 5000, 
+    y = 10, 
+    label = "Average amount\n of litter collected\n per manufacturer"
+  )
+# here it can be observed that the 
+tz_data %>%
+  group_by(manufacturer_country) %>%
+  summarise(total_bottles = sum(bottle_count)) %>%
+  arrange(desc(total_bottles)) %>% 
+  head(10)
+
+tz_data %>% 
+  group_by(brand_name) %>% 
+  summarise(total = sum(bottle_count)) %>% 
+  arrange(desc(total))
+
+
+ # distribution of container size
+
+tz_data %>% 
+  filter(units == "ml") %>% 
+  ggplot(aes(amount)) +
+  geom_histogram(fill = "#4E7FBF",
+                 binwidth = 5, 
+                 breaks = (seq(-250,15000, by = 500))) + 
+  geom_curve(aes(x = 500, 
+                 y = 730,
+                 xend = 5000,
+                 yend = 600), 
+             curvature = -0.4,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+  geom_curve(aes(x = 13000, 
+                 y = 12,
+                 xend = 10000,
+                 yend = 300), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+  geom_curve(aes(x = 6000, 
+                 y = 12,
+                 xend = 10000,
+                 yend = 300), 
+             curvature = -0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    # panel.grid.major.y = element_blank(),
+    legend.position="none", 
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text = element_text(color = "black"))  +
+  xlab("waste container capacity (ml)") +
+  ylab("") + 
+  annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 5000, 
+    y = 550, 
+    label = "Containers\n of \n 250-500ml"
+  ) + 
+  annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 10000, 
+    y = 360, 
+    label = "Containers\n of \n 6 & 13 liters"
+  )
+
+# creating word cloud
+
+mywords <- tz_data %>% 
+  group_by(brand_name) %>% 
+  count() %>% 
+  arrange(desc(n))
+
+wordcloud2(mywords, 
+           minRotation = -pi/16, 
+           maxRotation = -pi/16,
+           backgroundColor = "white", 
+           color="random-dark", 
+           shape = 'triangle', 
+           ellipticity = 0.9)
+
+# inspecting the general trends for the bottle count per nation
+
+#relevelling the batch column
+
+data$batch <- factor(data$batch, 
+                     levels = c("Mar", 
+                                "Apr", 
+                                "May", 
+                                "Jun", 
+                                "Jul", 
+                                "Aug",
+                                "Sep",
+                                "Oct",
+                                "Nov",
+                                "Dec"))
+
+
+
+data %>% 
+  complete(scan_country, batch) %>% 
+  group_by(scan_country, batch) %>% 
+  summarise(total_bottles = sum(bottle_count)) %>% 
+  replace_na(list(total_bottles = 0)) %>%
+  ggplot(aes(batch, total_bottles, color = scan_country)) +
+  geom_line(aes(group = scan_country))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

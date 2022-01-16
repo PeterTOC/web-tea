@@ -18,7 +18,7 @@ knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
 This is a racing bar chart of the championships and the respective teams that have won over the past half century(acc. to [Data](http://www.rsssf.com/tablest/tanzchamp.html)),
 
 Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup?
-
+`r emo::ji("smile")
 
 ## setting up the environment
 ```{r environment, warning=FALSE, message=FALSE}
@@ -92,7 +92,7 @@ data_df <- df %>%
   pivot_longer(-Team) %>% 
   mutate(rank = min_rank(-value) * 1) %>% 
   ungroup()
-https://stackoverflow.com/questions/1699046/for-each-row-in-an-r-dataframe
+
 ```
 
 

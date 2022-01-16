@@ -1,5 +1,5 @@
 ---
-title: "Data Cleaning in R: Best Practices"
+title: "Dealing with missing data in R: Best Practices"
 author: "Peter Boshe"
 date: '2021-09-25'
 slug: []
@@ -8,141 +8,211 @@ tags: ["Guide"]
 images: []
 summary: "This is a living document where I will be compiling what I consider best practices when it comes to data cleaning. The idea is to prepare an optimized checklist"
 draft: true
+editor_options: 
+  markdown: 
+    wrap: 90
 ---
 
-#### **Data Type Constraints;**
+## Dealing with missing values `r emo::ji("smile")`
+
+-   `any_na()` returns TRUE if any value is missing
+-   `are_na()` returns a logical vector indicating missing values
+-   `n_miss()` returns number of missing values
+-   `prop_miss()` returns the proportion of the missing values
+-   `prop_complete()` returns the proportion of the complete values
+-   `pct_miss()` returns the percentage of missing values
+-   `n_complete` returns the number of complete values
+
+Note: -NULL,NaN and Inf values are not detected by these methods, only NA
+
+-   NA \| TRUE = TRUE
+-   NA \| FALSE = NA
+-   NaN + NA = NaN
+-   NA + NA = NA
+-   NA + 1 = NA
+
+`naniar` package holds functions to help us create dataframe summaries of the missing data
 
-make sure that all data is in the preferred format, eg average of charatcer values
+-   `miss_case_summary`, each case represents a row in a dataframe
+-   `miss_var_summary` , each var represents a column, they work well with dplyrs
+    `group_by()` function if you want to assess different groups in particular.
+-   `miss_var_table`
+-   `miss_case_table`
+-   `miss_var_span` , helpful to segment the missing data summaries in regular interval
+    spans in time-series data for instance where you might want to compare the data
+    collection effeciency with respect to time span.
+-   `miss_var_run`, returns the "runs"/"streaks" of missingness, particularly useful when
+    trying to find repeated patterns of missing data. also can be paired well with dplyr's
+    `group_by()` function
+-   `miss_scan_count`, used for searching for oddly named missing values e.g. "N/A", "",
+    "NOT AVAILABLE"... etc, then accompanied by a
+-   `replace_with_na()`, `replace_with_na_at()`, `replace_with_na_if()`,
+-   `replace_with_na_all()` functions to have all NAs 'uniform'.
 
-Tools:
+### Visualization
 
--   assertive (package); useful for functions that will return an error if data is not in the preferred format, ensuring efficient insight extraction. extra protection. assert_is_numeric, assert_is_character
+-   `vis_miss` from `visdat` package for an overview
+-   `gg_miss_var` can be faceted by one variable
+-   `gg_miss_case`, order can be turned off by `order_cases = FALSE` argument, can be
+    faceted by one variable
+-   `gg_miss_fct`, can't be faceted, show trend of missing with factors
+-   `gg_miss_run`
+-   `gg_miss_upset` , vital in showing the number of
+-   combinations of missing values that co-occur
+-   `gg_miss_span` , supports faceting
 
--   dplyr(package); glimpse
+## How to handle Implicitly missing data
 
--   readr(package); during import
+Here we are dealing with missing data that is missing in the data (confusing, right?), in
+other words, it turns the implicit missing variables into explicit missing variables. use
+`tidyr`s `complete()` function, with the columns you want unique combinations of.
+
+```{r remedy001,  tidy = 'styler'}
 
--   string(package); convert numerical strings to numbers ie removing commas
+data %>% 
+tidyr::complete(col1,col2)
 
-    Note: due to the way R encodes its factors, factors need to be changed into characters before they can be changed into numbers
+```
 
-#### Range constraints;
+-   another important function is the `fill()`, also from the `tidyr` package. last
+    observation carried forward (LOCF).
 
-These range constraints can be logical, common knowledge or provided
+## Missing Dependancies
 
-Tools:
+1.  **MCAR** (Missing Completely at Random) \~the nissing data is 'randomly consistent' or
+    'consistently random' and you cant describe its trend or cause -Imputation is
+    advisable -Deleting missing observation may affect the sample size but will not
+    introduce bias, usually only when less than \< 5% of data is missing
 
--   lubridate(package);
+2.  **MAR** (Missing At Random) \~you can explain trends of the missing data usually
+    explained by a trend of another variable -Imputation needs to be performed carefully
+    -Deleting missing observations not advisable as it will lead or contribute to bias in
+    your data, there's a insight in the missing variablees hence safer to impute.
 
-        data %>% filter(date_column <= today())
+3.  **MNAR** (Missing Not At Random) \~you know why your data is missing and usually
+    depends on the the value of the missing variable, which makes this case complicated, a
+    catch 22, if you will -Data will be biased from both deletion and imptutation
+    -Inference can be limited, proceed with caution
 
--   ggplot2(package); a histogram with assigned breaks
+### Visualization
 
-        breaks <- c(min(data$column),0,5,max(data$column))
-        ggplot(data, aes(column))+
-            geom_histogram(breaks = breaks)
+-   using the function `shadow-bind()` we are able to create a nabular(NA + tabular)
+    dataframe that is essential to spot trends associated with missing data, which can be
+    combined with `dplyr()` functions to create powerful summaries
 
--   assertive(package);
+-   another important tool for visualizing the Missing dependancies is the
+    `geom_miss_point()` geom from `ggplot2`, note that this method does an imputation in
+    the background where it imputes the data 10% below minimum value
 
-        assert_all_are_in_past(data$date_column)
+-   these two methods can be combined to bring fourth even more insight!!!
 
-        assert_all_are_in_range(data$column, lower = 0, upper = 5)
+## Imputing data workflow
 
-Solutions;
+Just as imputing missing values is to our analysis, we need to also keep track of the
+values that we have imputed, For this we will make use of the same `naniar` package that
+we have utilized so far, we would also make use of the `dplyr` package to make statement
+like
 
--remove rows, only if the data to remove is small otherwise we will add bias to the data. by filter
+```{r remedy002, tidy = 'styler'}
+`bind_shadow(data, only_miss = TRUE) %>% 
+impute_below_all() %>% 
+add_label_shadow()`
 
--Replace with NA, replace dplyr
+```
 
-    replace(column, condition, replacement)
+to create a data frame of imputed values below the variable range and mark each imputed
+value in a subsequent identifier column
 
--Replace with range limit, replace dplyr
+we can also make use of histograms from the `ggplot2` package to analyse the distribution
+of missingness across each variable.
 
--Replace with other value based on domain knowledge
+#### Things to keep track of
 
-#### Uniqueness Constraints
+-   mean
+-   median (boxplots)
+-   spread (scatterplots)
 
-This Range constraint is to deal with duplicates in the data.
+NOTE: when we want to explore the missingness of more than two variables we would first
+need to perform some data wrangling and reformat our data table into a longer version with
+variables as values(gather/pivot_longer), this can be assisted with `naniar`s function
+`shadow_long()` then combined with a histogram of the variable values grouped by their
+missingness with a code similar to
 
-Can be a full duplicate or a partial duplicate
+```{r remedy003}
+ggplot(data, aes(x = value, fill = value_NA)) + 
+geom_histogram() + 
+facet_wrap(~variable)`
 
-Tools
 
--   R built-in duplicated() function that returns a logical vector, true for all the full duplicates, can also be used to count them with sum() function, also with filter
+```
 
-Solutions;
+## Performing imputations
 
--Dropping full duplicates using distinct()
+Imputing the mean of the present variable is a common bad practise. As this artificially
+increases the mean of your dataset and decreases the variance. And more likely than not,
+the imputed values will not follow the pattern of the underlying data just similarily as
+using the mean average of your data to predict future values.
 
--Finding partial duplicates, can assign an object and use it to filter both the columns ( using %in%) which will give us the list of full duplicates and partial duplicates
+We could use the same methods we use in creating models for prediction to fill in our
+missing data. for instance the package `simputations` helps access various models for
+imputation like the function `impute_lm()`would impute the missing values using a linear
+model. inside this function we would specify the variable we would like to impute,
 
-    data %>% 
-      count(column1, column2) %>% 
-      filter(n > 1)
+(var1) mapped against the variables we would like to inform the imputations (var2),
+(var3), (var4) in the following form `var(1) ~ var(2) + var(3) + var(4)`
 
--dropping partial duplicates
+-The point outlined above subjects our data with variations of alternatives into building
+our imputation model, as one may choose to define their model with 2 variables while on
+might decide to use all four,So it would be wise to test the variations out and evaluate
+the performance by seeing which model alters mean, median and spread the least and that
+would be the model you implement. this can be done using the `bind_rows()` from `dplyr`
+and comparing them with scatter plots
 
-    data %>% 
-      distinct(column1, column2, .keep_all = TRUE)
+following is an example of what a plot of imputation comparisons would look like,
 
--handling partial duplicates by summarising.eg mean(), max(), then removing the old unsummarised column
+<center>
 
-#### Checking Membership (Categorical Data)
+![comparison of different imputational methods](download.png)
 
-Tools;
+</center>
 
--   dplyr(function); Filtering Joins, with vector of the correct labels for categorical Data
+### Imputation model comparisons
 
-1.  Anti-join, answers that are in A but not in B, without joining the two tables
+to compare imputation models it is more practical to create the different sets of data
+derived from different imputation models (including one version of the data with all the
+missing values removed), creating linear models on the different set of data and
+evaluating the how those models behave and pick the model you believe best represents your
+data by exploring the coeffecients.
 
-2.  Semi-join, answers that are in A and in B, without joining the two tables
+The process in R would look something like
 
-##### Categorical Data Problems
+```{r remedy004}
 
-1.  Inconsistency within a category
+bound_models <- bind_rows(imp_model1 = imp_model1,
+                          imp_model2 = imp_model2,
+                          imp_model3 = imp_model3,
+                          .id = "imp_model")
 
-    stringr (package); str_to_lower(),str_to_upper,str_trim()
+```
 
-2.  Too many categories
+```{r}
 
-    forcats(package), collapsing categories;
+model_summary <- bound_models %>% 
+  group_by(imp_model) %>%
+  nest() %>%
+  mutate(mod = map(data, ~lm(var(1) ~ var(2) + var(3) + var(4), data = .)),
+         res = map(mod, residuals),
+         pred = map(mod, predict),
+         tidy = map(mod, broom::tidy))
 
-        other_categories <- c("amphibian", "reptile","bug")
-        animals %>% mutate(type_collapsed = fct_collapse(type_trimmed, other = other categories))
+```
 
-#### Text Data Problems
+```{r remedy005}
 
--   formatting inconsistencies
+ # Explore the coefficients in the model and select best model
+model_summary %>% 
+	select(imp_model ,tidy) %>% 
+	unnest() `
 
--   information inconsistencies
 
--   invalid data entered
-
-Tools
-
-stringr(package); str_detect(),str_replace_all(),str_remove_all(),str_length(),str_subset(),str_count()
-
-REGEX(REGular EXpressions)
-
-### Advanced Data Problems
-
-#### Uniformity
-
--   Different units or formats from data from multiple data sources or unstructured data
-
-Tools
-
--   Seek for anomalies using vizualizations for each variable to be tested
-
--   ifelse() function with mutate for unit conversion eg; centigrade to farheineit
-
--   lubridate(package);
-
-    when working with non- uniform date formats; use ?strptime in console to get list of all available date formats to pass to the orders argument
-
-        parse_date_time(data$date_column, orders = c("%Y-%m-%d", "%m/%d/%y", "%B %d, %Y")
-
-Note: for ambiguous dates like 6/7/2021, which might be July or June depending whether you got your data from Europe or USA respectively
-
-#### Cross Field Validation (sanity check)
-
+```

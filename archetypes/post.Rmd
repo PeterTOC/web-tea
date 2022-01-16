@@ -1,0 +1,22 @@
+---
+title: "{{ replace .Name "_" " " | title }}"
+date: {{ .Date }}
+draft: true
+author: "Peter Boshe"
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+images: []
+summary: ""
+---
+
+**Insert Lead paragraph here.**
+
+## New Cool Posts
+
+{{ range first 10 ( where .Site.RegularPages "Type" "cool" ) }}
+* {{ .Title }}
+{{ end }}

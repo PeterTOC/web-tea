@@ -1,5 +1,5 @@
 ---
-title: "Popular Pollutants of The Public"
+title: Popular Pollutants of The Public `r emo::ji("litter")`
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'
@@ -13,7 +13,7 @@ summary: "Who are the leading pollutants of our state? you probably have a good 
 draft: true
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler')
 ```
 ## Load The Data Set
 
@@ -26,7 +26,7 @@ rm(list = ls())
 # setting environment
 require(tidyverse)
 require(skimr)
-require(forcats)
+  require(forcats)
 require(knitr)
 require(rebus)
 require(RColorBrewer)

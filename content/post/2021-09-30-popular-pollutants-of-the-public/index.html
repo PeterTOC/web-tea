@@ -1,5 +1,5 @@
 ---
-title: "Popular Pollutants of The Public"
+title: Popular Pollutants of The Public 🚮
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'
@@ -39,7 +39,7 @@ draft: true
 <div id="load-the-data-set" class="section level2">
 <h2>Load The Data Set</h2>
 <p>The data was collected by <a href="https://www.unwaste.io/partners">Wastebase’s Data Partner</a> by methods decribed on this <a href="https://www.kaggle.com/wastebase/plastic-bottle-waste">source page</a></p>
-<pre class="r"><code># clear environment 
+<pre class="r"><code># clear environment
 rm(list = ls())
 
 # setting environment
@@ -52,7 +52,7 @@ require(RColorBrewer)
 require(wordcloud2)
 require(DT)
 
-# loading data 
+# loading data
 data &lt;- read_csv(&quot;wastebase_scan_summary_20210815.csv&quot;)</code></pre>
 </div>
 <div id="inspect-the-data" class="section level2">
@@ -279,86 +279,99 @@ data$manufacturer_name &lt;- factor(data$manufacturer_name)</code></pre>
 ## 6 ZA                       2
 ## 7 CH                       1
 
-tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;)#filter data for Tanzania (case study)</code></pre>
+tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;) # filter data for Tanzania (case study)</code></pre>
 <p>Note: email data collectors to query on the data discrepancy</p>
 </div>
 <div id="collapse-factors-with-variating-names" class="section level3">
 <h3>collapse factors with variating names</h3>
 <pre class="r"><code>
-drinking_water &lt;- c(&quot;Pure Drinking Water&quot;, &quot;Drinking Water&quot;, 
-                    &quot;Drinking water&quot;, &quot;pure drinking water&quot;, 
-                    &quot;Mineral Water&quot;, &quot;Mineral water&quot;, 
-                    &quot;Mineral water&quot;, &quot;Agua Mineral Natural de las Sierras&quot;, 
-                    &quot;Best drinking water&quot;, &quot;still drinking water&quot;, 
-                    &quot;Premium Pure Drinking Water&quot;, &quot;DRINKING WATER&quot;, 
-                    &quot;Natural Water&quot;, &quot;Hill Water&quot;)
+drinking_water &lt;- c(
+  &quot;Pure Drinking Water&quot;, &quot;Drinking Water&quot;,
+  &quot;Drinking water&quot;, &quot;pure drinking water&quot;,
+  &quot;Mineral Water&quot;, &quot;Mineral water&quot;,
+  &quot;Mineral water&quot;, &quot;Agua Mineral Natural de las Sierras&quot;,
+  &quot;Best drinking water&quot;, &quot;still drinking water&quot;,
+  &quot;Premium Pure Drinking Water&quot;, &quot;DRINKING WATER&quot;,
+  &quot;Natural Water&quot;, &quot;Hill Water&quot;
+)
 
-carbonated_soft_drinks &lt;- c(&quot;Xtra Carbonated Drink&quot;, 
-                            &quot;Extra Berry Flavor Carbonated Soft Drink&quot;, 
-                            &quot;Pineapple Flavoured Carbonated Soft Drink&quot;, 
-                            &quot;Coke&quot;,&quot;Fanta Orange&quot;, &quot;Pineapple Carbonated Drink&quot;, 
-                            &quot;Passion Flavour Carbonated Drink&quot;, 
-                            &quot;Xtra Berry Flavoured Carbonated Soft Drink&quot;, 
-                            &quot;Carbonated soft drink stoney Tangawizi/ ginger&quot;, 
-                            &quot;Cola Carbonated Soft Drink&quot;, &quot;Malt Flavoured&quot;, 
-                            &quot;Non Alcoholic Malt Drink&quot;, 
-                            &quot;Fruity Flavoured Soft Drink&quot;, 
-                            &quot;Energy drink&quot;,&quot;CARBONATED FLAVOURED DRINK&quot;, 
-                            &quot;Afiya Berries Flavour&quot;,&quot;Chungwa&quot;,&quot;Pepsi&quot;, 
-                            &quot;Pepsi Max&quot;, &quot;Apple punch&quot;, &quot;Mo Xtra Energy&quot;, 
-                            &quot;Twist Spark&quot;, &quot;Afiya Orange Flavour&quot;, 
-                            &quot;Diet Coke&quot;, &quot;Soda Water&quot;, &quot;Tonic Water&quot;, 
-                            &quot;Energy Drink&quot;, &quot;Grand Malt Non-alcohol can&quot;, 
-                            &quot;Fanta Orange Flavoured Drink&quot;,
-                            &quot;Lemon-lime Flavoured Drink&quot;,&quot;Azam Passion&quot;, 
-                            &quot;Novida Nanasi Flavoured&quot;, &quot;Indian Tonic&quot;, 
-                            &quot;Apple and Malt Flavoured&quot;, &quot;Indian Tonic&quot;)
-
-
-alcohol &lt;- c(&quot;K-Vant Spirit&quot;, &quot;Gin&quot;, &quot;Castle Lite&quot;, 
-             &quot;Potable cane spirit&quot;, &quot;Kilimanjaro Premium Lager&quot;, 
-             &quot;Savanna&quot;, &quot;Premium Lager&quot;, &quot;Premium Spirit&quot;, 
-             &quot;Lager Beer&quot;, &quot;Fortified Wine&quot;, &quot;Lager&quot;, 
-             &quot;Redds&quot;, &quot;Heineken&quot;, &quot;Valeur Superior Brandy&quot;, 
-             &quot;smart gi&quot;)
-
-juice &lt;- c(&quot;Mango juice drink&quot;, &quot;Fruit drink&quot;, 
-           &quot;Orange Dairy Blend Concentrate&quot;, 
-           &quot;Lemon-Lime Flavoured Drink&quot;, 
-           &quot;Mango Fruit Juice Drink (Azam Embe)&quot;, 
-           &quot;Ukwaju Tamarind Juice Drink&quot;, &quot;Ubuyu / Baobab Fruit Drink&quot;, 
-           &quot;Orange Flavored Drink&quot;, &quot;Mango juice drink&quot;, 
-           &quot;Tunda Embe / Mango Juice Drink&quot;, &quot;Delight Mango Flavoured Drink&quot;, 
-           &quot;Embe Flavoured Drink&quot;, &quot;Jembe Drink&quot;, &quot;Ukwaju&quot;, 
-           &quot;Embe Fruit juice&quot;, &quot;Tunda Mix&quot;, &quot;Mango&quot;)
-
-household_items &lt;- c(&quot;Lemon fresh Cleaner&quot;, &quot;Mouthwash total Care&quot;, 
-                     &quot;Nourishing conditioner&quot;, &quot;plain yoghurt&quot;, 
-                     &quot;Pure Sunflower Oil&quot;, &quot;Table vinegar&quot;, 
-                     &quot;Sunflower seed oil&quot;, &quot;Sunflower oil&quot;, 
-                     &quot;Mouthwash total Care&quot;, &quot;Nourishing conditioner&quot;, 
-                     &quot;Coconut Oil&quot;, &quot;Body Lotion&quot;, &quot;Anti-bacterial Mouthwash&quot;, 
-                     &quot;Antiseptic Desinfectant&quot;, &quot;boncabe&quot;, 
-                     &quot;Calcium and Magnesium&quot;, &quot;Chewy vites&quot;, 
-                     &quot;Chicken Masala Spice Seasoning&quot;, 
-                     &quot;ciclo farma&quot;, &quot;Fish oil&quot;, &quot;LAVA LOUCAS CONCENTRADO&quot;, 
-                     &quot;Coffee&quot;, &quot;White Board Cleaner&quot;, &quot;acid&quot;, 
-                     &quot;Plain Yoghurt&quot;)
-
-tz_data_collapsed &lt;- tz_data %&gt;% 
-  mutate(product_label_collapsed = 
-           fct_collapse(product_label,
-                        &quot;Drinking Water&quot; = drinking_water, 
-                        &quot;Carbonated Soft Drinks&quot; = carbonated_soft_drinks,
-                        &quot;Household Items&quot; = household_items, 
-                        &quot;Juice&quot; = juice, 
-                        &quot;Alcoholic Drinks&quot; = alcohol)) 
+carbonated_soft_drinks &lt;- c(
+  &quot;Xtra Carbonated Drink&quot;,
+  &quot;Extra Berry Flavor Carbonated Soft Drink&quot;,
+  &quot;Pineapple Flavoured Carbonated Soft Drink&quot;,
+  &quot;Coke&quot;, &quot;Fanta Orange&quot;, &quot;Pineapple Carbonated Drink&quot;,
+  &quot;Passion Flavour Carbonated Drink&quot;,
+  &quot;Xtra Berry Flavoured Carbonated Soft Drink&quot;,
+  &quot;Carbonated soft drink stoney Tangawizi/ ginger&quot;,
+  &quot;Cola Carbonated Soft Drink&quot;, &quot;Malt Flavoured&quot;,
+  &quot;Non Alcoholic Malt Drink&quot;,
+  &quot;Fruity Flavoured Soft Drink&quot;,
+  &quot;Energy drink&quot;, &quot;CARBONATED FLAVOURED DRINK&quot;,
+  &quot;Afiya Berries Flavour&quot;, &quot;Chungwa&quot;, &quot;Pepsi&quot;,
+  &quot;Pepsi Max&quot;, &quot;Apple punch&quot;, &quot;Mo Xtra Energy&quot;,
+  &quot;Twist Spark&quot;, &quot;Afiya Orange Flavour&quot;,
+  &quot;Diet Coke&quot;, &quot;Soda Water&quot;, &quot;Tonic Water&quot;,
+  &quot;Energy Drink&quot;, &quot;Grand Malt Non-alcohol can&quot;,
+  &quot;Fanta Orange Flavoured Drink&quot;,
+  &quot;Lemon-lime Flavoured Drink&quot;, &quot;Azam Passion&quot;,
+  &quot;Novida Nanasi Flavoured&quot;, &quot;Indian Tonic&quot;,
+  &quot;Apple and Malt Flavoured&quot;, &quot;Indian Tonic&quot;
+)
 
 
-tz_data_collapsed %&gt;% 
-  group_by(product_label_collapsed) %&gt;% 
-  summarise(total = sum(bottle_count)) %&gt;% 
-  arrange(desc(total)) %&gt;% 
+alcohol &lt;- c(
+  &quot;K-Vant Spirit&quot;, &quot;Gin&quot;, &quot;Castle Lite&quot;,
+  &quot;Potable cane spirit&quot;, &quot;Kilimanjaro Premium Lager&quot;,
+  &quot;Savanna&quot;, &quot;Premium Lager&quot;, &quot;Premium Spirit&quot;,
+  &quot;Lager Beer&quot;, &quot;Fortified Wine&quot;, &quot;Lager&quot;,
+  &quot;Redds&quot;, &quot;Heineken&quot;, &quot;Valeur Superior Brandy&quot;,
+  &quot;smart gi&quot;
+)
+
+juice &lt;- c(
+  &quot;Mango juice drink&quot;, &quot;Fruit drink&quot;,
+  &quot;Orange Dairy Blend Concentrate&quot;,
+  &quot;Lemon-Lime Flavoured Drink&quot;,
+  &quot;Mango Fruit Juice Drink (Azam Embe)&quot;,
+  &quot;Ukwaju Tamarind Juice Drink&quot;, &quot;Ubuyu / Baobab Fruit Drink&quot;,
+  &quot;Orange Flavored Drink&quot;, &quot;Mango juice drink&quot;,
+  &quot;Tunda Embe / Mango Juice Drink&quot;, &quot;Delight Mango Flavoured Drink&quot;,
+  &quot;Embe Flavoured Drink&quot;, &quot;Jembe Drink&quot;, &quot;Ukwaju&quot;,
+  &quot;Embe Fruit juice&quot;, &quot;Tunda Mix&quot;, &quot;Mango&quot;
+)
+
+household_items &lt;- c(
+  &quot;Lemon fresh Cleaner&quot;, &quot;Mouthwash total Care&quot;,
+  &quot;Nourishing conditioner&quot;, &quot;plain yoghurt&quot;,
+  &quot;Pure Sunflower Oil&quot;, &quot;Table vinegar&quot;,
+  &quot;Sunflower seed oil&quot;, &quot;Sunflower oil&quot;,
+  &quot;Mouthwash total Care&quot;, &quot;Nourishing conditioner&quot;,
+  &quot;Coconut Oil&quot;, &quot;Body Lotion&quot;, &quot;Anti-bacterial Mouthwash&quot;,
+  &quot;Antiseptic Desinfectant&quot;, &quot;boncabe&quot;,
+  &quot;Calcium and Magnesium&quot;, &quot;Chewy vites&quot;,
+  &quot;Chicken Masala Spice Seasoning&quot;,
+  &quot;ciclo farma&quot;, &quot;Fish oil&quot;, &quot;LAVA LOUCAS CONCENTRADO&quot;,
+  &quot;Coffee&quot;, &quot;White Board Cleaner&quot;, &quot;acid&quot;,
+  &quot;Plain Yoghurt&quot;
+)
+
+tz_data_collapsed &lt;- tz_data %&gt;%
+  mutate(
+    product_label_collapsed =
+      fct_collapse(product_label,
+        &quot;Drinking Water&quot; = drinking_water,
+        &quot;Carbonated Soft Drinks&quot; = carbonated_soft_drinks,
+        &quot;Household Items&quot; = household_items,
+        &quot;Juice&quot; = juice,
+        &quot;Alcoholic Drinks&quot; = alcohol
+      )
+  )
+
+
+tz_data_collapsed %&gt;%
+  group_by(product_label_collapsed) %&gt;%
+  summarise(total = sum(bottle_count)) %&gt;%
+  arrange(desc(total)) %&gt;%
   datatable()</code></pre>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["Drinking Water","Carbonated Soft Drinks","Alcoholic Drinks","Juice","Household Items"],[862,765,351,316,34]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>product_label_collapsed<\/th>\n      <th>total<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
@@ -367,10 +380,10 @@ tz_data_collapsed %&gt;%
 <h3>Total count of bottles produced per manufacturer in Tanzania</h3>
 <div id="top-amount-of-bottles-by-manufacterer" class="section level4">
 <h4>Top amount of bottles by manufacterer</h4>
-<pre class="r"><code>manufacturers &lt;- tz_data %&gt;% 
-  group_by(manufacturer_name, manufacturer_country) %&gt;% 
-  summarise(total_bottles = sum(bottle_count)) %&gt;% 
-  arrange(desc(total_bottles)) %&gt;% 
+<pre class="r"><code>manufacturers &lt;- tz_data %&gt;%
+  group_by(manufacturer_name, manufacturer_country) %&gt;%
+  summarise(total_bottles = sum(bottle_count)) %&gt;%
+  arrange(desc(total_bottles)) %&gt;%
   top_n(20)
 ## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.
 ## Selecting by total_bottles
@@ -385,70 +398,84 @@ datatable(manufacturers)</code></pre>
 
 
 
-# kbl(manufacturers[1:20,], 
+# kbl(manufacturers[1:20,],
 #     col.names = c(&quot;Manufacterers&quot;,&quot;Country&quot;, &quot;Total&quot;),
 #       align = &quot;lrc&quot;,
-#       caption = &quot;List of Manufacturers Producing the Plastic Containers&quot;) %&gt;% 
+#       caption = &quot;List of Manufacturers Producing the Plastic Containers&quot;) %&gt;%
 #   kable_minimal(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
-#                 full_width = F , 
-#                 position = &quot;left&quot;, 
-#                 fixed_thead = TRUE) %&gt;% 
-#     row_spec(0, 
+#                 full_width = F ,
+#                 position = &quot;left&quot;,
+#                 fixed_thead = TRUE) %&gt;%
+#     row_spec(0,
 #              background = &quot;yellow&quot;,
 #              color = &quot;black&quot;)
 
-palette &lt;- brewer.pal(n = 5,
-                      name = &quot;RdYlBu&quot;)
+palette &lt;- brewer.pal(
+  n = 5,
+  name = &quot;RdYlBu&quot;
+)
 
-manufacturers[1:20,] %&gt;% 
-  ggplot(aes(x = total_bottles, 
-             y = reorder(manufacturer_name,total_bottles), 
-             color = total_bottles)) +
-  geom_segment(aes(yend = manufacturer_name), 
-             xend = 0,
-             size = 2) + 
-  geom_point(size = 4) +   # shape = 21) +
-             # fill = &quot;#4E7FBF&quot;,
-             # color = &quot;#4E7FBF&quot;) +
-  geom_text(aes(label = total_bottles), color = &quot;white&quot;, size = 1.5) + 
-  scale_x_continuous(&quot;&quot;, limits = c(0,600), position = &quot;top&quot;) +
+manufacturers[1:20, ] %&gt;%
+  ggplot(aes(
+    x = total_bottles,
+    y = reorder(manufacturer_name, total_bottles),
+    color = total_bottles
+  )) +
+  geom_segment(aes(yend = manufacturer_name),
+    xend = 0,
+    size = 2
+  ) +
+  geom_point(size = 4) + # shape = 21) +
+  # fill = &quot;#4E7FBF&quot;,
+  # color = &quot;#4E7FBF&quot;) +
+  geom_text(aes(label = total_bottles), color = &quot;white&quot;, size = 1.5) +
+  scale_x_continuous(&quot;&quot;, limits = c(0, 600), position = &quot;top&quot;) +
   scale_color_gradientn(colors = palette) +
-  geom_curve(aes(x = 60, 
-                 y = 4,
-                 xend = 200,
-                 yend = 7), 
-             curvature = 0.2,
-             angle = 45, 
-             ncp = 5,
-             color = &quot;black&quot;,
-             arrow = arrow(angle = 30, 
-                           length = unit(0.5, &quot;cm&quot;), 
-                           ends = &quot;first&quot;, 
-                           type = &quot;open&quot;))+
-  geom_vline(xintercept = mean(manufacturers$total_bottles), 
-             linetype=&quot;longdash&quot;,
-             color = &quot;#F2A03D&quot;, 
-             size = 1.1) +
+  geom_curve(aes(
+    x = 60,
+    y = 4,
+    xend = 200,
+    yend = 7
+  ),
+  curvature = 0.2,
+  angle = 45,
+  ncp = 5,
+  color = &quot;black&quot;,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_vline(
+    xintercept = mean(manufacturers$total_bottles),
+    linetype = &quot;longdash&quot;,
+    color = &quot;#F2A03D&quot;,
+    size = 1.1
+  ) +
   theme_minimal() +
   theme(
     axis.line.y = element_blank(),
     panel.grid.minor.y = element_blank(),
-     # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
-     # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
-     panel.grid.major.y = element_blank(),
-     legend.position=&quot;none&quot;,
-     axis.text = element_text(color = &quot;black&quot;)
-  )  +
-  labs(title = &quot;20 Manufacturers with the most litter collected, 2021&quot;,
-       caption = &quot;Source: Wastebase.org&quot;) +
+    # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
+    # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    axis.text = element_text(color = &quot;black&quot;)
+  ) +
+  labs(
+    title = &quot;20 Manufacturers with the most litter collected, 2021&quot;,
+    caption = &quot;Source: Wastebase.org&quot;
+  ) +
   xlab(&quot;total quantity of bottles collected&quot;) +
   ylab(&quot;&quot;) +
   annotate(
     &quot;text&quot;,
     family = &quot;sans&quot;,
     fontface = &quot;italic&quot;,
-    x = 300, 
-    y = 9, 
+    x = 300,
+    y = 9,
     label = &quot;Average amount\n of litter produced\n per manufacturer&quot;
   )</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/total%20per%20manufacturer%20in%20TZ-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -497,7 +524,10 @@ manufacturers[1:20,] %&gt;%
 </div>
 <div id="get-ranking-of-bottlecount-as-per-brand-name" class="section level3">
 <h3>get ranking of bottlecount as per brand name</h3>
-<pre class="r"><code>tz_data %&gt;% group_by(brand_name) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))
+<pre class="r"><code>tz_data %&gt;%
+  group_by(brand_name) %&gt;%
+  summarise(total = sum(bottle_count)) %&gt;%
+  arrange(desc(total))
 ## # A tibble: 67 × 2
 ##    brand_name       total
 ##    &lt;chr&gt;            &lt;dbl&gt;
@@ -515,7 +545,10 @@ manufacturers[1:20,] %&gt;%
 </div>
 <div id="get-ranking-of-bottle-count-as-per-product-label" class="section level3">
 <h3>get ranking of bottle count as per product label</h3>
-<pre class="r"><code>tz_data %&gt;% group_by(product_label) %&gt;% summarise(total = sum(bottle_count)) %&gt;% arrange(desc(total))
+<pre class="r"><code>tz_data %&gt;%
+  group_by(product_label) %&gt;%
+  summarise(total = sum(bottle_count)) %&gt;%
+  arrange(desc(total))
 ## # A tibble: 101 × 2
 ##    product_label                            total
 ##    &lt;chr&gt;                                    &lt;dbl&gt;
@@ -533,88 +566,105 @@ manufacturers[1:20,] %&gt;%
 </div>
 <div id="for-analysis-on-the-product-size" class="section level3">
 <h3>for analysis on the product size</h3>
-<pre class="r"><code>ml_pattern &lt;- capture(DGT %R% 
-                        DGT %R% 
-                        DGT %R% 
-                        optional(DGT)) %R% 
-  optional(SPC) %R% 
-  or(&quot;ml&quot;,&quot;g&quot;)
+<pre class="r"><code>ml_pattern &lt;- capture(DGT %R%
+  DGT %R%
+  DGT %R%
+  optional(DGT)) %R%
+  optional(SPC) %R%
+  or(&quot;ml&quot;, &quot;g&quot;)
 
-l_pattern &lt;- capture(DGT %R% 
-                       (DOT) %R% 
-                       optional(DGT) %R% 
-                       optional(DGT)) %R% 
-  optional(DGT) %R% 
-  optional(SPC) %R% 
-  or(&quot;l&quot;,&quot;L&quot;,&quot;ml&quot;)
+l_pattern &lt;- capture(DGT %R%
+  (DOT) %R%
+  optional(DGT) %R%
+  optional(DGT)) %R%
+  optional(DGT) %R%
+  optional(SPC) %R%
+  or(&quot;l&quot;, &quot;L&quot;, &quot;ml&quot;)
 
-liters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, l_pattern)[,2])
-mliters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, ml_pattern)[,2])
+liters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, l_pattern)[, 2])
+mliters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, ml_pattern)[, 2])
 
-tz_data_collapsed &lt;- tz_data_collapsed %&gt;% 
-  mutate(volumes = ifelse(is.na(mliters),liters*1000,mliters))
+tz_data_collapsed &lt;- tz_data_collapsed %&gt;%
+  mutate(volumes = ifelse(is.na(mliters), liters * 1000, mliters))
 
-ggplot(tz_data_collapsed, aes(volumes)) + 
-  geom_histogram(fill = &quot;#4E7FBF&quot;,
-                 binwidth = 500, breaks = (seq(0,7000, by = 500))) + 
-  geom_curve(aes(x = 500, 
-                 y = 89,
-                 xend = 2000,
-                 yend = 80), 
-             curvature = -0.2,
-             angle = 45, 
-             ncp = 5, 
-             arrow = arrow(angle = 30, 
-                           length = unit(0.5, &quot;cm&quot;), 
-                           ends = &quot;first&quot;, 
-                           type = &quot;open&quot;)) +
-   geom_curve(aes(x = 2250, 
-                 y = 2,
-                 xend = 4500,
-                 yend = 45), 
-             curvature = -0.2,
-             angle = 45, 
-             ncp = 5, 
-             arrow = arrow(angle = 30, 
-                           length = unit(0.5, &quot;cm&quot;), 
-                           ends = &quot;first&quot;, 
-                           type = &quot;open&quot;)) +
-   geom_curve(aes(x = 5750, 
-                 y = 2,
-                 xend = 4500,
-                 yend = 45), 
-             curvature = 0.2,
-             angle = 45, 
-             ncp = 5, 
-             arrow = arrow(angle = 30, 
-                           length = unit(0.5, &quot;cm&quot;), 
-                           ends = &quot;first&quot;, 
-                           type = &quot;open&quot;)) +
+ggplot(tz_data_collapsed, aes(volumes)) +
+  geom_histogram(
+    fill = &quot;#4E7FBF&quot;,
+    binwidth = 500, breaks = (seq(0, 7000, by = 500))
+  ) +
+  geom_curve(aes(
+    x = 500,
+    y = 89,
+    xend = 2000,
+    yend = 80
+  ),
+  curvature = -0.2,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_curve(aes(
+    x = 2250,
+    y = 2,
+    xend = 4500,
+    yend = 45
+  ),
+  curvature = -0.2,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_curve(aes(
+    x = 5750,
+    y = 2,
+    xend = 4500,
+    yend = 45
+  ),
+  curvature = 0.2,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
   theme_minimal() +
   theme(
-     panel.grid.minor.y = element_blank(),
-     # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
-     # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
-     panel.grid.major.y = element_blank(),
-     legend.position=&quot;none&quot;,
-     axis.text = element_text(color = &quot;black&quot;)
-  )  +
+    panel.grid.minor.y = element_blank(),
+    # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
+    # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    axis.text = element_text(color = &quot;black&quot;)
+  ) +
   xlab(&quot;waste container capacity (ml)&quot;) +
-  ylab(&quot;&quot;) + 
+  ylab(&quot;&quot;) +
   annotate(
     &quot;text&quot;,
     family = &quot;sans&quot;,
     fontface = &quot;italic&quot;,
-    x = 2500, 
-    y = 80, 
+    x = 2500,
+    y = 80,
     label = &quot;Containers\n of \n 0-500ml&quot;
-  ) + 
-   annotate(
+  ) +
+  annotate(
     &quot;text&quot;,
     family = &quot;sans&quot;,
     fontface = &quot;italic&quot;,
-    x = 4600, 
-    y = 55, 
+    x = 4600,
+    y = 55,
     label = &quot;Containers\n of \n 2-6 liters&quot;
   )
 ## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
@@ -622,18 +672,19 @@ ggplot(tz_data_collapsed, aes(volumes)) +
 </div>
 <div id="wordcloud-for-article-picture" class="section level3">
 <h3>Wordcloud for Article Picture</h3>
-<pre class="r"><code>mywords &lt;- tz_data_collapsed %&gt;% 
-  group_by(brand_name) %&gt;% 
-  count() %&gt;% 
+<pre class="r"><code>mywords &lt;- tz_data_collapsed %&gt;%
+  group_by(brand_name) %&gt;%
+  count() %&gt;%
   arrange(desc(n))
 
-wordcloud2(mywords, 
-           minRotation = -pi/16, 
-           maxRotation = -pi/16,
-           backgroundColor = &quot;white&quot;, 
-           color=&quot;random-dark&quot;, 
-           shape = &#39;triangle&#39;, 
-           ellipticity = 0.9)</code></pre>
+wordcloud2(mywords,
+  minRotation = -pi / 16,
+  maxRotation = -pi / 16,
+  backgroundColor = &quot;white&quot;,
+  color = &quot;random-dark&quot;,
+  shape = &quot;triangle&quot;,
+  ellipticity = 0.9
+)</code></pre>
 <div id="htmlwidget-3" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
 <script type="application/json" data-for="htmlwidget-3">{"x":{"word":["Afya","Azam","Mo","Coca-Cola","Sayona","Fanta","Hill Water","Kilimanjaro","Uhai","Dew Drop","K-Vant","Malt drink","Sprite","Castle Lite","Dasani","Dettol","Drop of Zanzibar","Krest","Listerine","Minute Maid","Pepsi","Asas Diaries","Biowash","Boncabe Original","Canadian Drinking Water","Cantu","cotanak","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Fizz","Flamingo","Heineken","industria Quimica","Jembe","Leader's Ananasi","Lucozade","Maisha","Masafi","Mega We care","Milk Com","Mirinda","Pangani","Parachute","Pera fresh produce of Tanzania","Precious","Red Bull","Redd's","Safari","Savanna","Sayona Twist","Schweppes","SeQua","Sierra de los Padres","Simba Table Vinegar","smart gin","Solaray Dietary supplement","Sundrop","Super Burudani","Tropical Heat","Uhuru Peak","Valeur","Vim","vitamic c","Windhoek","Zan Aqua"],"freq":[11,10,8,6,6,4,4,4,4,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":16.3636363636364,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
 </div>

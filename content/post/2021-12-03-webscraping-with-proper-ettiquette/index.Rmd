@@ -1,5 +1,5 @@
 ---
-title: Proper Web Scraping Etiquette
+title: Proper Web Scraping Etiquette `r emo::ji("web")`
 author: Peter Boshe
 date: '2021-12-03'
 slug: []
@@ -18,7 +18,7 @@ draft: false
 knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
 ```
 
-## Why Web Scrape?
+## Why Web Scrape? `r emo::ji("smile")`
 
 If you are working in today's world, Many a times you would come across tasks where you need to find data published on a website, you finally find and it's all good.. except.. where is the download button?
 

@@ -1,5 +1,5 @@
 ---
-title: Building A Twitter Data Pipeline with R
+title: Building A Twitter Data Pipeline with R  `r emo::ji("mechanic")`
 author: Peter Boshe
 date: '2021-12-18'
 slug: []

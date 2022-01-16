@@ -1,7 +1,0 @@
-#!/usr/bin/Rscipt
-
-args = commandArgs(trailingOnly=TRUE)
-
-
-s[2] = rmarkdown:::convert_ipynb(args[1])
-xfun::file_string(args[2])

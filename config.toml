@@ -47,14 +47,12 @@ author = "authors"
 
   [params.social]
     rss = true
-    email = "example@example.com"
-    twitter = "https://twitter.com"
-    linkedin = "https://linkedin.com"
-    stack-overflow = "https://stackoverflow.com"
-    github = "https://github.com"
-    medium = "https://medium.com"
-    pinterest = "https://pinterest.com"
-    reddit = "https://reddit.com"
+    email = "peterboshe@gmail.com"
+    linkedin = "https://www.linkedin.com/in/peterboshe/"
+    stack-overflow = "https://stackoverflow.com/users/15254380/peter"
+    github = "https://github.com/PeterTOC"
+    upwork = "https://www.upwork.com/freelancers/~01ccb5205045cae5f6"
+    reddit = "https://www.reddit.com/user/Traditional_Net9757/"
     
 
   [params.prismJS]
