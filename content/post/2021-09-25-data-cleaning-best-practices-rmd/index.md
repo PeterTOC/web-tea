@@ -1,19 +1,19 @@
 ---
-title: "Dealing with missing data in R: Best Practices"
+title: Dealing with missing data in R; Best Practices
 author: "Peter Boshe"
 date: '2021-09-25'
 slug: []
 categories: ["Educational"]
 tags: ["Guide"]
 images: []
-summary: "This is a living document where I will be compiling what I consider best practices when it comes to data cleaning. The idea is to prepare an optimized checklist"
-draft: true
+summary: "This is a living document where I will be compiling what I consider best practices when it comes to dealing with misssing data. The idea is to prepare an optimized checklist"
+draft: false
 editor_options: 
   markdown: 
     wrap: 90
 ---
 
-## Dealing with missing values `r emo::ji("smile")`
+## Dealing with missing values :mag:
 
 -   `any_na()` returns TRUE if any value is missing
 -   `are_na()` returns a logical vector indicating missing values
