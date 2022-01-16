@@ -3,10 +3,10 @@ author: Peter Boshe
 date: '`r format(Sys.Date())`'
 title: Clustering Bustabit Gambling Behavior `r emo::ji("money")`
 output: html_document
-description: Our goal will be to define relevant groups or clusters of Bustabit users
+summary: "Our goal will be to define relevant groups or clusters of Bustabit users
   to identify what patterns and behaviors of gambling persist. Can we describe a particular
   group as risk-averse? Is there a set of gamblers that have a strategy that seems
-  to be more successful in the long term?
+  to be more successful in the long term?"
 ---
 
 ## 1. A preliminary look at the Bustabit data `r emo::ji("money")`
