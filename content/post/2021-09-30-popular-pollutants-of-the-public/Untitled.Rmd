@@ -1,7 +1,20 @@
+---
+author: Peter Boshe
+date: '2021-09-30'
+title: Popular Polutants of the Public `r emo::ji("litter")
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', collapse = TRUE, tidy = 'styler')
+```
+
+
+The data was collected by [Wastebase's Data Partner](https://www.unwaste.io/partners) by methods decribed on this [source page](https://www.kaggle.com/wastebase/plastic-bottle-waste)
 
 ## setting the environment
 
-```{r remedy001}
+```{r data, warning=FALSE, message=FALSE}
 
 rm(list = ls())
 require(tidyverse)
@@ -24,9 +37,9 @@ combined_file <- bind_rows(all_files, .id = "batch")
 ```
 
 
-## cleaning our dataset
+## pre-processing & cleaning our dataset
 
-```{r remedy002}
+```{r cleaning}
 
 df <- combined_file %>%
 #remove the bottle weight column
@@ -93,9 +106,9 @@ glue("We are left with the columns; {columns}",
 
 ```
 
-# clean our environment
+## clean our environment
 
-```{r remedy003}
+```{r housekeeping}
 
 rm(list = c("all_files",
             "combined_file",
@@ -108,17 +121,23 @@ rm(list = c("all_files",
 
 ```
 
-# Total bottles per country
+### Total bottles per country
+
+```{r bottles_per_country}
 
 data %>%
   group_by(scan_country) %>%
   summarise(total_bottles = sum(bottle_count)) %>%
   arrange(desc(total_bottles))
 
-# From the entire dataset we see that my beautiful country comes in second while
-# Mozambique holds the lead with more than 200,000 bottles scanned.
+```
 
+ + From the entire dataset we see that my beautiful country comes in second while
+ + Mozambique holds the lead with more than 200,000 bottles scanned.
 
+### Table of the top 20 manufacterers
+
+```{r bottles_per_manufacterer}
 
 tz_data <- data %>%
         filter(scan_country == "TZ")   #filter data for Tanzania (case study)
@@ -133,12 +152,15 @@ tz_manufacturer_country  <-  tz_data %>%
 
 datatable(tz_manufacturer_country)
 
- # From the table above we can see that it is a two-horse race on the beverage 
-# heavy weights, METL and BAHKHRESA., lets visualize the contrast between 
-# numbers
+```
+
++ From the table above we can see that it is a two-horse race on the beverage heavy weights, METL and BAHKHRESA,
+lets visualize the contrast between the numbers
 
 
+### Chart of the top 20 manufacterers
 
+```{r distribution}
 
 tz_manufacturer_country %>% 
   ggplot(aes(x = total_bottles, 
@@ -192,6 +214,13 @@ tz_manufacturer_country %>%
     y = 10, 
     label = "Average amount\n of litter collected\n per manufacturer"
   )
+
+```
+
+### Top 10 reoccurring brands
+
+
+```{r top_ten}
 # here it can be observed that the 
 tz_data %>%
   group_by(manufacturer_country) %>%
@@ -205,7 +234,11 @@ tz_data %>%
   arrange(desc(total))
 
 
- # distribution of container size
+```
+
+### distribution of container size
+
+```{r container_size_distribution}
 
 tz_data %>% 
   filter(units == "ml") %>% 
@@ -273,7 +306,11 @@ tz_data %>%
     label = "Containers\n of \n 6 & 13 liters"
   )
 
-# creating word cloud
+```
+
+### creating word cloud with brand names
+
+```{r word_cloud}
 
 mywords <- tz_data %>% 
   group_by(brand_name) %>% 
@@ -288,9 +325,18 @@ wordcloud2(mywords,
            shape = 'triangle', 
            ellipticity = 0.9)
 
-# inspecting the general trends for the bottle count per nation
 
-#relevelling the batch column
+```
+
+
++ inspecting the general trends for the bottle count per nation
+
++ relevelling the batch column
+
+
+### line chart for monthly trends per country
+
+```{r trend_per_nation}
 
 data$batch <- factor(data$batch, 
                      levels = c("Mar", 
@@ -313,6 +359,8 @@ data %>%
   replace_na(list(total_bottles = 0)) %>%
   ggplot(aes(batch, total_bottles, color = scan_country)) +
   geom_line(aes(group = scan_country))
+
+```
 
 
 

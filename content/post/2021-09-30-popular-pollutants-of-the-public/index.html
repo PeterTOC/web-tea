@@ -1,5 +1,5 @@
 ---
-title: Popular Pollutants of The Public 🚮
+title: Popular Pollutants of The Public 🚯
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'
@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 2
 summary: "Who are the leading pollutants of our state? you probably have a good guess as to who these popular pollutants are, but by all means dive in to find out more"
-draft: true
+draft: false
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
@@ -30,662 +30,103 @@ draft: true
 
 <div id="TOC">
 <ul>
-<li><a href="#load-the-data-set">Load The Data Set</a></li>
-<li><a href="#inspect-the-data">inspect the data</a></li>
-<li><a href="#exploratory-analysis">Exploratory Analysis</a></li>
+<li><a href="#setting-the-environment">setting the environment</a></li>
+<li><a href="#pre-processing-cleaning-our-dataset">pre-processing &amp; cleaning our dataset</a></li>
+<li><a href="#clean-our-environment">clean our environment</a></li>
 </ul>
 </div>
 
-<div id="load-the-data-set" class="section level2">
-<h2>Load The Data Set</h2>
 <p>The data was collected by <a href="https://www.unwaste.io/partners">Wastebase’s Data Partner</a> by methods decribed on this <a href="https://www.kaggle.com/wastebase/plastic-bottle-waste">source page</a></p>
-<pre class="r"><code># clear environment
-rm(list = ls())
-
-# setting environment
-require(tidyverse)
-require(skimr)
-require(forcats)
-require(knitr)
-require(rebus)
-require(RColorBrewer)
-require(wordcloud2)
-require(DT)
-
-# loading data
-data &lt;- read_csv(&quot;wastebase_scan_summary_20210815.csv&quot;)</code></pre>
+<div id="setting-the-environment" class="section level2">
+<h2>setting the environment</h2>
 </div>
-<div id="inspect-the-data" class="section level2">
-<h2>inspect the data</h2>
-<table>
-<caption>(#tab:inspect data)Data summary</caption>
-<tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">data</td>
-</tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">568</td>
-</tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">10</td>
-</tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">character</td>
-<td align="left">7</td>
-</tr>
-<tr class="odd">
-<td align="left">numeric</td>
-<td align="left">3</td>
-</tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">product_label</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">48</td>
-<td align="right">0</td>
-<td align="right">399</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">product_size</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">9</td>
-<td align="right">0</td>
-<td align="right">95</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">brand_name</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">30</td>
-<td align="right">0</td>
-<td align="right">236</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">manufacturer_country</td>
-<td align="right">1</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">25</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">manufacturer_name</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">5</td>
-<td align="right">47</td>
-<td align="right">0</td>
-<td align="right">90</td>
-<td align="right">0</td>
-</tr>
-<tr class="even">
-<td align="left">scan_country</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="right">0</td>
-<td align="right">7</td>
-<td align="right">0</td>
-</tr>
-<tr class="odd">
-<td align="left">data_url</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">62</td>
-<td align="right">62</td>
-<td align="right">0</td>
-<td align="right">90</td>
-<td align="right">0</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: numeric</strong></p>
-<table>
-<colgroup>
-<col width="13%" />
-<col width="8%" />
-<col width="11%" />
-<col width="10%" />
-<col width="9%" />
-<col width="5%" />
-<col width="10%" />
-<col width="10%" />
-<col width="9%" />
-<col width="10%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">product_barcode</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">4.85247e+12</td>
-<td align="right">2.3340e+12</td>
-<td align="right">415668</td>
-<td align="right">5.000187e+12</td>
-<td align="right">6.001292e+12</td>
-<td align="right">6.0099e+12</td>
-<td align="right">9.716189e+12</td>
-</tr>
-<tr class="even">
-<td align="left">bottle_weight</td>
-<td align="right">526</td>
-<td align="right">0.07</td>
-<td align="right">3.38200e+01</td>
-<td align="right">2.3770e+01</td>
-<td align="right">0</td>
-<td align="right">2.100000e+01</td>
-<td align="right">2.500000e+01</td>
-<td align="right">4.8620e+01</td>
-<td align="right">1.150000e+02</td>
-</tr>
-<tr class="odd">
-<td align="left">bottle_count</td>
-<td align="right">0</td>
-<td align="right">1.00</td>
-<td align="right">5.37100e+01</td>
-<td align="right">2.5127e+02</td>
-<td align="right">1</td>
-<td align="right">1.000000e+00</td>
-<td align="right">2.000000e+00</td>
-<td align="right">1.5000e+01</td>
-<td align="right">3.822000e+03</td>
-</tr>
-</tbody>
-</table>
-<p>Note: consider cleaning product size data, currently on 95 units</p>
-<div id="change-strings-as-factors" class="section level3">
-<h3>change strings as factors</h3>
-<pre class="r"><code>data$scan_country &lt;- factor(data$scan_country)
-data$manufacturer_country &lt;- factor(data$manufacturer_country)
-data$manufacturer_name &lt;- factor(data$manufacturer_name)</code></pre>
+<div id="pre-processing-cleaning-our-dataset" class="section level2">
+<h2>pre-processing &amp; cleaning our dataset</h2>
+<pre><code>## We are left with the columns; batch, brand_name, manufacturer_name, manufacturer_country, scan_country, amount, units, and bottle_count</code></pre>
 </div>
+<div id="clean-our-environment" class="section level2">
+<h2>clean our environment</h2>
+<div id="total-bottles-per-country" class="section level3">
+<h3>Total bottles per country</h3>
+<pre><code>## # A tibble: 11 × 2
+##    scan_country total_bottles
+##    &lt;fct&gt;                &lt;dbl&gt;
+##  1 MZ                  235985
+##  2 TZ                   38587
+##  3 KE                   13627
+##  4 ZM                    3801
+##  5 GB                    1652
+##  6 MW                    1456
+##  7 ES                      61
+##  8 ZA                      34
+##  9 UG                      23
+## 10 CH                       7
+## 11 FR                       6</code></pre>
+<ul>
+<li>From the entire dataset we see that my beautiful country comes in second while</li>
+<li>Mozambique holds the lead with more than 200,000 bottles scanned.</li>
+</ul>
 </div>
-<div id="exploratory-analysis" class="section level2">
-<h2>Exploratory Analysis</h2>
-<div id="total-count-of-bottles-per-country" class="section level3">
-<h3>Total count of bottles per country</h3>
-<pre class="r"><code>data %&gt;%
-  group_by(scan_country) %&gt;%
-  summarise(total_bottles = sum(bottle_count)) %&gt;%
-  arrange(desc(total_bottles))
-## # A tibble: 7 × 2
-##   scan_country total_bottles
-##   &lt;fct&gt;                &lt;dbl&gt;
-## 1 MZ                   27615
-## 2 TZ                    2328
-## 3 ZM                     228
-## 4 GB                     187
-## 5 KE                     149
-## 6 ZA                       2
-## 7 CH                       1
-
-tz_data &lt;- data %&gt;% filter(scan_country == &quot;TZ&quot;) # filter data for Tanzania (case study)</code></pre>
-<p>Note: email data collectors to query on the data discrepancy</p>
-</div>
-<div id="collapse-factors-with-variating-names" class="section level3">
-<h3>collapse factors with variating names</h3>
-<pre class="r"><code>
-drinking_water &lt;- c(
-  &quot;Pure Drinking Water&quot;, &quot;Drinking Water&quot;,
-  &quot;Drinking water&quot;, &quot;pure drinking water&quot;,
-  &quot;Mineral Water&quot;, &quot;Mineral water&quot;,
-  &quot;Mineral water&quot;, &quot;Agua Mineral Natural de las Sierras&quot;,
-  &quot;Best drinking water&quot;, &quot;still drinking water&quot;,
-  &quot;Premium Pure Drinking Water&quot;, &quot;DRINKING WATER&quot;,
-  &quot;Natural Water&quot;, &quot;Hill Water&quot;
-)
-
-carbonated_soft_drinks &lt;- c(
-  &quot;Xtra Carbonated Drink&quot;,
-  &quot;Extra Berry Flavor Carbonated Soft Drink&quot;,
-  &quot;Pineapple Flavoured Carbonated Soft Drink&quot;,
-  &quot;Coke&quot;, &quot;Fanta Orange&quot;, &quot;Pineapple Carbonated Drink&quot;,
-  &quot;Passion Flavour Carbonated Drink&quot;,
-  &quot;Xtra Berry Flavoured Carbonated Soft Drink&quot;,
-  &quot;Carbonated soft drink stoney Tangawizi/ ginger&quot;,
-  &quot;Cola Carbonated Soft Drink&quot;, &quot;Malt Flavoured&quot;,
-  &quot;Non Alcoholic Malt Drink&quot;,
-  &quot;Fruity Flavoured Soft Drink&quot;,
-  &quot;Energy drink&quot;, &quot;CARBONATED FLAVOURED DRINK&quot;,
-  &quot;Afiya Berries Flavour&quot;, &quot;Chungwa&quot;, &quot;Pepsi&quot;,
-  &quot;Pepsi Max&quot;, &quot;Apple punch&quot;, &quot;Mo Xtra Energy&quot;,
-  &quot;Twist Spark&quot;, &quot;Afiya Orange Flavour&quot;,
-  &quot;Diet Coke&quot;, &quot;Soda Water&quot;, &quot;Tonic Water&quot;,
-  &quot;Energy Drink&quot;, &quot;Grand Malt Non-alcohol can&quot;,
-  &quot;Fanta Orange Flavoured Drink&quot;,
-  &quot;Lemon-lime Flavoured Drink&quot;, &quot;Azam Passion&quot;,
-  &quot;Novida Nanasi Flavoured&quot;, &quot;Indian Tonic&quot;,
-  &quot;Apple and Malt Flavoured&quot;, &quot;Indian Tonic&quot;
-)
-
-
-alcohol &lt;- c(
-  &quot;K-Vant Spirit&quot;, &quot;Gin&quot;, &quot;Castle Lite&quot;,
-  &quot;Potable cane spirit&quot;, &quot;Kilimanjaro Premium Lager&quot;,
-  &quot;Savanna&quot;, &quot;Premium Lager&quot;, &quot;Premium Spirit&quot;,
-  &quot;Lager Beer&quot;, &quot;Fortified Wine&quot;, &quot;Lager&quot;,
-  &quot;Redds&quot;, &quot;Heineken&quot;, &quot;Valeur Superior Brandy&quot;,
-  &quot;smart gi&quot;
-)
-
-juice &lt;- c(
-  &quot;Mango juice drink&quot;, &quot;Fruit drink&quot;,
-  &quot;Orange Dairy Blend Concentrate&quot;,
-  &quot;Lemon-Lime Flavoured Drink&quot;,
-  &quot;Mango Fruit Juice Drink (Azam Embe)&quot;,
-  &quot;Ukwaju Tamarind Juice Drink&quot;, &quot;Ubuyu / Baobab Fruit Drink&quot;,
-  &quot;Orange Flavored Drink&quot;, &quot;Mango juice drink&quot;,
-  &quot;Tunda Embe / Mango Juice Drink&quot;, &quot;Delight Mango Flavoured Drink&quot;,
-  &quot;Embe Flavoured Drink&quot;, &quot;Jembe Drink&quot;, &quot;Ukwaju&quot;,
-  &quot;Embe Fruit juice&quot;, &quot;Tunda Mix&quot;, &quot;Mango&quot;
-)
-
-household_items &lt;- c(
-  &quot;Lemon fresh Cleaner&quot;, &quot;Mouthwash total Care&quot;,
-  &quot;Nourishing conditioner&quot;, &quot;plain yoghurt&quot;,
-  &quot;Pure Sunflower Oil&quot;, &quot;Table vinegar&quot;,
-  &quot;Sunflower seed oil&quot;, &quot;Sunflower oil&quot;,
-  &quot;Mouthwash total Care&quot;, &quot;Nourishing conditioner&quot;,
-  &quot;Coconut Oil&quot;, &quot;Body Lotion&quot;, &quot;Anti-bacterial Mouthwash&quot;,
-  &quot;Antiseptic Desinfectant&quot;, &quot;boncabe&quot;,
-  &quot;Calcium and Magnesium&quot;, &quot;Chewy vites&quot;,
-  &quot;Chicken Masala Spice Seasoning&quot;,
-  &quot;ciclo farma&quot;, &quot;Fish oil&quot;, &quot;LAVA LOUCAS CONCENTRADO&quot;,
-  &quot;Coffee&quot;, &quot;White Board Cleaner&quot;, &quot;acid&quot;,
-  &quot;Plain Yoghurt&quot;
-)
-
-tz_data_collapsed &lt;- tz_data %&gt;%
-  mutate(
-    product_label_collapsed =
-      fct_collapse(product_label,
-        &quot;Drinking Water&quot; = drinking_water,
-        &quot;Carbonated Soft Drinks&quot; = carbonated_soft_drinks,
-        &quot;Household Items&quot; = household_items,
-        &quot;Juice&quot; = juice,
-        &quot;Alcoholic Drinks&quot; = alcohol
-      )
-  )
-
-
-tz_data_collapsed %&gt;%
-  group_by(product_label_collapsed) %&gt;%
-  summarise(total = sum(bottle_count)) %&gt;%
-  arrange(desc(total)) %&gt;%
-  datatable()</code></pre>
+<div id="table-of-the-top-20-manufacterers" class="section level3">
+<h3>Table of the top 20 manufacterers</h3>
+<pre><code>## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.</code></pre>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["Drinking Water","Carbonated Soft Drinks","Alcoholic Drinks","Juice","Household Items"],[862,765,351,316,34]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>product_label_collapsed<\/th>\n      <th>total<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["METL Group","BAKHRESA GROUP DIVISIONS","Coca-Cola","Watercom (T) Ltd","Hill Group","Prime Care Distilleries Ltd","UNKNOWN_ORG","Motisun Group","Pepsico, Inc","Kibo Breweries Ltd","HAKIKA BREWERIES LIMITED","Dew Drop Drinks Co.Ltd","Mega Beverages Company Co Ltd.","Canada Pure Water Company Ltd","Sayona Drink Limited","Tanzania Breweries Limited","Anheuser-Busch InBev","Savannah Cider","AXCL GULF FZC","Heineken N.V."],["TZ","TZ","US","TZ","TZ","TZ","UK","TZ","US","TZ","TZ","TZ","TZ","TZ","TZ","TZ","BE","ZA","AE","NL"],[9897,8221,3495,3136,2083,1930,1613,1192,1094,873,795,694,499,493,413,377,250,211,162,146]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer_name<\/th>\n      <th>manufacturer_country<\/th>\n      <th>total_bottles<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>From the table above we can see that it is a two-horse race on the beverage heavy weights, METL and BAHKHRESA,
+lets visualize the contrast between the numbers</li>
+</ul>
 </div>
-<div id="total-count-of-bottles-produced-per-manufacturer-in-tanzania" class="section level3">
-<h3>Total count of bottles produced per manufacturer in Tanzania</h3>
-<div id="top-amount-of-bottles-by-manufacterer" class="section level4">
-<h4>Top amount of bottles by manufacterer</h4>
-<pre class="r"><code>manufacturers &lt;- tz_data %&gt;%
-  group_by(manufacturer_name, manufacturer_country) %&gt;%
-  summarise(total_bottles = sum(bottle_count)) %&gt;%
-  arrange(desc(total_bottles)) %&gt;%
-  top_n(20)
-## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.
-## Selecting by total_bottles
-
-datatable(manufacturers)</code></pre>
-<div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39"],["BAKHRESA GROUP DIVISIONS","METL Group","Coca-Cola","UNKNOWN_ORG","Hill Group","Watercom (T) Ltd","Motisun Group","Dew Drop Drinks Co.Ltd","HAKIKA BREWERIES LIMITED","Pepsico, Inc","Canada Pure Water Company Ltd","Coca Cola Kwanza Ltd","Coca Cola Sabco (Mozambique) SARL","Mega Beverages Company Co Ltd.","Anheuser-Busch InBev","Sayona Drink Limited","Kibo Breweries Ltd","Savannah Cider","Alaska Tanzania Industries","Chill Beverages International","Heineken N.V.","Tanzania Breweries Limited","Ohlthaver &amp; List Group of Companies","Reckitt Benckiser Group PLC","WATERCOM (T) LIMITED","Drop of Zanzibar Limited","Johnson &amp; Johnson","Acacia Food and Beverages Ltd","Asas Group of companies","CHEMICOTEX","Cotanak Sunflower Oil","Mega Lifesciences Public Company Limited","Mopani Internacional Lda","Nutreco Alimentos S.A","PDC Brands","PERA Afrika Ltd","Suntory Holdings Limited","Tropical Heat Limited","Zainab Bottlers Company limited"],["TZ","TZ","US","UK","TZ","TZ","TZ","TZ","TZ","US","TZ","TZ","MZ","TZ","BE","TZ","TZ","ZA","TZ","ZA","NL","TZ",null,"GB","TZ","TZ","US","ZM","TZ","TZ","TR","TH","MZ","AR","US","TZ","JP","KE","TZ"],[460,434,289,210,131,124,107,87,80,55,51,43,41,37,34,34,29,19,8,8,7,7,6,6,5,2,2,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer_name<\/th>\n      <th>manufacturer_country<\/th>\n      <th>total_bottles<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="chart-of-the-top-20-manufacterers" class="section level3">
+<h3>Chart of the top 20 manufacterers</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="chart-of-the-top-20" class="section level4">
-<h4>Chart of the top 20</h4>
-<pre class="r"><code>
-
-
-
-# kbl(manufacturers[1:20,],
-#     col.names = c(&quot;Manufacterers&quot;,&quot;Country&quot;, &quot;Total&quot;),
-#       align = &quot;lrc&quot;,
-#       caption = &quot;List of Manufacturers Producing the Plastic Containers&quot;) %&gt;%
-#   kable_minimal(bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
-#                 full_width = F ,
-#                 position = &quot;left&quot;,
-#                 fixed_thead = TRUE) %&gt;%
-#     row_spec(0,
-#              background = &quot;yellow&quot;,
-#              color = &quot;black&quot;)
-
-palette &lt;- brewer.pal(
-  n = 5,
-  name = &quot;RdYlBu&quot;
-)
-
-manufacturers[1:20, ] %&gt;%
-  ggplot(aes(
-    x = total_bottles,
-    y = reorder(manufacturer_name, total_bottles),
-    color = total_bottles
-  )) +
-  geom_segment(aes(yend = manufacturer_name),
-    xend = 0,
-    size = 2
-  ) +
-  geom_point(size = 4) + # shape = 21) +
-  # fill = &quot;#4E7FBF&quot;,
-  # color = &quot;#4E7FBF&quot;) +
-  geom_text(aes(label = total_bottles), color = &quot;white&quot;, size = 1.5) +
-  scale_x_continuous(&quot;&quot;, limits = c(0, 600), position = &quot;top&quot;) +
-  scale_color_gradientn(colors = palette) +
-  geom_curve(aes(
-    x = 60,
-    y = 4,
-    xend = 200,
-    yend = 7
-  ),
-  curvature = 0.2,
-  angle = 45,
-  ncp = 5,
-  color = &quot;black&quot;,
-  arrow = arrow(
-    angle = 30,
-    length = unit(0.5, &quot;cm&quot;),
-    ends = &quot;first&quot;,
-    type = &quot;open&quot;
-  )
-  ) +
-  geom_vline(
-    xintercept = mean(manufacturers$total_bottles),
-    linetype = &quot;longdash&quot;,
-    color = &quot;#F2A03D&quot;,
-    size = 1.1
-  ) +
-  theme_minimal() +
-  theme(
-    axis.line.y = element_blank(),
-    panel.grid.minor.y = element_blank(),
-    # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
-    # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
-    panel.grid.major.y = element_blank(),
-    legend.position = &quot;none&quot;,
-    axis.text = element_text(color = &quot;black&quot;)
-  ) +
-  labs(
-    title = &quot;20 Manufacturers with the most litter collected, 2021&quot;,
-    caption = &quot;Source: Wastebase.org&quot;
-  ) +
-  xlab(&quot;total quantity of bottles collected&quot;) +
-  ylab(&quot;&quot;) +
-  annotate(
-    &quot;text&quot;,
-    family = &quot;sans&quot;,
-    fontface = &quot;italic&quot;,
-    x = 300,
-    y = 9,
-    label = &quot;Average amount\n of litter produced\n per manufacturer&quot;
-  )</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/total%20per%20manufacturer%20in%20TZ-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-</div>
-<div id="total-count-of-bottles-as-per-manufacturer-country" class="section level3">
-<h3>Total count of bottles as per manufacturer country</h3>
-<pre class="r"><code>tz_data %&gt;%
-  group_by(manufacturer_country) %&gt;%
-  summarise(total_bottles = sum(bottle_count)) %&gt;%
-  arrange(desc(total_bottles))
-## # A tibble: 15 × 2
+<div id="top-10-reoccurring-brands" class="section level3">
+<h3>Top 10 reoccurring brands</h3>
+<pre><code>## # A tibble: 10 × 2
 ##    manufacturer_country total_bottles
 ##    &lt;fct&gt;                        &lt;dbl&gt;
-##  1 TZ                            1643
-##  2 US                             347
-##  3 UK                             210
-##  4 MZ                              42
-##  5 BE                              34
-##  6 ZA                              27
-##  7 NL                               7
-##  8 GB                               6
-##  9 &lt;NA&gt;                             6
-## 10 AR                               1
-## 11 JP                               1
-## 12 KE                               1
-## 13 TH                               1
-## 14 TR                               1
-## 15 ZM                               1</code></pre>
-</div>
-<div id="inspect-tz-data" class="section level3">
-<h3>Inspect TZ data</h3>
-<pre class="r"><code>glimpse(tz_data)
-## Rows: 131
-## Columns: 10
-## $ product_barcode      &lt;dbl&gt; 7.628005e+10, 3.155930e+12, 6.009703e+12, 6.16110…
-## $ product_label        &lt;chr&gt; &quot;Calcium and Magnesium&quot;, &quot;Lager Beer&quot;, &quot;Chewy vit…
-## $ product_size         &lt;chr&gt; &quot;1.600ml&quot;, &quot;330ml&quot;, &quot;1.0ml&quot;, &quot;500g&quot;, &quot;500ml&quot;, &quot;20…
-## $ brand_name           &lt;chr&gt; &quot;Solaray Dietary supplement&quot;, &quot;Desperados Origina…
-## $ manufacturer_country &lt;fct&gt; UK, UK, UK, UK, UK, UK, UK, UK, UK, UK, UK, UK, U…
-## $ manufacturer_name    &lt;fct&gt; &quot;UNKNOWN_ORG&quot;, &quot;UNKNOWN_ORG&quot;, &quot;UNKNOWN_ORG&quot;, &quot;UNK…
-## $ scan_country         &lt;fct&gt; TZ, TZ, TZ, TZ, TZ, TZ, TZ, TZ, TZ, TZ, TZ, TZ, T…
-## $ data_url             &lt;chr&gt; &quot;https://wastebase.org/#/o/00000000-0000-0000-000…
-## $ bottle_weight        &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, N…
-## $ bottle_count         &lt;dbl&gt; 1, 3, 1, 1, 1, 5, 19, 31, 80, 8, 46, 8, 1, 1, 1, …</code></pre>
-</div>
-<div id="get-ranking-of-bottlecount-as-per-brand-name" class="section level3">
-<h3>get ranking of bottlecount as per brand name</h3>
-<pre class="r"><code>tz_data %&gt;%
-  group_by(brand_name) %&gt;%
-  summarise(total = sum(bottle_count)) %&gt;%
-  arrange(desc(total))
-## # A tibble: 67 × 2
+##  1 TZ                           30928
+##  2 US                            4616
+##  3 UK                            1613
+##  4 ZA                             267
+##  5 BE                             250
+##  6 AE                             162
+##  7 KE                             158
+##  8 NL                             146
+##  9 MZ                             130
+## 10 MT                              90
+## # A tibble: 93 × 2
 ##    brand_name       total
-##    &lt;chr&gt;            &lt;dbl&gt;
-##  1 Mo                 346
-##  2 Azam               250
-##  3 Uhai               210
-##  4 Hill Water         131
-##  5 Afya               124
-##  6 Sayona             107
-##  7 Kilimanjaro        106
-##  8 Dew Drop            87
-##  9 Leader&#39;s Ananasi    80
-## 10 Super Burudani      80
-## # … with 57 more rows</code></pre>
+##    &lt;fct&gt;            &lt;dbl&gt;
+##  1 Mo                9019
+##  2 Azam              4291
+##  3 Uhai              3930
+##  4 Afya              3106
+##  5 Leader&#39;s Ananasi  2090
+##  6 Hill Water        2083
+##  7 Sayona            1192
+##  8 Pepsi             1038
+##  9 Kilimanjaro        957
+## 10 Double Kick        873
+## # … with 83 more rows</code></pre>
 </div>
-<div id="get-ranking-of-bottle-count-as-per-product-label" class="section level3">
-<h3>get ranking of bottle count as per product label</h3>
-<pre class="r"><code>tz_data %&gt;%
-  group_by(product_label) %&gt;%
-  summarise(total = sum(bottle_count)) %&gt;%
-  arrange(desc(total))
-## # A tibble: 101 × 2
-##    product_label                            total
-##    &lt;chr&gt;                                    &lt;dbl&gt;
-##  1 Pure Drinking Water                        467
-##  2 Drinking Water                             126
-##  3 Xtra Carbonated Drink                       92
-##  4 Drinking water                              82
-##  5 Extra Berry Flavor Carbonated Soft Drink    81
-##  6 Fortified Wine                              80
-##  7 Gin                                         80
-##  8 Energy drink                                78
-##  9 Coke                                        63
-## 10 Fanta Orange                                49
-## # … with 91 more rows</code></pre>
+<div id="distribution-of-container-size" class="section level3">
+<h3>distribution of container size</h3>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/container_size_distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="for-analysis-on-the-product-size" class="section level3">
-<h3>for analysis on the product size</h3>
-<pre class="r"><code>ml_pattern &lt;- capture(DGT %R%
-  DGT %R%
-  DGT %R%
-  optional(DGT)) %R%
-  optional(SPC) %R%
-  or(&quot;ml&quot;, &quot;g&quot;)
-
-l_pattern &lt;- capture(DGT %R%
-  (DOT) %R%
-  optional(DGT) %R%
-  optional(DGT)) %R%
-  optional(DGT) %R%
-  optional(SPC) %R%
-  or(&quot;l&quot;, &quot;L&quot;, &quot;ml&quot;)
-
-liters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, l_pattern)[, 2])
-mliters &lt;- as.numeric(str_match(tz_data_collapsed$product_size, ml_pattern)[, 2])
-
-tz_data_collapsed &lt;- tz_data_collapsed %&gt;%
-  mutate(volumes = ifelse(is.na(mliters), liters * 1000, mliters))
-
-ggplot(tz_data_collapsed, aes(volumes)) +
-  geom_histogram(
-    fill = &quot;#4E7FBF&quot;,
-    binwidth = 500, breaks = (seq(0, 7000, by = 500))
-  ) +
-  geom_curve(aes(
-    x = 500,
-    y = 89,
-    xend = 2000,
-    yend = 80
-  ),
-  curvature = -0.2,
-  angle = 45,
-  ncp = 5,
-  arrow = arrow(
-    angle = 30,
-    length = unit(0.5, &quot;cm&quot;),
-    ends = &quot;first&quot;,
-    type = &quot;open&quot;
-  )
-  ) +
-  geom_curve(aes(
-    x = 2250,
-    y = 2,
-    xend = 4500,
-    yend = 45
-  ),
-  curvature = -0.2,
-  angle = 45,
-  ncp = 5,
-  arrow = arrow(
-    angle = 30,
-    length = unit(0.5, &quot;cm&quot;),
-    ends = &quot;first&quot;,
-    type = &quot;open&quot;
-  )
-  ) +
-  geom_curve(aes(
-    x = 5750,
-    y = 2,
-    xend = 4500,
-    yend = 45
-  ),
-  curvature = 0.2,
-  angle = 45,
-  ncp = 5,
-  arrow = arrow(
-    angle = 30,
-    length = unit(0.5, &quot;cm&quot;),
-    ends = &quot;first&quot;,
-    type = &quot;open&quot;
-  )
-  ) +
-  theme_minimal() +
-  theme(
-    panel.grid.minor.y = element_blank(),
-    # panel.background = element_rect(fill = &quot;#F2F2F2&quot;),
-    # panel.border = element_rect(color = &quot;#F2F2F2&quot;, fill = NA),
-    panel.grid.major.y = element_blank(),
-    legend.position = &quot;none&quot;,
-    axis.text = element_text(color = &quot;black&quot;)
-  ) +
-  xlab(&quot;waste container capacity (ml)&quot;) +
-  ylab(&quot;&quot;) +
-  annotate(
-    &quot;text&quot;,
-    family = &quot;sans&quot;,
-    fontface = &quot;italic&quot;,
-    x = 2500,
-    y = 80,
-    label = &quot;Containers\n of \n 0-500ml&quot;
-  ) +
-  annotate(
-    &quot;text&quot;,
-    family = &quot;sans&quot;,
-    fontface = &quot;italic&quot;,
-    x = 4600,
-    y = 55,
-    label = &quot;Containers\n of \n 2-6 liters&quot;
-  )
-## Warning: Removed 1 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="creating-word-cloud-with-brand-names" class="section level3">
+<h3>creating word cloud with brand names</h3>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"word":["Azam","Afya","Mo","Coca-Cola","Sayona","Fanta","Uhai","Hill Water","Kilimanjaro","Malt drink","Sprite","K-Vant","Pepsi","Dew Drop","Krest","Listerine","Minute Maid","Dettol","Drop of Zanzibar","Dasani","Sayona Twist","Castle Lite","Masafi","Super Burudani","Fizz","Asas Diaries","Biowash","Canadian Drinking Water","Cantu","cotanak","Flamingo","Furaha","gold emblem","industria Quimica","Mega We care","Milk Com","Parachute","Pera fresh produce of Tanzania","Sierra de los Padres","Simba Table Vinegar","Solaray Dietary supplement","Sundrop","Vim","vitamic c","Zan Aqua","U-Fresh","Boncabe Original","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Heineken","Jembe","Leader's Ananasi","Lucozade","Pangani","Red Bull","Redd's","Safari","Savanna","smart gin","Tropical Heat","Valeur","Windhoek","Bio-D","Fitch and Leedes GINGER ALE","Maisha","Mirinda","Nutra Shine Professional","POWER TANGAWIZI","Precious","Schweppes","SeQua","SOY SAUCE","TOMATO SAUCE","Uhuru Peak","VESTLINE","Dabaga Vegetable & Fruits Canning","Mango Crush","ManziValley","Mo Portello","Novida","Pawa Plus","Red Gold","Toss","Afia","Juicy Ginger","Oryx Energies","Safi","Yasaki","drinking water","TOSS","valley"],"freq":[92,82,65,54,42,38,37,35,30,29,22,21,19,18,18,18,18,16,16,15,15,14,11,11,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,8,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,3,3,3,3,3,2,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":1.95652173913043,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<ul>
+<li><p>inspecting the general trends for the bottle count per nation</p></li>
+<li><p>relevelling the batch column</p></li>
+</ul>
 </div>
-<div id="wordcloud-for-article-picture" class="section level3">
-<h3>Wordcloud for Article Picture</h3>
-<pre class="r"><code>mywords &lt;- tz_data_collapsed %&gt;%
-  group_by(brand_name) %&gt;%
-  count() %&gt;%
-  arrange(desc(n))
-
-wordcloud2(mywords,
-  minRotation = -pi / 16,
-  maxRotation = -pi / 16,
-  backgroundColor = &quot;white&quot;,
-  color = &quot;random-dark&quot;,
-  shape = &quot;triangle&quot;,
-  ellipticity = 0.9
-)</code></pre>
-<div id="htmlwidget-3" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3">{"x":{"word":["Afya","Azam","Mo","Coca-Cola","Sayona","Fanta","Hill Water","Kilimanjaro","Uhai","Dew Drop","K-Vant","Malt drink","Sprite","Castle Lite","Dasani","Dettol","Drop of Zanzibar","Krest","Listerine","Minute Maid","Pepsi","Asas Diaries","Biowash","Boncabe Original","Canadian Drinking Water","Cantu","cotanak","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Fizz","Flamingo","Heineken","industria Quimica","Jembe","Leader's Ananasi","Lucozade","Maisha","Masafi","Mega We care","Milk Com","Mirinda","Pangani","Parachute","Pera fresh produce of Tanzania","Precious","Red Bull","Redd's","Safari","Savanna","Sayona Twist","Schweppes","SeQua","Sierra de los Padres","Simba Table Vinegar","smart gin","Solaray Dietary supplement","Sundrop","Super Burudani","Tropical Heat","Uhuru Peak","Valeur","Vim","vitamic c","Windhoek","Zan Aqua"],"freq":[11,10,8,6,6,4,4,4,4,3,3,3,3,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":16.3636363636364,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<div id="line-chart-for-monthly-trends-per-country" class="section level3">
+<h3>line chart for monthly trends per country</h3>
+<pre><code>## `summarise()` has grouped output by &#39;scan_country&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/trend_per_nation-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>

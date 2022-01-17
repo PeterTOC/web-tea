@@ -1,6 +1,6 @@
 ---
 author: Peter Boshe
-date: '`r format(Sys.Date())`'
+date: '2022-01-15'
 title: Clustering Bustabit Gambling Behavior `r emo::ji("money")`
 output: html_document
 summary: "Our goal will be to define relevant groups or clusters of Bustabit users to identify what patterns and behaviors of gambling persist. Can we describe a particular group as risk-averse? Is there a set of gamblers that have a strategy that seems to be more successful in the long term?"

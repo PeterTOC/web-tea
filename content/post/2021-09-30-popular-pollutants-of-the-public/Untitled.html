@@ -1,0 +1,435 @@
+---
+author: Peter Boshe
+date: '2021-09-30'
+title: Popular Polutants of the Public `r emo::ji("litter")
+output: html_document
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery-3.6.0.min.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+<link href="/rmarkdown-libs/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/wordcloud2/wordcloud2-all.js"></script>
+<script src="/rmarkdown-libs/wordcloud2/hover.js"></script>
+<script src="/rmarkdown-libs/wordcloud2-binding/wordcloud2.js"></script>
+
+
+<p>The data was collected by <a href="https://www.unwaste.io/partners">Wastebase’s Data Partner</a> by methods decribed on this <a href="https://www.kaggle.com/wastebase/plastic-bottle-waste">source page</a></p>
+<div id="setting-the-environment" class="section level2">
+<h2>setting the environment</h2>
+<pre class="r"><code>
+rm(list = ls())
+require(tidyverse)
+require(glue)
+require(knitr)
+require(DT)
+require(RColorBrewer)
+require(wordcloud2)
+
+palette &lt;- brewer.pal(
+  n = 4,
+  name = &quot;RdYlBu&quot;
+)
+
+setwd(&quot;~/Portfolio/web-tea/content/post/2021-09-30-popular-pollutants-of-the-public/index_files&quot;)
+files &lt;- list.files(pattern = &quot;*F.csv&quot;)
+all_files &lt;- map(files, read_csv)
+
+names(all_files) &lt;- month.abb[3:12] # to name the data according to month created which in our case is march to december
+
+combined_file &lt;- bind_rows(all_files, .id = &quot;batch&quot;)</code></pre>
+</div>
+<div id="pre-processing-cleaning-our-dataset" class="section level2">
+<h2>pre-processing &amp; cleaning our dataset</h2>
+<pre class="r"><code>
+df &lt;- combined_file %&gt;%
+  # remove the bottle weight column
+  # remove the url column
+  select(-bottle_weight, -data_url, -product_label, -product_barcode)
+
+# convert batch, manufacturer_name, manufacturer_country, scan_country into factors, months
+df$batch &lt;- as.factor(df$batch)
+df$manufacturer_country &lt;- as.factor(df$manufacturer_country)
+df$manufacturer_name &lt;- as.factor(df$manufacturer_name)
+df$scan_country &lt;- as.factor(df$scan_country)
+df$brand_name &lt;- as.factor(df$brand_name)
+
+# parse product_size for uniform measurements
+number_pattern &lt;- &quot;^\\d\\s?\\.?\\d*&quot;
+unit_pattern &lt;- &quot;\\D+$&quot;
+
+df1 &lt;- df %&gt;%
+  mutate(product_size_extracted = str_extract(product_size, number_pattern)) %&gt;%
+  mutate(units = str_extract(product_size, unit_pattern)) %&gt;%
+  drop_na(units)
+
+df1$units &lt;- str_trim(df1$units)
+df1$product_size_extracted &lt;- as.numeric(str_trim(df1$product_size_extracted))
+
+df1$units &lt;- ifelse(df1$units == &quot;litre&quot;, &quot;l&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;ltrs&quot;, &quot;l&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;ltr&quot;, &quot;l&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;Litres&quot;, &quot;l&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;L&quot;, &quot;l&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;gm&quot;, &quot;g&quot;, df1$units)
+df1$units &lt;- ifelse(df1$units == &quot;m&quot;, &quot;ml&quot;, df1$units)
+
+
+df2 &lt;- df1 %&gt;%
+  mutate(
+    amount = case_when(
+      units == &quot;l&quot; ~ product_size_extracted * 1000,
+      units == &quot;kg&quot; ~ product_size_extracted * 1000,
+      TRUE ~ product_size_extracted
+    )
+  )
+
+df2$units &lt;- ifelse(df2$units == &quot;l&quot;, &quot;ml&quot;, df2$units)
+df2$units &lt;- ifelse(df2$units == &quot;kg&quot;, &quot;g&quot;, df2$units)
+
+data &lt;- df2 %&gt;%
+  select(
+    batch,
+    brand_name,
+    manufacturer_name,
+    manufacturer_country,
+    scan_country,
+    amount,
+    units,
+    bottle_count
+  ) %&gt;%
+  mutate(units = as.factor(units))
+
+# we are left with columns
+glue(&quot;We are left with the columns; {columns}&quot;,
+  columns = glue_collapse(colnames(data),
+    sep = &quot;, &quot;,
+    last = &quot;, and &quot;
+  )
+)
+## We are left with the columns; batch, brand_name, manufacturer_name, manufacturer_country, scan_country, amount, units, and bottle_count</code></pre>
+</div>
+<div id="clean-our-environment" class="section level2">
+<h2>clean our environment</h2>
+<pre class="r"><code>
+rm(list = c(
+  &quot;all_files&quot;,
+  &quot;combined_file&quot;,
+  &quot;df&quot;,
+  &quot;df1&quot;,
+  &quot;df2&quot;,
+  &quot;number_pattern&quot;,
+  &quot;unit_pattern&quot;
+))</code></pre>
+<div id="total-bottles-per-country" class="section level3">
+<h3>Total bottles per country</h3>
+<pre class="r"><code>
+data %&gt;%
+  group_by(scan_country) %&gt;%
+  summarise(total_bottles = sum(bottle_count)) %&gt;%
+  arrange(desc(total_bottles))
+## # A tibble: 11 × 2
+##    scan_country total_bottles
+##    &lt;fct&gt;                &lt;dbl&gt;
+##  1 MZ                  235985
+##  2 TZ                   38587
+##  3 KE                   13627
+##  4 ZM                    3801
+##  5 GB                    1652
+##  6 MW                    1456
+##  7 ES                      61
+##  8 ZA                      34
+##  9 UG                      23
+## 10 CH                       7
+## 11 FR                       6</code></pre>
+<ul>
+<li>From the entire dataset we see that my beautiful country comes in second while</li>
+<li>Mozambique holds the lead with more than 200,000 bottles scanned.</li>
+</ul>
+</div>
+<div id="table-of-the-top-20-manufacterers" class="section level3">
+<h3>Table of the top 20 manufacterers</h3>
+<pre class="r"><code>
+tz_data &lt;- data %&gt;%
+  filter(scan_country == &quot;TZ&quot;) # filter data for Tanzania (case study)
+
+
+tz_manufacturer_country &lt;- tz_data %&gt;%
+  group_by(manufacturer_name, manufacturer_country) %&gt;%
+  summarise(total_bottles = sum(bottle_count)) %&gt;%
+  arrange(desc(total_bottles)) %&gt;%
+  head(20)
+## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.
+
+
+datatable(tz_manufacturer_country)</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["METL Group","BAKHRESA GROUP DIVISIONS","Coca-Cola","Watercom (T) Ltd","Hill Group","Prime Care Distilleries Ltd","UNKNOWN_ORG","Motisun Group","Pepsico, Inc","Kibo Breweries Ltd","HAKIKA BREWERIES LIMITED","Dew Drop Drinks Co.Ltd","Mega Beverages Company Co Ltd.","Canada Pure Water Company Ltd","Sayona Drink Limited","Tanzania Breweries Limited","Anheuser-Busch InBev","Savannah Cider","AXCL GULF FZC","Heineken N.V."],["TZ","TZ","US","TZ","TZ","TZ","UK","TZ","US","TZ","TZ","TZ","TZ","TZ","TZ","TZ","BE","ZA","AE","NL"],[9897,8221,3495,3136,2083,1930,1613,1192,1094,873,795,694,499,493,413,377,250,211,162,146]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer_name<\/th>\n      <th>manufacturer_country<\/th>\n      <th>total_bottles<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>From the table above we can see that it is a two-horse race on the beverage heavy weights, METL and BAHKHRESA,
+lets visualize the contrast between the numbers</li>
+</ul>
+</div>
+<div id="chart-of-the-top-20-manufacterers" class="section level3">
+<h3>Chart of the top 20 manufacterers</h3>
+<pre class="r"><code>
+tz_manufacturer_country %&gt;%
+  ggplot(aes(
+    x = total_bottles,
+    y = reorder(manufacturer_name, total_bottles),
+    color = total_bottles
+  )) +
+  geom_segment(aes(yend = manufacturer_name),
+    xend = 0,
+    size = 2
+  ) +
+  geom_point(size = 9) + # shape = 21) +
+  geom_text(aes(label = total_bottles),
+    color = &quot;black&quot;,
+    size = 2.5
+  ) +
+  scale_color_gradientn(
+    colors = palette,
+    trans = &quot;reverse&quot;
+  ) +
+  geom_curve(aes(
+    x = 2000,
+    y = 5,
+    xend = 4000,
+    yend = 8
+  ),
+  curvature = 0.2,
+  angle = 45,
+  ncp = 5,
+  color = &quot;black&quot;,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_vline(
+    xintercept = mean(tz_manufacturer_country$total_bottles),
+    linetype = &quot;dotdash&quot;,
+    color = &quot;#4E7FBF&quot;,
+    size = 0.5
+  ) +
+  theme_minimal() +
+  theme(
+    axis.line.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+    panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    axis.ticks.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.line.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank()
+  ) +
+  labs(
+    title = &quot;20 Manufacturers with the most litter collected, 2021&quot;,
+    caption = &quot;Source: Wastebase.org&quot;
+  ) +
+  xlab(&quot;total quantity of bottles collected&quot;) +
+  ylab(&quot;&quot;) +
+  annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 5000,
+    y = 10,
+    label = &quot;Average amount\n of litter collected\n per manufacturer&quot;
+  )</code></pre>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/Untitled_files/figure-html/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="top-10-reoccurring-brands" class="section level3">
+<h3>Top 10 reoccurring brands</h3>
+<pre class="r"><code># here it can be observed that the
+tz_data %&gt;%
+  group_by(manufacturer_country) %&gt;%
+  summarise(total_bottles = sum(bottle_count)) %&gt;%
+  arrange(desc(total_bottles)) %&gt;%
+  head(10)
+## # A tibble: 10 × 2
+##    manufacturer_country total_bottles
+##    &lt;fct&gt;                        &lt;dbl&gt;
+##  1 TZ                           30928
+##  2 US                            4616
+##  3 UK                            1613
+##  4 ZA                             267
+##  5 BE                             250
+##  6 AE                             162
+##  7 KE                             158
+##  8 NL                             146
+##  9 MZ                             130
+## 10 MT                              90
+
+tz_data %&gt;%
+  group_by(brand_name) %&gt;%
+  summarise(total = sum(bottle_count)) %&gt;%
+  arrange(desc(total))
+## # A tibble: 93 × 2
+##    brand_name       total
+##    &lt;fct&gt;            &lt;dbl&gt;
+##  1 Mo                9019
+##  2 Azam              4291
+##  3 Uhai              3930
+##  4 Afya              3106
+##  5 Leader&#39;s Ananasi  2090
+##  6 Hill Water        2083
+##  7 Sayona            1192
+##  8 Pepsi             1038
+##  9 Kilimanjaro        957
+## 10 Double Kick        873
+## # … with 83 more rows</code></pre>
+</div>
+<div id="distribution-of-container-size" class="section level3">
+<h3>distribution of container size</h3>
+<pre class="r"><code>
+tz_data %&gt;%
+  filter(units == &quot;ml&quot;) %&gt;%
+  ggplot(aes(amount)) +
+  geom_histogram(
+    fill = &quot;#4E7FBF&quot;,
+    binwidth = 5,
+    breaks = (seq(-250, 15000, by = 500))
+  ) +
+  geom_curve(aes(
+    x = 500,
+    y = 730,
+    xend = 5000,
+    yend = 600
+  ),
+  curvature = -0.4,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_curve(aes(
+    x = 13000,
+    y = 12,
+    xend = 10000,
+    yend = 300
+  ),
+  curvature = 0.2,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  geom_curve(aes(
+    x = 6000,
+    y = 12,
+    xend = 10000,
+    yend = 300
+  ),
+  curvature = -0.2,
+  angle = 45,
+  ncp = 5,
+  arrow = arrow(
+    angle = 30,
+    length = unit(0.5, &quot;cm&quot;),
+    ends = &quot;first&quot;,
+    type = &quot;open&quot;
+  )
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor.y = element_blank(),
+    # panel.grid.major.y = element_blank(),
+    legend.position = &quot;none&quot;,
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.text = element_text(color = &quot;black&quot;)
+  ) +
+  xlab(&quot;waste container capacity (ml)&quot;) +
+  ylab(&quot;&quot;) +
+  annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 5000,
+    y = 550,
+    label = &quot;Containers\n of \n 250-500ml&quot;
+  ) +
+  annotate(
+    &quot;text&quot;,
+    family = &quot;sans&quot;,
+    fontface = &quot;italic&quot;,
+    x = 10000,
+    y = 360,
+    label = &quot;Containers\n of \n 6 &amp; 13 liters&quot;
+  )</code></pre>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/Untitled_files/figure-html/container_size_distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="creating-word-cloud-with-brand-names" class="section level3">
+<h3>creating word cloud with brand names</h3>
+<pre class="r"><code>
+mywords &lt;- tz_data %&gt;%
+  group_by(brand_name) %&gt;%
+  count() %&gt;%
+  arrange(desc(n))
+
+wordcloud2(mywords,
+  minRotation = -pi / 16,
+  maxRotation = -pi / 16,
+  backgroundColor = &quot;white&quot;,
+  color = &quot;random-dark&quot;,
+  shape = &quot;triangle&quot;,
+  ellipticity = 0.9
+)</code></pre>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"word":["Azam","Afya","Mo","Coca-Cola","Sayona","Fanta","Uhai","Hill Water","Kilimanjaro","Malt drink","Sprite","K-Vant","Pepsi","Dew Drop","Krest","Listerine","Minute Maid","Dettol","Drop of Zanzibar","Dasani","Sayona Twist","Castle Lite","Masafi","Super Burudani","Fizz","Asas Diaries","Biowash","Canadian Drinking Water","Cantu","cotanak","Flamingo","Furaha","gold emblem","industria Quimica","Mega We care","Milk Com","Parachute","Pera fresh produce of Tanzania","Sierra de los Padres","Simba Table Vinegar","Solaray Dietary supplement","Sundrop","Vim","vitamic c","Zan Aqua","U-Fresh","Boncabe Original","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Heineken","Jembe","Leader's Ananasi","Lucozade","Pangani","Red Bull","Redd's","Safari","Savanna","smart gin","Tropical Heat","Valeur","Windhoek","Bio-D","Fitch and Leedes GINGER ALE","Maisha","Mirinda","Nutra Shine Professional","POWER TANGAWIZI","Precious","Schweppes","SeQua","SOY SAUCE","TOMATO SAUCE","Uhuru Peak","VESTLINE","Dabaga Vegetable & Fruits Canning","Mango Crush","ManziValley","Mo Portello","Novida","Pawa Plus","Red Gold","Toss","Afia","Juicy Ginger","Oryx Energies","Safi","Yasaki","drinking water","TOSS","valley"],"freq":[92,82,65,54,42,38,37,35,30,29,22,21,19,18,18,18,18,16,16,15,15,14,11,11,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,8,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,3,3,3,3,3,2,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":1.95652173913043,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<ul>
+<li><p>inspecting the general trends for the bottle count per nation</p></li>
+<li><p>relevelling the batch column</p></li>
+</ul>
+</div>
+<div id="line-chart-for-monthly-trends-per-country" class="section level3">
+<h3>line chart for monthly trends per country</h3>
+<pre class="r"><code>
+data$batch &lt;- factor(data$batch,
+  levels = c(
+    &quot;Mar&quot;,
+    &quot;Apr&quot;,
+    &quot;May&quot;,
+    &quot;Jun&quot;,
+    &quot;Jul&quot;,
+    &quot;Aug&quot;,
+    &quot;Sep&quot;,
+    &quot;Oct&quot;,
+    &quot;Nov&quot;,
+    &quot;Dec&quot;
+  )
+)
+
+
+
+data %&gt;%
+  complete(scan_country, batch) %&gt;%
+  group_by(scan_country, batch) %&gt;%
+  summarise(total_bottles = sum(bottle_count)) %&gt;%
+  replace_na(list(total_bottles = 0)) %&gt;%
+  ggplot(aes(batch, total_bottles, color = scan_country)) +
+  geom_line(aes(group = scan_country))
+## `summarise()` has grouped output by &#39;scan_country&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/Untitled_files/figure-html/trend_per_nation-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>

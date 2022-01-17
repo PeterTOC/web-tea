@@ -1,0 +1,370 @@
+---
+title: Popular Pollutants of The Public `r emo::ji("litter")`
+description: "Analysis on data collected from plastic bottles barcodes"
+author: "Peter Boshe"
+date: '2021-09-30'
+categories: ["Socio-eco Welfare"]
+tags: ["DataViz", "Unguided Project", "E.D.A"]
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+summary: "Who are the leading pollutants of our state? you probably have a good guess as to who these popular pollutants are, but by all means dive in to find out more"
+draft: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler')
+```
+## Load The Data Set
+
+The data was collected by [Wastebase's Data Partner](https://www.unwaste.io/partners) by methods decribed on this [source page](https://www.kaggle.com/wastebase/plastic-bottle-waste)
+
+```{r data, warning=FALSE, message=FALSE}
+# clear environment 
+rm(list = ls())
+
+# setting environment
+require(tidyverse)
+require(skimr)
+  require(forcats)
+require(knitr)
+require(rebus)
+require(RColorBrewer)
+require(wordcloud2)
+require(DT)
+
+# loading data 
+data <- read_csv("wastebase_scan_summary_20210815.csv")
+```
+
+## inspect the data
+
+```{r inspect data, echo=FALSE}
+skim_without_charts(data)
+```
+
+Note: consider cleaning product size data, currently on 95 units
+
+### change strings as factors
+```{r factors}
+data$scan_country <- factor(data$scan_country)
+data$manufacturer_country <- factor(data$manufacturer_country)
+data$manufacturer_name <- factor(data$manufacturer_name)
+```
+
+## Exploratory Analysis
+
+### Total count of bottles per country
+```{r total count}
+data %>%
+  group_by(scan_country) %>%
+  summarise(total_bottles = sum(bottle_count)) %>%
+  arrange(desc(total_bottles))
+
+tz_data <- data %>% filter(scan_country == "TZ")#filter data for Tanzania (case study)
+```
+
+Note: email data collectors to query on the data discrepancy
+
+### collapse factors with variating names
+
+```{r collapsing factors}
+
+drinking_water <- c("Pure Drinking Water", "Drinking Water", 
+                    "Drinking water", "pure drinking water", 
+                    "Mineral Water", "Mineral water", 
+                    "Mineral water", "Agua Mineral Natural de las Sierras", 
+                    "Best drinking water", "still drinking water", 
+                    "Premium Pure Drinking Water", "DRINKING WATER", 
+                    "Natural Water", "Hill Water")
+
+carbonated_soft_drinks <- c("Xtra Carbonated Drink", 
+                            "Extra Berry Flavor Carbonated Soft Drink", 
+                            "Pineapple Flavoured Carbonated Soft Drink", 
+                            "Coke","Fanta Orange", "Pineapple Carbonated Drink", 
+                            "Passion Flavour Carbonated Drink", 
+                            "Xtra Berry Flavoured Carbonated Soft Drink", 
+                            "Carbonated soft drink stoney Tangawizi/ ginger", 
+                            "Cola Carbonated Soft Drink", "Malt Flavoured", 
+                            "Non Alcoholic Malt Drink", 
+                            "Fruity Flavoured Soft Drink", 
+                            "Energy drink","CARBONATED FLAVOURED DRINK", 
+                            "Afiya Berries Flavour","Chungwa","Pepsi", 
+                            "Pepsi Max", "Apple punch", "Mo Xtra Energy", 
+                            "Twist Spark", "Afiya Orange Flavour", 
+                            "Diet Coke", "Soda Water", "Tonic Water", 
+                            "Energy Drink", "Grand Malt Non-alcohol can", 
+                            "Fanta Orange Flavoured Drink",
+                            "Lemon-lime Flavoured Drink","Azam Passion", 
+                            "Novida Nanasi Flavoured", "Indian Tonic", 
+                            "Apple and Malt Flavoured", "Indian Tonic")
+
+
+alcohol <- c("K-Vant Spirit", "Gin", "Castle Lite", 
+             "Potable cane spirit", "Kilimanjaro Premium Lager", 
+             "Savanna", "Premium Lager", "Premium Spirit", 
+             "Lager Beer", "Fortified Wine", "Lager", 
+             "Redds", "Heineken", "Valeur Superior Brandy", 
+             "smart gi")
+
+juice <- c("Mango juice drink", "Fruit drink", 
+           "Orange Dairy Blend Concentrate", 
+           "Lemon-Lime Flavoured Drink", 
+           "Mango Fruit Juice Drink (Azam Embe)", 
+           "Ukwaju Tamarind Juice Drink", "Ubuyu / Baobab Fruit Drink", 
+           "Orange Flavored Drink", "Mango juice drink", 
+           "Tunda Embe / Mango Juice Drink", "Delight Mango Flavoured Drink", 
+           "Embe Flavoured Drink", "Jembe Drink", "Ukwaju", 
+           "Embe Fruit juice", "Tunda Mix", "Mango")
+
+household_items <- c("Lemon fresh Cleaner", "Mouthwash total Care", 
+                     "Nourishing conditioner", "plain yoghurt", 
+                     "Pure Sunflower Oil", "Table vinegar", 
+                     "Sunflower seed oil", "Sunflower oil", 
+                     "Mouthwash total Care", "Nourishing conditioner", 
+                     "Coconut Oil", "Body Lotion", "Anti-bacterial Mouthwash", 
+                     "Antiseptic Desinfectant", "boncabe", 
+                     "Calcium and Magnesium", "Chewy vites", 
+                     "Chicken Masala Spice Seasoning", 
+                     "ciclo farma", "Fish oil", "LAVA LOUCAS CONCENTRADO", 
+                     "Coffee", "White Board Cleaner", "acid", 
+                     "Plain Yoghurt")
+
+tz_data_collapsed <- tz_data %>% 
+  mutate(product_label_collapsed = 
+           fct_collapse(product_label,
+                        "Drinking Water" = drinking_water, 
+                        "Carbonated Soft Drinks" = carbonated_soft_drinks,
+                        "Household Items" = household_items, 
+                        "Juice" = juice, 
+                        "Alcoholic Drinks" = alcohol)) 
+
+
+tz_data_collapsed %>% 
+  group_by(product_label_collapsed) %>% 
+  summarise(total = sum(bottle_count)) %>% 
+  arrange(desc(total)) %>% 
+  datatable()
+```
+
+### Total count of bottles produced per manufacturer in Tanzania
+
+#### Top amount of bottles by manufacterer
+```{r top20}
+manufacturers <- tz_data %>% 
+  group_by(manufacturer_name, manufacturer_country) %>% 
+  summarise(total_bottles = sum(bottle_count)) %>% 
+  arrange(desc(total_bottles)) %>% 
+  top_n(20)
+
+datatable(manufacturers)
+```
+
+
+
+#### Chart of the top 20
+
+```{r total per manufacturer in TZ}
+
+
+
+
+# kbl(manufacturers[1:20,], 
+#     col.names = c("Manufacterers","Country", "Total"),
+#       align = "lrc",
+#       caption = "List of Manufacturers Producing the Plastic Containers") %>% 
+#   kable_minimal(bootstrap_options = c("striped", "hover", "condensed"),
+#                 full_width = F , 
+#                 position = "left", 
+#                 fixed_thead = TRUE) %>% 
+#     row_spec(0, 
+#              background = "yellow",
+#              color = "black")
+
+palette <- brewer.pal(n = 5,
+                      name = "RdYlBu")
+
+manufacturers[1:20,] %>% 
+  ggplot(aes(x = total_bottles, 
+             y = reorder(manufacturer_name,total_bottles), 
+             color = total_bottles)) +
+  geom_segment(aes(yend = manufacturer_name), 
+             xend = 0,
+             size = 2) + 
+  geom_point(size = 4) +   # shape = 21) +
+             # fill = "#4E7FBF",
+             # color = "#4E7FBF") +
+  geom_text(aes(label = total_bottles), color = "white", size = 1.5) + 
+  scale_x_continuous("", limits = c(0,600), position = "top") +
+  scale_color_gradientn(colors = palette) +
+  geom_curve(aes(x = 60, 
+                 y = 4,
+                 xend = 200,
+                 yend = 7), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5,
+             color = "black",
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open"))+
+  geom_vline(xintercept = mean(manufacturers$total_bottles), 
+             linetype="longdash",
+             color = "#F2A03D", 
+             size = 1.1) +
+  theme_minimal() +
+  theme(
+    axis.line.y = element_blank(),
+    panel.grid.minor.y = element_blank(),
+     # panel.background = element_rect(fill = "#F2F2F2"),
+     # panel.border = element_rect(color = "#F2F2F2", fill = NA),
+     panel.grid.major.y = element_blank(),
+     legend.position="none",
+     axis.text = element_text(color = "black")
+  )  +
+  labs(title = "20 Manufacturers with the most litter collected, 2021",
+       caption = "Source: Wastebase.org") +
+  xlab("total quantity of bottles collected") +
+  ylab("") +
+  annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 300, 
+    y = 9, 
+    label = "Average amount\n of litter produced\n per manufacturer"
+  )
+
+
+```
+
+### Total count of bottles as per manufacturer country
+```{r total per manufacturer country}
+tz_data %>%
+  group_by(manufacturer_country) %>%
+  summarise(total_bottles = sum(bottle_count)) %>%
+  arrange(desc(total_bottles))
+
+```
+
+### Inspect TZ data
+```{r}
+glimpse(tz_data)
+```
+
+### get ranking of bottlecount as per brand name
+```{r}
+tz_data %>% group_by(brand_name) %>% summarise(total = sum(bottle_count)) %>% arrange(desc(total))
+```
+
+### get ranking of bottle count as per product label
+
+```{r}
+tz_data %>% group_by(product_label) %>% summarise(total = sum(bottle_count)) %>% arrange(desc(total))
+```
+
+### for analysis on the product size
+```{r}
+ml_pattern <- capture(DGT %R% 
+                        DGT %R% 
+                        DGT %R% 
+                        optional(DGT)) %R% 
+  optional(SPC) %R% 
+  or("ml","g")
+
+l_pattern <- capture(DGT %R% 
+                       (DOT) %R% 
+                       optional(DGT) %R% 
+                       optional(DGT)) %R% 
+  optional(DGT) %R% 
+  optional(SPC) %R% 
+  or("l","L","ml")
+
+liters <- as.numeric(str_match(tz_data_collapsed$product_size, l_pattern)[,2])
+mliters <- as.numeric(str_match(tz_data_collapsed$product_size, ml_pattern)[,2])
+
+tz_data_collapsed <- tz_data_collapsed %>% 
+  mutate(volumes = ifelse(is.na(mliters),liters*1000,mliters))
+
+ggplot(tz_data_collapsed, aes(volumes)) + 
+  geom_histogram(fill = "#4E7FBF",
+                 binwidth = 500, breaks = (seq(0,7000, by = 500))) + 
+  geom_curve(aes(x = 500, 
+                 y = 89,
+                 xend = 2000,
+                 yend = 80), 
+             curvature = -0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+   geom_curve(aes(x = 2250, 
+                 y = 2,
+                 xend = 4500,
+                 yend = 45), 
+             curvature = -0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+   geom_curve(aes(x = 5750, 
+                 y = 2,
+                 xend = 4500,
+                 yend = 45), 
+             curvature = 0.2,
+             angle = 45, 
+             ncp = 5, 
+             arrow = arrow(angle = 30, 
+                           length = unit(0.5, "cm"), 
+                           ends = "first", 
+                           type = "open")) +
+  theme_minimal() +
+  theme(
+     panel.grid.minor.y = element_blank(),
+     # panel.background = element_rect(fill = "#F2F2F2"),
+     # panel.border = element_rect(color = "#F2F2F2", fill = NA),
+     panel.grid.major.y = element_blank(),
+     legend.position="none",
+     axis.text = element_text(color = "black")
+  )  +
+  xlab("waste container capacity (ml)") +
+  ylab("") + 
+  annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 2500, 
+    y = 80, 
+    label = "Containers\n of \n 0-500ml"
+  ) + 
+   annotate(
+    "text",
+    family = "sans",
+    fontface = "italic",
+    x = 4600, 
+    y = 55, 
+    label = "Containers\n of \n 2-6 liters"
+  )
+```
+
+### Wordcloud for Article Picture
+```{r}
+mywords <- tz_data_collapsed %>% 
+  group_by(brand_name) %>% 
+  count() %>% 
+  arrange(desc(n))
+
+wordcloud2(mywords, 
+           minRotation = -pi/16, 
+           maxRotation = -pi/16,
+           backgroundColor = "white", 
+           color="random-dark", 
+           shape = 'triangle', 
+           ellipticity = 0.9)
+
+```
