@@ -1,7 +1,7 @@
 ---
 author: Peter Boshe
 date: '2022-01-15'
-title: Clustering Bustabit Gambling Behavior 💸
+title: Clustering Bustabit Gambling Behavior 💹
 output: html_document
 summary: "Our goal will be to define relevant groups or clusters of Bustabit users to identify what patterns and behaviors of gambling persist. Can we describe a particular group as risk-averse? Is there a set of gamblers that have a strategy that seems to be more successful in the long term?"
 ---
@@ -10,7 +10,7 @@ summary: "Our goal will be to define relevant groups or clusters of Bustabit use
 
 
 <div id="a-preliminary-look-at-the-bustabit-data" class="section level2">
-<h2>1. A preliminary look at the Bustabit data 💰</h2>
+<h2>1. A preliminary look at the Bustabit data 💵</h2>
 <p>
 The similarities and differences in the behaviors of different people have long been of interest, particularly in psychology and other social science fields. Understanding human behavior in particular contexts can help us to make informed decisions. Consider a game of poker - understanding why players raise, call, and fold in various situations can provide a distinct advantage competitively.
 </p>
@@ -82,29 +82,14 @@ The data you will be working with includes over 40000 games of Bustabit by a bit
 Let’s begin by doing an exploratory dive into the Bustabit data!
 </p>
 <pre class="r"><code># Load the tidyverse
-library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.6     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.1.1     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code># Read in the bustabit gambling data 
-bustabit &lt;- read_csv(&quot;datasets/bustabit.csv&quot;)</code></pre>
-<pre><code>## Rows: 50000 Columns: 9</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (1): Username
-## dbl  (7): Id, GameID, Bet, CashedOut, Bonus, Profit, BustedAt
-## dttm (1): PlayDate</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code># Look at the first five rows of the data
-head(bustabit)</code></pre>
-<pre><code>## # A tibble: 6 × 9
+library(tidyverse)
+
+# Read in the bustabit gambling data 
+bustabit &lt;- read_csv(&quot;datasets/bustabit.csv&quot;)
+
+# Look at the first five rows of the data
+head(bustabit)
+## # A tibble: 6 × 9
 ##         Id  GameID Username    Bet CashedOut Bonus Profit BustedAt
 ##      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 14196549 3366002 papai         5      1.2    0     1        8.24
@@ -113,12 +98,13 @@ head(bustabit)</code></pre>
 ## 4 25732127 3429241 sanya1206    10     NA     NA    NA        1.63
 ## 5 17995432 3389174 ADM          50      1.5    1.4  25.7      2.29
 ## 6 14147823 3365723 afrod         2     NA     NA    NA        1.04
-## # … with 1 more variable: PlayDate &lt;dttm&gt;</code></pre>
-<pre class="r"><code># Find the highest multiplier (BustedAt value) achieved in a game
+## # … with 1 more variable: PlayDate &lt;dttm&gt;
+
+# Find the highest multiplier (BustedAt value) achieved in a game
 bustabit %&gt;%
     arrange(desc(BustedAt)) %&gt;%
-    slice(1)</code></pre>
-<pre><code>## # A tibble: 1 × 9
+    slice(1)
+## # A tibble: 1 × 9
 ##         Id  GameID Username     Bet CashedOut Bonus Profit BustedAt
 ##      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 19029273 3395044 Shadowshot   130         2  2.77   134.  251025.
@@ -155,8 +141,8 @@ bustabit_features &lt;- bustabit %&gt;%
          GameLost = ifelse(Profit == 0, 1, 0))
 
 # Look at the first five rows of the features data
-head(bustabit_features)</code></pre>
-<pre><code>## # A tibble: 6 × 12
+head(bustabit_features)
+## # A tibble: 6 × 12
 ##         Id  GameID Username    Bet CashedOut Bonus Profit BustedAt
 ##      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 14196549 3366002 papai         5      1.2    0     1        8.24
@@ -207,8 +193,8 @@ bustabit_clus &lt;- bustabit_features %&gt;%
             GamesLost = sum(GameLost))
 
 # View the first five rows of the data
-head(bustabit_clus, n = 5)</code></pre>
-<pre><code>## # A tibble: 5 × 7
+head(bustabit_clus, n = 5)
+## # A tibble: 5 × 7
 ##   Username     AverageCashedOut AverageBet TotalProfit TotalLosses GamesWon
 ##   &lt;chr&gt;                   &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 _caramba_tm_             1.7        1.33        3.13           0        3
@@ -239,8 +225,8 @@ bustabit_standardized &lt;- bustabit_clus %&gt;%
     mutate_if(is.numeric, mean_sd_standard)
               
 # Summarize our standardized data
-summary(bustabit_standardized)</code></pre>
-<pre><code>##    Username         AverageCashedOut     AverageBet       TotalProfit      
+summary(bustabit_standardized)
+##    Username         AverageCashedOut     AverageBet       TotalProfit      
 ##  Length:4149        Min.   :-0.76289   Min.   :-0.1773   Min.   :-0.09052  
 ##  Class :character   1st Qu.:-0.28157   1st Qu.:-0.1765   1st Qu.:-0.09050  
 ##  Mode  :character   Median :-0.18056   Median :-0.1711   Median :-0.08974  
@@ -276,8 +262,8 @@ cluster_solution &lt;- kmeans(bustabit_standardized[,-1], centers = 5)
 bustabit_clus$cluster &lt;- factor(cluster_solution$cluster)
 
 # Look at the distribution of cluster assignments
-table(bustabit_clus$cluster)</code></pre>
-<pre><code>## 
+table(bustabit_clus$cluster)
+## 
 ##    1    2    3    4    5 
 ## 3626   17  412   16   78</code></pre>
 </div>
@@ -292,8 +278,8 @@ bustabit_clus_avg &lt;- bustabit_clus %&gt;%
     summarize_if(is.numeric, mean)
 
 # View the resulting table
-bustabit_clus_avg</code></pre>
-<pre><code>## # A tibble: 5 × 7
+bustabit_clus_avg
+## # A tibble: 5 × 7
 ##   cluster AverageCashedOut AverageBet TotalProfit TotalLosses GamesWon GamesLost
 ##   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 1                   1.70      4024.       4273.      -4366.    2.91       2.13
@@ -323,11 +309,12 @@ bustabit_avg_minmax &lt;- bustabit_clus_avg %&gt;%
     mutate_if(is.numeric, min_max_standard)
 
 # Load the GGally package
-library(GGally)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+library(GGally)
+## Registered S3 method overwritten by &#39;GGally&#39;:
 ##   method from   
-##   +.gg   ggplot2</code></pre>
-<pre class="r"><code># Create a parallel coordinate plot of the values
+##   +.gg   ggplot2
+              
+# Create a parallel coordinate plot of the values
 ggparcoord(bustabit_avg_minmax, columns = 2:ncol(bustabit_avg_minmax), 
            groupColumn = NULL, scale = &quot;globalminmax&quot;, order = &quot;skewness&quot;)</code></pre>
 <p><img src="/post/Clustering-Bustabit-Gambling-Behavior/notebook_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
@@ -415,8 +402,8 @@ bustabit_clus_avg_named &lt;- bustabit_clus_avg %&gt;%
     cbind(Name = cluster_names)
 
 # View the cluster means table with your appended cluster names
-bustabit_clus_avg_named</code></pre>
-<pre><code>##   cluster AverageCashedOut  AverageBet  TotalProfit   TotalLosses   GamesWon
+bustabit_clus_avg_named
+##   cluster AverageCashedOut  AverageBet  TotalProfit   TotalLosses   GamesWon
 ## 1       1         1.699993   4024.1102    4272.6656    -4365.7788  2.9109211
 ## 2       2        27.448235   1278.2574     619.4041     -581.2941  0.7058824
 ## 3       3         1.915776   1633.2292   19362.9909   -19205.1165 27.0606796

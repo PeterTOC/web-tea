@@ -34,7 +34,7 @@ summary: "Our goal will be to define relevant groups or clusters of Bustabit use
 </ol>
 <p>Let's begin by doing an exploratory dive into the Bustabit data!</p>
 
-```{r}
+```{r, collapse=TRUE, message=FALSE}
 # Load the tidyverse
 library(tidyverse)
 
@@ -60,7 +60,7 @@ bustabit %>%
 <li><strong>GameLost</strong> If the user had a loss in this game, the value should be 1, and 0 otherwise</li>
 </ol>
 
-```{r}
+```{r, collapse=TRUE}
 # Create the new feature variables 
 bustabit_features <- bustabit %>% 
   mutate(CashedOut = ifelse(is.na(CashedOut), BustedAt + .01, CashedOut),
@@ -85,7 +85,7 @@ head(bustabit_features)
 </ol>
 <p>With these variables, we will be able to potentially group similar users based on their typical Bustabit gambling behavior.</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Group by players to create per-player summary statistics
 bustabit_clus <- bustabit_features %>%
   group_by(Username) %>%
@@ -105,7 +105,7 @@ head(bustabit_clus, n = 5)
 <p>One thing to think about is that in many cases, we may actually want a particular numeric variable to maintain a higher weight. This could occur if there is some prior knowledge regarding, for example, which variable might be most important in terms of defining similar Bustabit behavior. In this case, without that prior knowledge, we will forego the weighting of variables and scale everything. We are going to use <strong>mean-sd</strong> standardization to scale the data. Note that this is also known as a <strong>Z-score</strong>.</p>
 <p>Note that we could compute the Z-scores by using the base R function <code>scale()</code>, but we're going to write our own function in order to get the practice.</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Create the mean-sd standardization function
 mean_sd_standard <- function(x) {
     (x - mean(x))/sd(x)
@@ -124,7 +124,7 @@ summary(bustabit_standardized)
 <p>Without prior knowledge, it is often difficult to know what an appropriate choice for the number of clusters is. We will begin by choosing <strong>five</strong>. This choice is rather arbitrary, but represents a good initial compromise between choosing too many clusters (which reduces the interpretability of the final results), and choosing too few clusters (which may not capture the distinctive behaviors effectively). Feel free to play around with other choices for the number of clusters and see what you get instead!</p>
 <p>One subtlety to note - because the K means algorithm uses a random start, we are going to set a random seed first in order to ensure the results are reproducible.</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Choose 20190101 as our random seed
 set.seed(20190101)
 
@@ -141,7 +141,7 @@ table(bustabit_clus$cluster)
 ## 6. Compute averages for each cluster
 <p>We have a clustering assignment which maps every Bustabit gambler to one of five different groups. To begin to assess the quality and distinctiveness of these groups, we are going to look at <strong>group averages</strong> for each cluster across the original variables in our clustering dataset. This will, for example, allow us to see which cluster tends to make the largest bets, which cluster tends to win the most games, and which cluster tends to lose the most money. This will provide us with our first clear indication as to whether the behaviors of the groups appear distinctive!</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Group by the cluster assignment and calculate averages
 bustabit_clus_avg <- bustabit_clus %>%
     group_by(cluster) %>%
@@ -156,7 +156,7 @@ bustabit_clus_avg
 <p>Other choices of scaling, such as the Z-score method from before, can work effectively as well. However, min-max scaling has the advantage of <strong>interpretability</strong> - a value of 1 for a particular variable indicates that cluster has the highest value compared to all other clusters, and a value of 0 indicates that it has the lowest. This can help make relative comparisons between the clusters more clear.</p>
 <p>The <code>ggparcoord()</code> function from <code>GGally</code> will be used to produce a Parallel Coordinate Plot. Note that this has a built-in argument <code>scale</code> to perform different scaling options, including min-max scaling. We will set this option to <code>"globalminmax"</code> to perform no scaling, and write our own scaling routine for practice. If you are interested, you can look at the function definition for <code>ggparcoord()</code> to help you write our scaling function!</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Create the min-max scaling function
 min_max_standard <- function(x) {
    (x - min(x))/(max(x) - min(x))
@@ -182,7 +182,7 @@ ggparcoord(bustabit_avg_minmax, columns = 2:ncol(bustabit_avg_minmax),
 </ol>
 <p>This plot provides interesting information in terms of the similarity of any two players. In fact, you will see that players who fall close to the boundaries of clusters might be the ones that exhibit the gambling behavior of a couple of different clusters. After you produce your plot, try to determine which clusters seem to be the most "different." Also, try playing around with different projections of the data, such as PC3 vs. PC2, or PC3 vs. PC1, to see if you can find one that better differentiates the groups.</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Calculate the principal components of the standardized data
 my_pc <- as.data.frame(prcomp(bustabit_standardized[,-1])$x)
 
@@ -204,7 +204,7 @@ p1
 <p><strong><p style="color:#1b9e77">Risk Takers: </p></strong> These users have played only a couple games on average, but their average cashed out value is significantly higher than the other clusters, indicating that they tend to wait for the multiplier to increase to large values before cashing out.</p>
 <p><strong><p style="color:#e7298a">High Rollers:</p></strong> High bets are the name of the game for this group. They bet large sums of money in each game, although they tend to cash out at lower multipliers and thus play the game more conservatively, particularly compared to the Risk Takers. Interestingly, these users have also on average earned a net positive earnings from their games played.</p>
 
-```{r}
+```{r, collapse=TRUE}
 # Assign cluster names to clusters 1 through 5 in order
 cluster_names <- c(
     "Risky Commoners",
