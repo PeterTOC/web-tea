@@ -11,7 +11,7 @@ output:
     toc_depth: 2
 images: []
 summary: "In this article we take a look at how we can scrape raw information/data from websites without the hassle of copying and pasting and clicking and retyping whole data tables and ~then~ analysing your data."
-draft: false
+draft: true
 ---
 
 ```{r setup, include=FALSE}
@@ -104,7 +104,7 @@ status_code(response)
 
 <details>
 <summary>Click for Code</summary>
-```{r extraction,warning=FALSE,message=FALSE}
+```{r extraction,eval=FALSE,warning=FALSE,message=FALSE}
 #extractanycompanynames--------------------------------------------
 
 company<-html%>%
@@ -137,7 +137,7 @@ html_text()
 
 <details>
 <summary>Click for Code</summary>
-```{r dataframe}
+```{r dataframe, eval=FALSE}
 #creatingdataframeforanalysis-----------------------------------------
 gainers_losers<-data.frame(company=company,
 price=price,
@@ -152,7 +152,7 @@ change=change)
 
 <details>
 <summary>Click for Code</summary>
-```{r scrub}
+```{r scrub,  eval=FALSE}
 # clean data --------------------------------------------------------------
 gainers_losers$company = as.factor(gainers_losers$company)
 gainers_losers$price = as.numeric(gsub(",", "", gainers_losers$price))
@@ -178,7 +178,7 @@ datatable(gainers_losers)
 </details>
 
 
-```{r table, echo=FALSE}
+```{r table, echo=FALSE, eval=FALSE}
 datatable(gainers_losers)
 ```
 
@@ -219,7 +219,7 @@ ggplot(gainers_losers, aes(price, reorder(company,price))) +
 </details>
 
 
-```{r fig1, echo=FALSE}
+```{r fig1,  eval=FALSE,echo=FALSE}
 # visualization of the data -----------------------------------------------
 ggplot(gainers_losers, aes(price, reorder(company,price))) + 
   geom_segment(aes(yend = company), 
@@ -270,7 +270,7 @@ ggplot(gainers_losers, aes(as.factor(company), percent_change, fill = pos)) +
 
 
 
-```{r fig2, echo=FALSE}
+```{r fig2,  eval=FALSE,echo=FALSE}
 
 ggplot(gainers_losers, aes(as.factor(company), percent_change, fill = pos)) +
   geom_col(position = "identity", color = "black") +

@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 2
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"
-draft: false
+
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
@@ -140,7 +140,7 @@ plt_cum_confirmed_cases_china_vs_world</code></pre>
 Code
 </button>
 <pre class="r"><code>who_events &lt;- tribble(
-  ~ date, ~ event,
+  ~date, ~event,
   &quot;2020-01-30&quot;, &quot;Global health\nemergency declared&quot;,
   &quot;2020-03-11&quot;, &quot;Pandemic\ndeclared&quot;,
   &quot;2020-02-13&quot;, &quot;China reporting\nchange&quot;
@@ -150,7 +150,7 @@ Code
 # and text at date, labeled by event, and at 100000 on the y-axis
 plt_cum_confirmed_cases_china_vs_world +
   geom_vline(data = who_events, aes(xintercept = date), linetype = &quot;dashed&quot;) +
-  geom_text(data = who_events, aes(date, label = event),y = 1e5  )</code></pre>
+  geom_text(data = who_events, aes(date, label = event), y = 1e5)</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/significant%20events-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="adding-a-trend-line-to-china" class="section level2">
@@ -164,10 +164,10 @@ plt_cum_confirmed_cases_china_vs_world +
 <button type="button" class="btn btn-default">
 <pre class="r"><code># Filter for China, from Feb 15
 china_after_feb15 &lt;- confirmed_cases_china_vs_world %&gt;%
- filter(is_china == &quot;China&quot;, date &gt;= &quot;2020-02-15&quot;)
+  filter(is_china == &quot;China&quot;, date &gt;= &quot;2020-02-15&quot;)
 # Using china_after_feb15, draw a line plot cum_cases vs. date
 # Add a smooth trend line using linear regression, no error bars
-ggplot(china_after_feb15, aes(date,cum_cases)) +
+ggplot(china_after_feb15, aes(date, cum_cases)) +
   geom_line() +
   geom_smooth(method = &quot;lm&quot;, se = FALSE) +
   ylab(&quot;Cumulative confirmed cases&quot;)</code></pre>
@@ -183,15 +183,15 @@ ggplot(china_after_feb15, aes(date,cum_cases)) +
 <p>How does the rest of the world compare to linear growth?</p>
 </p>
 <pre class="r"><code># Filter confirmed_cases_china_vs_world for not China
-not_china &lt;-  confirmed_cases_china_vs_world %&gt;% filter(is_china == &quot;Not China&quot;)
+not_china &lt;- confirmed_cases_china_vs_world %&gt;% filter(is_china == &quot;Not China&quot;)
 # Using not_china, draw a line plot cum_cases vs. date
 # Add a smooth trend line using linear regression, no error bars
-plt_not_china_trend_lin &lt;- ggplot(not_china, aes(date,cum_cases)) +
+plt_not_china_trend_lin &lt;- ggplot(not_china, aes(date, cum_cases)) +
   geom_line() +
-  geom_smooth(method = &quot;lm&quot;,se = FALSE) +
+  geom_smooth(method = &quot;lm&quot;, se = FALSE) +
   ylab(&quot;Cumulative confirmed cases&quot;)
 # See the result
-plt_not_china_trend_lin </code></pre>
+plt_not_china_trend_lin</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="adding-a-logarithmic-scale" class="section level2">
@@ -201,7 +201,7 @@ plt_not_china_trend_lin </code></pre>
 </p>
 <div class="fold s">
 <pre class="r"><code># Modify the plot to use a logarithmic scale on the y-axis
-plt_not_china_trend_lin + 
+plt_not_china_trend_lin +
   scale_y_log10()</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
@@ -226,8 +226,8 @@ glimpse(confirmed_cases_by_country)
 ## $ cum_cases &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
 # Group by country, summarize to calculate total cases, find the top 7
 top_countries_by_total_cases &lt;- confirmed_cases_by_country %&gt;%
-  group_by(country)  %&gt;% 
-  summarize(total_cases = max(cum_cases))  %&gt;% 
+  group_by(country) %&gt;%
+  summarize(total_cases = max(cum_cases)) %&gt;%
   top_n(10)
 # See the result
 datatable(top_countries_by_total_cases)</code></pre>
@@ -254,8 +254,8 @@ glimpse(confirmed_cases_top7_outside_china)
 ## $ cum_cases &lt;dbl&gt; 16, 0, 3, 31, 2, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,…
 # Using confirmed_cases_top7_outside_china, draw a line plot of
 # cum_cases vs. date, colored by country
-ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country))+
-    geom_line()</code></pre>
+ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country)) +
+  geom_line()</code></pre>
 <p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>

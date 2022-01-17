@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 2
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"
-draft: false
+
 ---
 
 ```{r setup, include=FALSE}
@@ -66,7 +66,7 @@ library(dplyr)
 library(knitr)
 library(DT)
 # Read datasets/confirmed_cases_worldwide.csv into confirmed_cases_worldwide
-confirmed_cases_worldwide <- read_csv("~/Portfolio/web-tea/content/post/2020-09-18-covid-outbreak-analysis2-rmd/datasets/confirmed_cases_worldwide.csv")
+confirmed_cases_worldwide <- read_csv("~/Portfolio/web-tea/content/post/2021-09-18-covid-outbreak-analysis2-rmd/datasets/confirmed_cases_worldwide.csv")
 datatable(confirmed_cases_worldwide)
 ```
 </div>

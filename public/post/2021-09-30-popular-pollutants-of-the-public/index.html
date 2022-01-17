@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>
+  
+     Popular Pollutants of The Public 🚮 | 
+    Peter Boshe
+  
+</title><meta name="description" content="Analysis on data collected from plastic bottles barcodes"><meta name="author" content="Peter Boshe">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/favicon-32x32.png " sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0c344b">
+<link rel="icon" href="/favicon.ico">
+
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css">
+    
+
+
+
+    
+        
+            <link rel="stylesheet" href="/dist/main.37ab3f61b95417873748.min.css">
+        
+    
+
+
+<link rel="stylesheet" href="/css/style1.css">
+
+
+<link rel="canonical" href="/post/2021-09-30-popular-pollutants-of-the-public/"><meta property="og:title" content="Popular Pollutants of The Public 🚮" />
+<meta property="og:description" content="Analysis on data collected from plastic bottles barcodes" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2021-09-30-popular-pollutants-of-the-public/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-30T00:00:00+00:00" />
+
+<meta itemprop="name" content="Popular Pollutants of The Public 🚮">
+<meta itemprop="description" content="Analysis on data collected from plastic bottles barcodes"><meta itemprop="datePublished" content="2021-09-30T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-09-30T00:00:00+00:00" />
+<meta itemprop="wordCount" content="473">
+<meta itemprop="keywords" content="DataViz,Unguided Project,E.D.A," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Popular Pollutants of The Public 🚮"/>
+<meta name="twitter:description" content="Analysis on data collected from plastic bottles barcodes"/>
+
+</head>
+<body>
+    
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm" id="navbar-main-menu">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" href="/">Peter Boshe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="navbar-nav ml-auto">
+                
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                
+                    <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    
+<main class="content-page container pt-7 pb-5">
+    
+    <div class="row">
+        <div class="col">
+            <article>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="meta text-muted mb-3">
+                            <p class="created text-muted text-uppercase font-weight-bold mb-1">September 30, 2021</p>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>473 words</span>
+                            <span><i class="fas fa-clock mr-2"></i>3 mins read</span>
+                        </div>
+
+                        <h1>Popular Pollutants of The Public 🚮</h1>
+
+                        
+                    </div>
+                </div><div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="content">
+                            
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/header-attrs/header-attrs.js"></script>
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/htmlwidgets/htmlwidgets.js"></script>
+<link href="/post/2021-09-30-popular-pollutants-of-the-public/index_files/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/datatables-binding/datatables.js"></script>
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/jquery/jquery-3.6.0.min.js"></script>
+<link href="/post/2021-09-30-popular-pollutants-of-the-public/index_files/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/post/2021-09-30-popular-pollutants-of-the-public/index_files/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/post/2021-09-30-popular-pollutants-of-the-public/index_files/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/crosstalk/js/crosstalk.min.js"></script>
+<link href="/post/2021-09-30-popular-pollutants-of-the-public/index_files/wordcloud2/wordcloud.css" rel="stylesheet" />
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/wordcloud2/wordcloud2-all.js"></script>
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/wordcloud2/hover.js"></script>
+<script src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/wordcloud2-binding/wordcloud2.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#setting-the-environment">setting the environment</a></li>
+<li><a href="#pre-processing-cleaning-our-dataset">pre-processing &amp; cleaning our dataset</a></li>
+<li><a href="#clean-our-environment">clean our environment</a></li>
+</ul>
+</div>
+
+<p>The data was collected by <a href="https://www.unwaste.io/partners">Wastebase’s Data Partner</a> by methods decribed on this <a href="https://www.kaggle.com/wastebase/plastic-bottle-waste">source page</a></p>
+<div id="setting-the-environment" class="section level2">
+<h2>setting the environment</h2>
+</div>
+<div id="pre-processing-cleaning-our-dataset" class="section level2">
+<h2>pre-processing &amp; cleaning our dataset</h2>
+<pre><code>## We are left with the columns; batch, brand_name, manufacturer_name, manufacturer_country, scan_country, amount, units, and bottle_count</code></pre>
+</div>
+<div id="clean-our-environment" class="section level2">
+<h2>clean our environment</h2>
+<div id="total-bottles-per-country" class="section level3">
+<h3>Total bottles per country</h3>
+<pre><code>## # A tibble: 11 × 2
+##    scan_country total_bottles
+##    &lt;fct&gt;                &lt;dbl&gt;
+##  1 MZ                  235985
+##  2 TZ                   38587
+##  3 KE                   13627
+##  4 ZM                    3801
+##  5 GB                    1652
+##  6 MW                    1456
+##  7 ES                      61
+##  8 ZA                      34
+##  9 UG                      23
+## 10 CH                       7
+## 11 FR                       6</code></pre>
+<ul>
+<li>From the entire dataset we see that my beautiful country comes in second while</li>
+<li>Mozambique holds the lead with more than 200,000 bottles scanned.</li>
+</ul>
+</div>
+<div id="table-of-the-top-20-manufacterers" class="section level3">
+<h3>Table of the top 20 manufacterers</h3>
+<pre><code>## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.</code></pre>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["METL Group","BAKHRESA GROUP DIVISIONS","Coca-Cola","Watercom (T) Ltd","Hill Group","Prime Care Distilleries Ltd","UNKNOWN_ORG","Motisun Group","Pepsico, Inc","Kibo Breweries Ltd","HAKIKA BREWERIES LIMITED","Dew Drop Drinks Co.Ltd","Mega Beverages Company Co Ltd.","Canada Pure Water Company Ltd","Sayona Drink Limited","Tanzania Breweries Limited","Anheuser-Busch InBev","Savannah Cider","AXCL GULF FZC","Heineken N.V."],["TZ","TZ","US","TZ","TZ","TZ","UK","TZ","US","TZ","TZ","TZ","TZ","TZ","TZ","TZ","BE","ZA","AE","NL"],[9897,8221,3495,3136,2083,1930,1613,1192,1094,873,795,694,499,493,413,377,250,211,162,146]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer_name<\/th>\n      <th>manufacturer_country<\/th>\n      <th>total_bottles<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<ul>
+<li>From the table above we can see that it is a two-horse race on the beverage heavy weights, METL and BAHKHRESA,
+lets visualize the contrast between the numbers</li>
+</ul>
+</div>
+<div id="chart-of-the-top-20-manufacterers" class="section level3">
+<h3>Chart of the top 20 manufacterers</h3>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/figure-html/distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="top-10-reoccurring-brands" class="section level3">
+<h3>Top 10 reoccurring brands</h3>
+<pre><code>## # A tibble: 10 × 2
+##    manufacturer_country total_bottles
+##    &lt;fct&gt;                        &lt;dbl&gt;
+##  1 TZ                           30928
+##  2 US                            4616
+##  3 UK                            1613
+##  4 ZA                             267
+##  5 BE                             250
+##  6 AE                             162
+##  7 KE                             158
+##  8 NL                             146
+##  9 MZ                             130
+## 10 MT                              90
+## # A tibble: 93 × 2
+##    brand_name       total
+##    &lt;fct&gt;            &lt;dbl&gt;
+##  1 Mo                9019
+##  2 Azam              4291
+##  3 Uhai              3930
+##  4 Afya              3106
+##  5 Leader&#39;s Ananasi  2090
+##  6 Hill Water        2083
+##  7 Sayona            1192
+##  8 Pepsi             1038
+##  9 Kilimanjaro        957
+## 10 Double Kick        873
+## # … with 83 more rows</code></pre>
+</div>
+<div id="distribution-of-container-size" class="section level3">
+<h3>distribution of container size</h3>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/figure-html/container_size_distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="creating-word-cloud-with-brand-names" class="section level3">
+<h3>creating word cloud with brand names</h3>
+<div id="htmlwidget-2" style="width:672px;height:480px;" class="wordcloud2 html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"word":["Azam","Afya","Mo","Coca-Cola","Sayona","Fanta","Uhai","Hill Water","Kilimanjaro","Malt drink","Sprite","K-Vant","Pepsi","Dew Drop","Krest","Listerine","Minute Maid","Dettol","Drop of Zanzibar","Dasani","Sayona Twist","Castle Lite","Masafi","Super Burudani","Fizz","Asas Diaries","Biowash","Canadian Drinking Water","Cantu","cotanak","Flamingo","Furaha","gold emblem","industria Quimica","Mega We care","Milk Com","Parachute","Pera fresh produce of Tanzania","Sierra de los Padres","Simba Table Vinegar","Solaray Dietary supplement","Sundrop","Vim","vitamic c","Zan Aqua","U-Fresh","Boncabe Original","Desperados Original Tequila","Diana Lotion","Double Kick","Fitch and leedes","Heineken","Jembe","Leader's Ananasi","Lucozade","Pangani","Red Bull","Redd's","Safari","Savanna","smart gin","Tropical Heat","Valeur","Windhoek","Bio-D","Fitch and Leedes GINGER ALE","Maisha","Mirinda","Nutra Shine Professional","POWER TANGAWIZI","Precious","Schweppes","SeQua","SOY SAUCE","TOMATO SAUCE","Uhuru Peak","VESTLINE","Dabaga Vegetable & Fruits Canning","Mango Crush","ManziValley","Mo Portello","Novida","Pawa Plus","Red Gold","Toss","Afia","Juicy Ginger","Oryx Energies","Safi","Yasaki","drinking water","TOSS","valley"],"freq":[92,82,65,54,42,38,37,35,30,29,22,21,19,18,18,18,18,16,16,15,15,14,11,11,10,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,8,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,3,3,3,3,3,2,1,1],"fontFamily":"Segoe UI","fontWeight":"bold","color":"random-dark","minSize":0,"weightFactor":1.95652173913043,"backgroundColor":"white","gridSize":0,"minRotation":-0.196349540849362,"maxRotation":-0.196349540849362,"shuffle":true,"rotateRatio":0.4,"shape":"triangle","ellipticity":0.9,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+<ul>
+<li><p>inspecting the general trends for the bottle count per nation</p></li>
+<li><p>relevelling the batch column</p></li>
+</ul>
+</div>
+<div id="line-chart-for-monthly-trends-per-country" class="section level3">
+<h3>line chart for monthly trends per country</h3>
+<pre><code>## `summarise()` has grouped output by &#39;scan_country&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="/post/2021-09-30-popular-pollutants-of-the-public/index_files/figure-html/trend_per_nation-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+                        </div><div class="tags my-3"><a class="badge badge-pill badge-light border mr-2" href="/tags/dataviz">
+                                    <i class="fas fa-tag mr-2"></i>DataViz
+                                </a><a class="badge badge-pill badge-light border mr-2" href="/tags/unguided-project">
+                                    <i class="fas fa-tag mr-2"></i>Unguided Project
+                                </a><a class="badge badge-pill badge-light border mr-2" href="/tags/e.d.a">
+                                    <i class="fas fa-tag mr-2"></i>E.D.A
+                                </a></div><ul class="share nav my-3 justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://twitter.com/intent/tweet?url=%2fpost%2f2021-09-30-popular-pollutants-of-the-public%2f&text=Popular%20Pollutants%20of%20The%20Public%20%f0%9f%9a%ae">
+              <i class="fa-fw fab fa-twitter"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.linkedin.com/shareArticle?url=%2fpost%2f2021-09-30-popular-pollutants-of-the-public%2f&title=Popular%20Pollutants%20of%20The%20Public%20%f0%9f%9a%ae">
+                <i class="fa-fw fab fa-linkedin-in"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.facebook.com/sharer.php?u=%2fpost%2f2021-09-30-popular-pollutants-of-the-public%2f&t=Popular%20Pollutants%20of%20The%20Public%20%f0%9f%9a%ae">
+                <i class="fa-fw fab fa-facebook-f"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://reddit.com/submit?url=%2fpost%2f2021-09-30-popular-pollutants-of-the-public%2f&title=Popular%20Pollutants%20of%20The%20Public%20%f0%9f%9a%ae">
+                <i class="fa-fw fab fa-reddit-alien"></i>
+            </a>
+        </li>
+    </nav>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                    </div>
+                </div><div class="row justify-content-center my-3">
+                    <div class="col-lg-8">
+                        <div id="commento"></div>
+                        <script src="https://commento.io"></script>
+                    </div>
+                </div></article>
+        </div>
+    </div>
+
+    <div class="related-content row mt-5 row-cols-1 row-cols-lg-3"><div class="col mb-3">
+                <div class="card h-100">
+    
+    <a href="/post/2021-09-18-covid-outbreak-analysis2-rmd/" class="d-block"><div class="card-body">
+            <h4 class="card-title">COVID-19 Outbreak Analysis</h4>
+            <p class="card-text text-muted text-uppercase">September 18, 2021</p>
+            <div class="card-text">
+                This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak
+            </div>
+        </div>
+    </a>
+</div>
+
+            </div><div class="col mb-3">
+                <div class="card h-100">
+    
+    <a href="/post/2020-12-01-visualization-case-study-selection/" class="d-block"><div class="card-body">
+            <h4 class="card-title">Visualization - Case Study Selection</h4>
+            <p class="card-text text-muted text-uppercase">May 1, 2021</p>
+            <div class="card-text">
+                This project includes charts that were used in a research paper on ‘Data Protection Regulation in Africa’
+            </div>
+        </div>
+    </a>
+</div>
+
+            </div></div>
+</main>
+
+
+    <footer class="footer text-center bg-dark py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="/index.xml" rel="alternate" type="application/rss+xml" class="icons d-block">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a></li><li class="list-inline-item">
+                        <a href="mailto:peterboshe@gmail.com" class="icons d-block">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li><li class="list-inline-item">
+                            <a href="https://github.com/PeterTOC" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/peterboshe/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.reddit.com/user/Traditional_Net9757/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-reddit fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://stackoverflow.com/users/15254380/peter" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.upwork.com/freelancers/~01ccb5205045cae5f6" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-upwork fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                </ul>
+
+                <p class="text-muted">
+                    
+                        Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.
+                    
+                </p>
+
+                <p class="text-muted">
+                Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with <a href="https://github.com/puresyntax71/hugo-theme-chunky-poster" target="_blank">Chunky Poster</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        
+            <script src="/dist/main.d608eadfe5ac0688902e.min.js"></script>
+        
+    
+
+
+
+<script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+
+<script src="/js/web-tea/themes/hugo-theme-chunky-poster/src/main.js"></script>
+
+
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-XXXX', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+</html>

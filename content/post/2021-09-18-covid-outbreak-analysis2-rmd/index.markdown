@@ -13,7 +13,6 @@ output:
       collapsed: false
       smooth_scroll: true
 summary: "This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak"
-draft: true
 ---
 
 

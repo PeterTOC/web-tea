@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>
+  
+     Dealing with missing data in R; Best Practices | 
+    Peter Boshe
+  
+</title><meta name="description" content="This is my Data Science Portfolio, &lt;br&gt; Look around."><meta name="author" content="Peter Boshe">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/favicon-32x32.png " sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0c344b">
+<link rel="icon" href="/favicon.ico">
+
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css">
+    
+
+
+
+    
+        
+            <link rel="stylesheet" href="/dist/main.37ab3f61b95417873748.min.css">
+        
+    
+
+
+<link rel="stylesheet" href="/css/style1.css">
+
+
+<link rel="canonical" href="/post/2021-09-25-data-cleaning-best-practices-rmd/"><meta property="og:title" content="Dealing with missing data in R; Best Practices" />
+<meta property="og:description" content="This is a living document where I will be compiling what I consider best practices when it comes to dealing with misssing data. The idea is to prepare an optimized checklist" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2021-09-25-data-cleaning-best-practices-rmd/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-09-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-25T00:00:00+00:00" />
+
+<meta itemprop="name" content="Dealing with missing data in R; Best Practices">
+<meta itemprop="description" content="This is a living document where I will be compiling what I consider best practices when it comes to dealing with misssing data. The idea is to prepare an optimized checklist"><meta itemprop="datePublished" content="2021-09-25T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-09-25T00:00:00+00:00" />
+<meta itemprop="wordCount" content="1152">
+<meta itemprop="keywords" content="Guide," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Dealing with missing data in R; Best Practices"/>
+<meta name="twitter:description" content="This is a living document where I will be compiling what I consider best practices when it comes to dealing with misssing data. The idea is to prepare an optimized checklist"/>
+
+</head>
+<body>
+    
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm" id="navbar-main-menu">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" href="/">Peter Boshe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="navbar-nav ml-auto">
+                
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                
+                    <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    
+<main class="content-page container pt-7 pb-5">
+    
+    <div class="row">
+        <div class="col">
+            <article>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="meta text-muted mb-3">
+                            <p class="created text-muted text-uppercase font-weight-bold mb-1">September 25, 2021</p>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>1152 words</span>
+                            <span><i class="fas fa-clock mr-2"></i>6 mins read</span>
+                        </div>
+
+                        <h1>Dealing with missing data in R; Best Practices</h1>
+
+                        
+                    </div>
+                </div><div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="content">
+                            <h2 id="dealing-with-missing-values-">Dealing with missing values 🔍</h2>
+<ul>
+<li><code>any_na()</code> returns TRUE if any value is missing</li>
+<li><code>are_na()</code> returns a logical vector indicating missing values</li>
+<li><code>n_miss()</code> returns number of missing values</li>
+<li><code>prop_miss()</code> returns the proportion of the missing values</li>
+<li><code>prop_complete()</code> returns the proportion of the complete values</li>
+<li><code>pct_miss()</code> returns the percentage of missing values</li>
+<li><code>n_complete</code> returns the number of complete values</li>
+</ul>
+<p>Note: -NULL,NaN and Inf values are not detected by these methods, only NA</p>
+<ul>
+<li>NA | TRUE = TRUE</li>
+<li>NA | FALSE = NA</li>
+<li>NaN + NA = NaN</li>
+<li>NA + NA = NA</li>
+<li>NA + 1 = NA</li>
+</ul>
+<p><code>naniar</code> package holds functions to help us create dataframe summaries of the missing data</p>
+<ul>
+<li><code>miss_case_summary</code>, each case represents a row in a dataframe</li>
+<li><code>miss_var_summary</code> , each var represents a column, they work well with dplyrs
+<code>group_by()</code> function if you want to assess different groups in particular.</li>
+<li><code>miss_var_table</code></li>
+<li><code>miss_case_table</code></li>
+<li><code>miss_var_span</code> , helpful to segment the missing data summaries in regular interval
+spans in time-series data for instance where you might want to compare the data
+collection effeciency with respect to time span.</li>
+<li><code>miss_var_run</code>, returns the &ldquo;runs&rdquo;/&ldquo;streaks&rdquo; of missingness, particularly useful when
+trying to find repeated patterns of missing data. also can be paired well with dplyr&rsquo;s
+<code>group_by()</code> function</li>
+<li><code>miss_scan_count</code>, used for searching for oddly named missing values e.g. &ldquo;N/A&rdquo;, &ldquo;&rdquo;,
+&ldquo;NOT AVAILABLE&rdquo;&hellip; etc, then accompanied by a</li>
+<li><code>replace_with_na()</code>, <code>replace_with_na_at()</code>, <code>replace_with_na_if()</code>,</li>
+<li><code>replace_with_na_all()</code> functions to have all NAs &lsquo;uniform&rsquo;.</li>
+</ul>
+<h3 id="visualization">Visualization</h3>
+<ul>
+<li><code>vis_miss</code> from <code>visdat</code> package for an overview</li>
+<li><code>gg_miss_var</code> can be faceted by one variable</li>
+<li><code>gg_miss_case</code>, order can be turned off by <code>order_cases = FALSE</code> argument, can be
+faceted by one variable</li>
+<li><code>gg_miss_fct</code>, can&rsquo;t be faceted, show trend of missing with factors</li>
+<li><code>gg_miss_run</code></li>
+<li><code>gg_miss_upset</code> , vital in showing the number of</li>
+<li>combinations of missing values that co-occur</li>
+<li><code>gg_miss_span</code> , supports faceting</li>
+</ul>
+<h2 id="how-to-handle-implicitly-missing-data">How to handle Implicitly missing data</h2>
+<p>Here we are dealing with missing data that is missing in the data (confusing, right?), in
+other words, it turns the implicit missing variables into explicit missing variables. use
+<code>tidyr</code>s <code>complete()</code> function, with the columns you want unique combinations of.</p>
+<pre><code class="language-{r">
+data %&gt;% 
+tidyr::complete(col1,col2)
+
+</code></pre>
+<ul>
+<li>another important function is the <code>fill()</code>, also from the <code>tidyr</code> package. last
+observation carried forward (LOCF).</li>
+</ul>
+<h2 id="missing-dependancies">Missing Dependancies</h2>
+<ol>
+<li>
+<p><strong>MCAR</strong> (Missing Completely at Random) ~the nissing data is &lsquo;randomly consistent&rsquo; or
+&lsquo;consistently random&rsquo; and you cant describe its trend or cause -Imputation is
+advisable -Deleting missing observation may affect the sample size but will not
+introduce bias, usually only when less than &lt; 5% of data is missing</p>
+</li>
+<li>
+<p><strong>MAR</strong> (Missing At Random) ~you can explain trends of the missing data usually
+explained by a trend of another variable -Imputation needs to be performed carefully
+-Deleting missing observations not advisable as it will lead or contribute to bias in
+your data, there&rsquo;s a insight in the missing variablees hence safer to impute.</p>
+</li>
+<li>
+<p><strong>MNAR</strong> (Missing Not At Random) ~you know why your data is missing and usually
+depends on the the value of the missing variable, which makes this case complicated, a
+catch 22, if you will -Data will be biased from both deletion and imptutation
+-Inference can be limited, proceed with caution</p>
+</li>
+</ol>
+<h3 id="visualization-1">Visualization</h3>
+<ul>
+<li>
+<p>using the function <code>shadow-bind()</code> we are able to create a nabular(NA + tabular)
+dataframe that is essential to spot trends associated with missing data, which can be
+combined with <code>dplyr()</code> functions to create powerful summaries</p>
+</li>
+<li>
+<p>another important tool for visualizing the Missing dependancies is the
+<code>geom_miss_point()</code> geom from <code>ggplot2</code>, note that this method does an imputation in
+the background where it imputes the data 10% below minimum value</p>
+</li>
+<li>
+<p>these two methods can be combined to bring fourth even more insight!!!</p>
+</li>
+</ul>
+<h2 id="imputing-data-workflow">Imputing data workflow</h2>
+<p>Just as imputing missing values is to our analysis, we need to also keep track of the
+values that we have imputed, For this we will make use of the same <code>naniar</code> package that
+we have utilized so far, we would also make use of the <code>dplyr</code> package to make statement
+like</p>
+<pre><code class="language-{r">`bind_shadow(data, only_miss = TRUE) %&gt;% 
+impute_below_all() %&gt;% 
+add_label_shadow()`
+
+</code></pre>
+<p>to create a data frame of imputed values below the variable range and mark each imputed
+value in a subsequent identifier column</p>
+<p>we can also make use of histograms from the <code>ggplot2</code> package to analyse the distribution
+of missingness across each variable.</p>
+<h4 id="things-to-keep-track-of">Things to keep track of</h4>
+<ul>
+<li>mean</li>
+<li>median (boxplots)</li>
+<li>spread (scatterplots)</li>
+</ul>
+<p>NOTE: when we want to explore the missingness of more than two variables we would first
+need to perform some data wrangling and reformat our data table into a longer version with
+variables as values(gather/pivot_longer), this can be assisted with <code>naniar</code>s function
+<code>shadow_long()</code> then combined with a histogram of the variable values grouped by their
+missingness with a code similar to</p>
+<pre><code class="language-{r">ggplot(data, aes(x = value, fill = value_NA)) + 
+geom_histogram() + 
+facet_wrap(~variable)`
+
+
+</code></pre>
+<h2 id="performing-imputations">Performing imputations</h2>
+<p>Imputing the mean of the present variable is a common bad practise. As this artificially
+increases the mean of your dataset and decreases the variance. And more likely than not,
+the imputed values will not follow the pattern of the underlying data just similarily as
+using the mean average of your data to predict future values.</p>
+<p>We could use the same methods we use in creating models for prediction to fill in our
+missing data. for instance the package <code>simputations</code> helps access various models for
+imputation like the function <code>impute_lm()</code>would impute the missing values using a linear
+model. inside this function we would specify the variable we would like to impute,</p>
+<p>(var1) mapped against the variables we would like to inform the imputations (var2),
+(var3), (var4) in the following form <code>var(1) ~ var(2) + var(3) + var(4)</code></p>
+<p>-The point outlined above subjects our data with variations of alternatives into building
+our imputation model, as one may choose to define their model with 2 variables while on
+might decide to use all four,So it would be wise to test the variations out and evaluate
+the performance by seeing which model alters mean, median and spread the least and that
+would be the model you implement. this can be done using the <code>bind_rows()</code> from <code>dplyr</code>
+and comparing them with scatter plots</p>
+<p>following is an example of what a plot of imputation comparisons would look like,</p>
+<center>
+<p><img src="download.png" alt="comparison of different imputational methods"></p>
+</center>
+<h3 id="imputation-model-comparisons">Imputation model comparisons</h3>
+<p>to compare imputation models it is more practical to create the different sets of data
+derived from different imputation models (including one version of the data with all the
+missing values removed), creating linear models on the different set of data and
+evaluating the how those models behave and pick the model you believe best represents your
+data by exploring the coeffecients.</p>
+<p>The process in R would look something like</p>
+<pre><code class="language-{r">
+bound_models &lt;- bind_rows(imp_model1 = imp_model1,
+                          imp_model2 = imp_model2,
+                          imp_model3 = imp_model3,
+                          .id = &quot;imp_model&quot;)
+
+</code></pre>
+<pre><code class="language-{r}">
+model_summary &lt;- bound_models %&gt;% 
+  group_by(imp_model) %&gt;%
+  nest() %&gt;%
+  mutate(mod = map(data, ~lm(var(1) ~ var(2) + var(3) + var(4), data = .)),
+         res = map(mod, residuals),
+         pred = map(mod, predict),
+         tidy = map(mod, broom::tidy))
+
+</code></pre>
+<pre><code class="language-{r">
+ # Explore the coefficients in the model and select best model
+model_summary %&gt;% 
+	select(imp_model ,tidy) %&gt;% 
+	unnest() `
+
+
+</code></pre>
+
+                        </div><div class="tags my-3"><a class="badge badge-pill badge-light border mr-2" href="/tags/guide">
+                                    <i class="fas fa-tag mr-2"></i>Guide
+                                </a></div><ul class="share nav my-3 justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://twitter.com/intent/tweet?url=%2fpost%2f2021-09-25-data-cleaning-best-practices-rmd%2f&text=Dealing%20with%20missing%20data%20in%20R%3b%20Best%20Practices">
+              <i class="fa-fw fab fa-twitter"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.linkedin.com/shareArticle?url=%2fpost%2f2021-09-25-data-cleaning-best-practices-rmd%2f&title=Dealing%20with%20missing%20data%20in%20R%3b%20Best%20Practices">
+                <i class="fa-fw fab fa-linkedin-in"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.facebook.com/sharer.php?u=%2fpost%2f2021-09-25-data-cleaning-best-practices-rmd%2f&t=Dealing%20with%20missing%20data%20in%20R%3b%20Best%20Practices">
+                <i class="fa-fw fab fa-facebook-f"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://reddit.com/submit?url=%2fpost%2f2021-09-25-data-cleaning-best-practices-rmd%2f&title=Dealing%20with%20missing%20data%20in%20R%3b%20Best%20Practices">
+                <i class="fa-fw fab fa-reddit-alien"></i>
+            </a>
+        </li>
+    </nav>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                    </div>
+                </div><div class="row justify-content-center my-3">
+                    <div class="col-lg-8">
+                        <div id="commento"></div>
+                        <script src="https://commento.io"></script>
+                    </div>
+                </div></article>
+        </div>
+    </div>
+
+    
+</main>
+
+
+    <footer class="footer text-center bg-dark py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="/index.xml" rel="alternate" type="application/rss+xml" class="icons d-block">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a></li><li class="list-inline-item">
+                        <a href="mailto:peterboshe@gmail.com" class="icons d-block">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li><li class="list-inline-item">
+                            <a href="https://github.com/PeterTOC" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/peterboshe/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.reddit.com/user/Traditional_Net9757/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-reddit fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://stackoverflow.com/users/15254380/peter" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.upwork.com/freelancers/~01ccb5205045cae5f6" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-upwork fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                </ul>
+
+                <p class="text-muted">
+                    
+                        Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.
+                    
+                </p>
+
+                <p class="text-muted">
+                Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with <a href="https://github.com/puresyntax71/hugo-theme-chunky-poster" target="_blank">Chunky Poster</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        
+            <script src="/dist/main.d608eadfe5ac0688902e.min.js"></script>
+        
+    
+
+
+
+<script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+
+<script src="/js/web-tea/themes/hugo-theme-chunky-poster/src/main.js"></script>
+
+
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-XXXX', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+</body>
+</html>

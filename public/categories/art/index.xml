@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Art on Peter Boshe</title>
+    <link>/categories/art/</link>
+    <description>Recent content in Art on Peter Boshe</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 04 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/art/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RArt; plotting flowers with the golden ratio and R 👩‍🎨</title>
+      <link>/post/flowers/notebook/</link>
+      <pubDate>Sat, 04 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/flowers/notebook/</guid>
+      <description>&amp;ldquo;The scientist does not study nature because it is useful; he studies it because he delights in it, and he delights in it because it is beautiful.&amp;quot;-(Henri Poincaré)</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,5 +1,5 @@
 ---
-title: 'Tanzania Mainland Football Championships: 1965 - 2020'
+title: Tanzania Mainland Football Championships; 1965 - 2020 ⚽
 author: 'Peter Boshe'
 date: '2021-10-19'
 categories: ["Sports"]
@@ -10,7 +10,7 @@ output:
     toc_depth: 2
 images: []
 summary: "This is a racing bar chart of the male football championships and the respective teams that have won over the past half century"
-draft: true
+draft: false
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
@@ -18,13 +18,13 @@ draft: true
 <div id="TOC">
 <ul>
 <li><a href="#setting-up-the-environment">setting up the environment</a></li>
-<li><a href="#inspecting-the-dataset">inspecting the dataset</a></li>
-<li><a href="#create-the-racing-bar-chart">create the racing bar chart</a></li>
+<li><a href="#pre-processing">pre-processing</a></li>
+<li><a href="#make-gif">Make Gif</a></li>
 </ul>
 </div>
 
 <p>This is a racing bar chart of the championships and the respective teams that have won over the past half century(acc. to <a href="http://www.rsssf.com/tablest/tanzchamp.html">Data</a>),</p>
-<p>Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup?</p>
+<p>Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup? 🙀</p>
 <div id="setting-up-the-environment" class="section level2">
 <h2>setting up the environment</h2>
 <pre class="r"><code># clear environment 
@@ -35,189 +35,89 @@ library(readxl)
 library(tidyverse)
 library(gganimate)
 library(lubridate)
+library(gifski)
+library(png)
+library(knitr)
 
 # loading data 
 df &lt;- read_excel(&quot;Tanzania mainland championships.xlsx&quot;)</code></pre>
 </div>
-<div id="inspecting-the-dataset" class="section level2">
-<h2>inspecting the dataset</h2>
-<pre class="r"><code>skimr::skim(df)</code></pre>
-<table>
-<caption><span id="tab:inspection">Table 1: </span>Data summary</caption>
-<tbody>
-<tr class="odd">
-<td align="left">Name</td>
-<td align="left">df</td>
-</tr>
-<tr class="even">
-<td align="left">Number of rows</td>
-<td align="left">56</td>
-</tr>
-<tr class="odd">
-<td align="left">Number of columns</td>
-<td align="left">2</td>
-</tr>
-<tr class="even">
-<td align="left">_______________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Column type frequency:</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">character</td>
-<td align="left">1</td>
-</tr>
-<tr class="odd">
-<td align="left">numeric</td>
-<td align="left">1</td>
-</tr>
-<tr class="even">
-<td align="left">________________________</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">Group variables</td>
-<td align="left">None</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: character</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">min</th>
-<th align="right">max</th>
-<th align="right">empty</th>
-<th align="right">n_unique</th>
-<th align="right">whitespace</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Team</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">7</td>
-<td align="right">17</td>
-<td align="right">0</td>
-<td align="right">9</td>
-<td align="right">0</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Variable type: numeric</strong></p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">skim_variable</th>
-<th align="right">n_missing</th>
-<th align="right">complete_rate</th>
-<th align="right">mean</th>
-<th align="right">sd</th>
-<th align="right">p0</th>
-<th align="right">p25</th>
-<th align="right">p50</th>
-<th align="right">p75</th>
-<th align="right">p100</th>
-<th align="left">hist</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">Year</td>
-<td align="right">0</td>
-<td align="right">1</td>
-<td align="right">1992.5</td>
-<td align="right">16.31</td>
-<td align="right">1965</td>
-<td align="right">1978.75</td>
-<td align="right">1992.5</td>
-<td align="right">2006.25</td>
-<td align="right">2020</td>
-<td align="left">▇▇▇▇▇</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="create-the-racing-bar-chart" class="section level2">
-<h2>create the racing bar chart</h2>
-<p>Note: data with incomplete detail was removed</p>
-<pre class="r"><code>data_df &lt;- df %&gt;% 
-  select(Team, Year) %&gt;% 
+<div id="pre-processing" class="section level2">
+<h2>pre-processing</h2>
+<pre class="r"><code>df2 &lt;- df %&gt;% 
+  mutate(Cup = 1) %&gt;% 
+  complete(Team, Year) %&gt;% 
+  replace_na(list(Cup = 0)) %&gt;%  
   group_by(Team) %&gt;% 
-  mutate(cups = 1:n())  %&gt;% 
-  # mutate(rank = 1:n())  %&gt;% 
-  # pivot_wider(names_from = &quot;Year&quot;, values_from = &quot;cups&quot;) %&gt;% 
-  # pivot
-  ungroup() %&gt;% 
+  mutate(count = cumsum(Cup))
+  </code></pre>
+<pre class="r"><code>df2 %&gt;% 
   group_by(Year) %&gt;% 
-  arrange(-cups) %&gt;% 
-  ggplot(aes(x = cups, y = Team, group = Team,
-             fill = as.factor(Team))) +
-  geom_col() +
-  # geom_rect(aes(xmin = 0, 
-  #               xmax = cups,
-  #               ymin = Team[cups &gt; 0] ,
-  #               ymax = Team[cups &gt; 0],
-  #               y = Team[cups &gt; 0]))+
-  facet_wrap(~ Year) +
-  scale_x_continuous(limits = c(0,30),
-                     breaks = 1:30) +
-  ggtitle(&quot;Mainland Championships since inception&quot;) +
-  labs(x = &quot;Cups&quot;) +
-  labs(y = &quot;Teams that have won&quot;) +
-  labs(fill = NULL) +
-  theme_classic() +
-  facet_null() +
-  geom_text(col = &quot;darkblue&quot;, size = 12,
-            aes(group = Team, label = as.character(Year), x = 27, y = 3 )) +
-  transition_time(Year)</code></pre>
-<pre class="r"><code> df1 &lt;- df %&gt;% 
-     group_by(Team) %&gt;% 
-     mutate(cups = 1:n()) %&gt;% 
-     ungroup() %&gt;% 
-     group_by(Year) %&gt;% spread(Year, cups) %&gt;% 
-     replace(is.na(.),0) %&gt;% pivot_longer(-Team) %&gt;% mutate(rank = min_rank(-value) * 1) %&gt;%
-     ungroup()</code></pre>
-<pre class="r"><code>p &lt;- ggplot(data = df1, 
-            aes(rank, 
-                group = Team, 
-                fill = as.factor(Team), 
-                color = as.factor(Team))) +
-    geom_tile(aes(y = value/2, 
-                  height = value, 
-                  width = 0.9), 
-              alpha = 0.8, color = NA) +
-    
-     # text in x-axis (requires clip = &quot;off&quot; in coord_*)
-     # paste(country, &quot; &quot;)  is a hack to make pretty spacing, since hjust &gt; 1 
-    #   leads to weird artifacts in text spacing.
-    geom_text(aes(y = 0, 
-                  label = paste(Team, &quot; &quot;)), 
-              vjust = 0.2, 
-              hjust = 1) +
-    coord_flip(clip = &quot;off&quot;, expand = FALSE) +
-    scale_y_continuous(labels = scales::comma) +
-    scale_x_reverse() +
-    guides(color = FALSE, fill = FALSE) +
-    labs(title=&#39;Mainland Championship&#39;, 
-         x = &quot;&quot;, 
-         y = &quot;value&quot;) +
-    theme(plot.title = element_text(hjust = 0, 
-                                    size = 22),
-          axis.ticks.y = element_blank(),  # These relate to the axes post-flip
-          axis.text.y  = element_blank(),  # These relate to the axes post-flip
-          plot.margin = margin(1,1,1,4, &quot;cm&quot;)) +
-  
-     transition_states(name, transition_length = 4, state_length = 1) +
-     ease_aes(&#39;cubic-in-out&#39;)
-## Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =
-## &quot;none&quot;)` instead.
-animate(p, fps = 55, duration = 55, width = 800, height = 600)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.gif" style="display: block; margin: auto;" /></p>
+  arrange(Year, -count) %&gt;% 
+  #assign ranking
+  mutate(rank = 1:n()) -&gt;
+ranked_by_year</code></pre>
+<pre class="r"><code>my_theme &lt;- theme_classic(base_family = &quot;Times&quot;) +
+  theme(axis.text.y = element_blank()) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.line.y = element_blank()) +
+  theme(legend.background = element_rect(fill = &quot;gainsboro&quot;)) +
+  theme(plot.background = element_rect(fill = &quot;gainsboro&quot;)) +
+  theme(panel.background = element_rect(fill = &quot;gainsboro&quot;))</code></pre>
+<div id="static-plot" class="section level3">
+<h3>Static Plot</h3>
+<pre class="r"><code>ranked_by_year %&gt;% 
+   ggplot(
+  aes(xmin = 0,
+      xmax = count,
+      ymin = rank - .45,
+      ymax = rank + .45,
+      y = rank,
+    fill = Team
+  )
+) +
+  geom_rect(alpha = .7) +  
+  geom_text(col = &quot;gray13&quot;,  
+            hjust = &quot;right&quot;,  
+            aes(label = Team),  
+            x = -1) + 
+    geom_text(aes(count + 1,
+                  label = round(count)),
+            color = &quot;black&quot;,
+            position = &quot;identity&quot;,
+            size = 2.5) +
+  scale_y_reverse() +
+  # scale_x_continuous(
+  #   limits = c(-39, 27),
+  #   breaks = 1:30) +
+  labs(
+    title = &quot;Mainland Championships&quot;,
+    x = &quot;Cups Won&quot;,
+    y = &quot;&quot;
+  ) + 
+    facet_wrap(~ Year) +
+  my_theme -&gt;
+my_plot</code></pre>
+</div>
+</div>
+<div id="make-gif" class="section level2">
+<h2>Make Gif</h2>
+<pre class="r"><code>my_plot +  
+  facet_null() +  
+  scale_x_continuous(
+    limits = c(-10, 40),
+    breaks = seq(0, 30, 5)) +
+  geom_text(x = 30, y = -7.5,  
+            family = &quot;Times&quot;,  
+            aes(label = as.character(Year)),  
+            size = 20, col = &quot;grey18&quot;) +  
+  aes(group = Team) +  
+  transition_time(Year) +
+  enter_fade() +
+  exit_fade() -&gt; p
+
+
+
+  animate(p, fps = 4, duration = 27, width = 800, height = 600)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.gif" style="display: block; margin: auto;" /></p>
 </div>

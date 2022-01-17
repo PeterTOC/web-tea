@@ -1,0 +1,27 @@
+#header{
+	color: #4E7FBF;
+	background-color: #FFF7DE;
+	opacity: 0.6;
+	font-family: Calibri;
+	font-size: 20px;
+}
+#TOC{
+	color: #4E7FBF;
+	font-family: Calibri;
+	font-size: 16px;
+	font-weight:bold;
+	border-color: #613242;
+	background-color:#FFF7DE;
+	padding: 1em 1em;
+	margin: 0 0 0.5em 0.5em;
+	width: 60%;
+}
+body{
+	color: #000000;
+	font-family: Calibri;
+	background-color: #FFF7DE;
+}
+pre{
+	color: #613242;
+	background-color: #B3FEFB;
+}

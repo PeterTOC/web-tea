@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Guided Project on Peter Boshe</title>
+    <link>/tags/guided-project/</link>
+    <description>Recent content in Guided Project on Peter Boshe</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 04 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/guided-project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RArt; plotting flowers with the golden ratio and R 👩‍🎨</title>
+      <link>/post/flowers/notebook/</link>
+      <pubDate>Sat, 04 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/flowers/notebook/</guid>
+      <description>&amp;ldquo;The scientist does not study nature because it is useful; he studies it because he delights in it, and he delights in it because it is beautiful.&amp;quot;-(Henri Poincaré)</description>
+    </item>
+    
+    <item>
+      <title>COVID-19 Outbreak Analysis</title>
+      <link>/post/2021-09-18-covid-outbreak-analysis2-rmd/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-09-18-covid-outbreak-analysis2-rmd/</guid>
+      <description>This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak</description>
+    </item>
+    
+    <item>
+      <title>Visualization - Case Study Selection</title>
+      <link>/post/2020-12-01-visualization-case-study-selection/</link>
+      <pubDate>Sat, 01 May 2021 11:00:59 -0400</pubDate>
+      
+      <guid>/post/2020-12-01-visualization-case-study-selection/</guid>
+      <description>This project includes charts that were used in a research paper on &amp;lsquo;Data Protection Regulation in Africa&amp;rsquo;</description>
+    </item>
+    
+  </channel>
+</rss>

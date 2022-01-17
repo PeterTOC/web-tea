@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web Scraping on Peter Boshe</title>
+    <link>/tags/web-scraping/</link>
+    <description>Recent content in Web Scraping on Peter Boshe</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Fri, 03 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/web-scraping/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Proper Web Scraping Etiquette</title>
+      <link>/post/2021-12-03-webscraping-with-proper-ettiquette/</link>
+      <pubDate>Fri, 03 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-12-03-webscraping-with-proper-ettiquette/</guid>
+      <description>In this article we take a look at how we can scrape raw information/data from websites without the hassle of copying and pasting and clicking and retyping whole data tables and ~then~ analysing your data.</description>
+    </item>
+    
+  </channel>
+</rss>

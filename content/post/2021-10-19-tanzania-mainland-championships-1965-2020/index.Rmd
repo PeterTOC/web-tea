@@ -1,5 +1,5 @@
 ---
-title: 'Tanzania Mainland Football Championships: 1965 - 2020'
+title: Tanzania Mainland Football Championships; 1965 - 2020 `r emo::ji("soccer")`
 author: 'Peter Boshe'
 date: '2021-10-19'
 categories: ["Sports"]
@@ -10,17 +10,19 @@ output:
     toc_depth: 2
 images: []
 summary: "This is a racing bar chart of the male football championships and the respective teams that have won over the past half century"
-draft: true
+draft: false
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
 ```
+
 This is a racing bar chart of the championships and the respective teams that have won over the past half century(acc. to [Data](http://www.rsssf.com/tablest/tanzchamp.html)),
 
-Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup?
-`r emo::ji("smile")
+Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup? `r emo::ji("surprised")`
 
 ## setting up the environment
+
 ```{r environment, warning=FALSE, message=FALSE}
 # clear environment 
 rm(list = ls())
@@ -32,216 +34,100 @@ library(gganimate)
 library(lubridate)
 library(gifski)
 library(png)
+library(knitr)
 
 # loading data 
 df <- read_excel("Tanzania mainland championships.xlsx")
 
 ```
 
-## inspecting the dataset
+## pre-processing
 
-```{r inspection}
-skimr::skim(df)
-```
-## create the racing bar chart
-
-
-Note: data with incomplete detail was removed
-```{r main code}
-data_df <- df %>% 
-  select(Team, Year) %>% 
-  group_by(Team) %>% 
-  mutate(cups = 1:n())  %>% 
-  # mutate(rank = 1:n())  %>% 
-  # pivot_wider(names_from = "Year", values_from = "cups") %>% 
-  # pivot
-  ungroup() %>% 
-  group_by(Year) %>% 
-  arrange(-cups) %>% 
-  ggplot(aes(x = cups, y = Team, group = Team,
-             fill = as.factor(Team))) +
-  geom_col() +
-  # geom_rect(aes(xmin = 0, 
-  #               xmax = cups,
-  #               ymin = Team[cups > 0] ,
-  #               ymax = Team[cups > 0],
-  #               y = Team[cups > 0]))+
-  facet_wrap(~ Year) +
-  scale_x_continuous(limits = c(0,30),
-                     breaks = 1:30) +
-  ggtitle("Mainland Championships since inception") +
-  labs(x = "Cups") +
-  labs(y = "Teams that have won") +
-  labs(fill = NULL) +
-  theme_classic() +
-  facet_null() +
-  geom_text(col = "darkblue", size = 12,
-            aes(group = Team, label = as.character(Year), x = 27, y = 3 )) +
-  transition_time(Year)
-
-```
-
-```{r}
- df1 <- df %>% 
-     group_by(Team) %>% 
-     mutate(cups = 1:n()) %>% 
-     ungroup() %>% 
-     group_by(Year) %>% 
-     spread(Year, cups) %>% 
-     replace(is.na(.),0) %>% #need to find way to carry over counts
-  pivot_longer(-Team) %>% 
-  mutate(rank = min_rank(-value) * 1) %>% 
-  ungroup()
-
-```
-
-
-
-
-```{r}
-p <- ggplot(data = df1, 
-            aes(rank, 
-                group = Team, 
-                fill = as.factor(Team), 
-                color = as.factor(Team))) +
-    geom_tile(aes(y = value/2, 
-                  height = value, 
-                  width = 0.9), 
-              alpha = 0.8, color = NA) +
-    
-     # text in x-axis (requires clip = "off" in coord_*)
-     # paste(country, " ")  is a hack to make pretty spacing, since hjust > 1 
-    #   leads to weird artifacts in text spacing.
-    geom_text(aes(y = 0, 
-                  label = paste(Team, " ")), 
-              vjust = 0.2, 
-              hjust = 1) +
-    coord_flip(clip = "off", expand = FALSE) +
-    scale_y_continuous(labels = scales::comma) +
-    scale_x_reverse() +
-    guides(color = FALSE, fill = FALSE) +
-    labs(title='Mainland Championship', 
-         x = "", 
-         y = "value") +
-    theme(plot.title = element_text(hjust = 0, 
-                                    size = 22),
-          axis.ticks.y = element_blank(),  # These relate to the axes post-flip
-          axis.text.y  = element_blank(),  # These relate to the axes post-flip
-          plot.margin = margin(1,1,1,4, "cm")) +
-  
-     transition_states(name, transition_length = 4, state_length = 1) +
-     ease_aes('cubic-in-out')
-
-animate(p, fps = 55, duration = 55, width = 800, height = 600)
-
-```
-
-
-SANE ATTEMPT
-```{r}
+```{r pre-processing}
 df2 <- df %>% 
-     group_by(Team) %>% 
-     mutate(cups = 1:n()) %>% 
-     ungroup() %>% 
-     group_by(Year) %>% 
-     spread(Year, cups) %>% 
-     replace(is.na(.),0)
-
-BRRR::skrrrahh(44)
-
+  mutate(Cup = 1) %>% 
+  complete(Team, Year) %>% 
+  replace_na(list(Cup = 0)) %>%  
+  group_by(Team) %>% 
+  mutate(count = cumsum(Cup))
+  
 ```
-
-
-## function for championship counting
 
 ```{r}
-system.time(
-  for(i in 1:nrow(df2)){ 
-   for(j in 3:ncol(df2)){
-  
-     x=j-1
-     
-  if (df2[i,j] == 0 & df2[i,x] != 0)
-  {
-    df2[i,j] <- df2[i,x]
-  }
-   }})
-  
-BRRR::skrrrahh(44)
+df2 %>% 
+  group_by(Year) %>% 
+  arrange(Year, -count) %>% 
+  #assign ranking
+  mutate(rank = 1:n()) ->
+ranked_by_year
 ```
-
 
 ```{r}
- df3 <- df2 %>% 
-  gather(key = "Year", 
-         value = "Cups", 
-         -Team)
-df3$Year <- as.numeric(df3$Year)
-BRRR::skrrrahh(44)
+my_theme <- theme_classic(base_family = "Times") +
+  theme(axis.text.y = element_blank()) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.line.y = element_blank()) +
+  theme(legend.background = element_rect(fill = "gainsboro")) +
+  theme(plot.background = element_rect(fill = "gainsboro")) +
+  theme(panel.background = element_rect(fill = "gainsboro"))
 ```
 
-## Visualisation 
+### Static Plot
 
 ```{r}
-
-
-
-p <- df3 %>% 
-  arrange(desc(Cups)) %>% 
-  ggplot(aes(Cups,
-             Team,
-            fill = as.factor(Team), 
-            color = as.factor(Team))) +
-    geom_tile(aes(y = Cups/2, 
-                  height = Cups, 
-                  width = 0.9), 
-              alpha = 0.8, color = NA)+
-    geom_text(aes(y = 0, 
-                  label = paste(Team, " ")), 
-              vjust = 0.2, 
-              hjust = 1) +
-    coord_flip(clip = "off", expand = FALSE) +
-    scale_y_continuous() +
-    scale_x_reverse() +
-    guides(color = "none", fill = "none") +
-    labs(title='Mainland Championship', 
-         x = "", 
-         y = "Cups") +
-    theme(plot.title = element_text(hjust = 0, 
-                                    size = 22),
-          axis.ticks.y = element_blank(),  # These relate to the axes post-flip
-          axis.text.y  = element_blank(),  # These relate to the axes post-flip
-          plot.margin = margin(1,1,1,4, "cm")) +
-  
-     transition_states(Year, transition_length = 4, state_length = 1) +
-     ease_aes('cubic-in-out')
-
-# p + transition_time(Year)
-
-animate(p, 
-        renderer = gifski_renderer(), 
-        nframes = 56,
-        fps = 2, 
-        duration = 28,
-        width = 800, 
-        height = 600)
-
-
-BRRR::skrrrahh(44)
-
+ranked_by_year %>% 
+   ggplot(
+  aes(xmin = 0,
+      xmax = count,
+      ymin = rank - .45,
+      ymax = rank + .45,
+      y = rank,
+    fill = Team
+  )
+) +
+  geom_rect(alpha = .7) +  
+  geom_text(col = "gray13",  
+            hjust = "right",  
+            aes(label = Team),  
+            x = -1) + 
+    geom_text(aes(count + 1,
+                  label = round(count)),
+            color = "black",
+            position = "identity",
+            size = 2.5) +
+  scale_y_reverse() +
+  # scale_x_continuous(
+  #   limits = c(-39, 27),
+  #   breaks = 1:30) +
+  labs(
+    title = "Mainland Championships",
+    x = "Cups Won",
+    y = ""
+  ) + 
+    facet_wrap(~ Year) +
+  my_theme ->
+my_plot
 ```
 
+## Make Gif
+
+```{r}
+my_plot +  
+  facet_null() +  
+  scale_x_continuous(
+    limits = c(-10, 40),
+    breaks = seq(0, 30, 5)) +
+  geom_text(x = 30, y = -7.5,  
+            family = "Times",  
+            aes(label = as.character(Year)),  
+            size = 20, col = "grey18") +  
+  aes(group = Team) +  
+  transition_time(Year) +
+  enter_fade() +
+  exit_fade() -> p
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+  animate(p, fps = 4, duration = 27, width = 800, height = 600)
+  
+```

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>E.D.A on Peter Boshe</title>
+    <link>/tags/e.d.a/</link>
+    <description>Recent content in E.D.A on Peter Boshe</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved.</copyright>
+    <lastBuildDate>Sun, 05 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/e.d.a/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Twitter Sentiment Analysis with R</title>
+      <link>/post/2021-12-05-twitter-sentiment-analysis-with-r/</link>
+      <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-12-05-twitter-sentiment-analysis-with-r/</guid>
+      <description>Sentiment Analysis   Sentiment Analysis Sentiment analysis gives us insight into the things that automate mining of attitudes, opinions, views and emotions from text, speech, tweets and database sources.</description>
+    </item>
+    
+    <item>
+      <title>Popular Pollutants of The Public 🚮</title>
+      <link>/post/2021-09-30-popular-pollutants-of-the-public/</link>
+      <pubDate>Thu, 30 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-09-30-popular-pollutants-of-the-public/</guid>
+      <description>Who are the leading pollutants of our state? you probably have a good guess as to who these popular pollutants are, but by all means dive in to find out more</description>
+    </item>
+    
+    <item>
+      <title>COVID-19 Outbreak Analysis</title>
+      <link>/post/2021-09-18-covid-outbreak-analysis2-rmd/</link>
+      <pubDate>Sat, 18 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2021-09-18-covid-outbreak-analysis2-rmd/</guid>
+      <description>This a Guided Project hosted by DataCamp to analyse and visualize the the trends in spread and significant events during the COVID outbreak</description>
+    </item>
+    
+  </channel>
+</rss>

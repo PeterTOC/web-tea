@@ -1,0 +1,378 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={code.R},
+  pdfauthor={pedro},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{code.R}
+\author{pedro}
+\date{2022-01-10}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\#\# setting the environment}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+\KeywordTok{require}\NormalTok{(tidyverse)}
+\KeywordTok{require}\NormalTok{(glue)}
+\KeywordTok{require}\NormalTok{(knitr)}
+
+
+\KeywordTok{setwd}\NormalTok{(}\StringTok{"\textasciitilde{}/Portfolio/web{-}tea/content/post/2021{-}09{-}30{-}popular{-}pollutants{-}of{-}the{-}public/index\_files"}\NormalTok{)}
+\NormalTok{files \textless{}{-}}\StringTok{ }\KeywordTok{list.files}\NormalTok{(}\DataTypeTok{pattern =} \StringTok{"*F.csv"}\NormalTok{)}
+\NormalTok{all\_files \textless{}{-}}\StringTok{ }\KeywordTok{map}\NormalTok{(files, read\_csv)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 85 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 190 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 240 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 446 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 599 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 631 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 793 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 855 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 900 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{verbatim}
+## Rows: 985 Columns: 10
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification ----------------------------------------------------
+## Delimiter: ","
+## chr (8): product_barcode, product_label, product_size, brand_name, man...
+## dbl (2): bottle_weight, bottle_count
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(all\_files) \textless{}{-}}\StringTok{ }\NormalTok{month.abb[}\DecValTok{3}\OperatorTok{:}\DecValTok{12}\NormalTok{] }\CommentTok{\#to name the data according to month created which in our case is march to december}
+
+\NormalTok{combined\_file \textless{}{-}}\StringTok{ }\KeywordTok{bind\_rows}\NormalTok{(all\_files, }\DataTypeTok{.id =} \StringTok{"batch"}\NormalTok{)}
+
+\CommentTok{\#\# cleaning our dataset}
+
+\NormalTok{df \textless{}{-}}\StringTok{ }\NormalTok{combined\_file }\OperatorTok{\%\textgreater{}\%}
+\CommentTok{\#remove the bottle weight column}
+\CommentTok{\#remove the url column}
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{{-}}\NormalTok{bottle\_weight, }\OperatorTok{{-}}\NormalTok{data\_url, }\OperatorTok{{-}}\NormalTok{product\_label, }\OperatorTok{{-}}\NormalTok{product\_barcode)}
+
+\CommentTok{\#convert batch, manufacturer\_name, manufacturer\_country, scan\_country into factors, months}
+\NormalTok{df}\OperatorTok{$}\NormalTok{batch \textless{}{-}}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(df}\OperatorTok{$}\NormalTok{batch)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{manufacturer\_country \textless{}{-}}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(df}\OperatorTok{$}\NormalTok{manufacturer\_country)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{manufacturer\_name \textless{}{-}}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(df}\OperatorTok{$}\NormalTok{manufacturer\_name)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{scan\_country \textless{}{-}}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(df}\OperatorTok{$}\NormalTok{scan\_country)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{brand\_name \textless{}{-}}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(df}\OperatorTok{$}\NormalTok{brand\_name)}
+
+\CommentTok{\#parse product\_size for uniform measurements}
+\NormalTok{number\_pattern \textless{}{-}}\StringTok{ "\^{}}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{d}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{s?}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{.?}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{d*"}
+\NormalTok{unit\_pattern \textless{}{-}}\StringTok{ "}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{D+$"}
+
+\NormalTok{df1 \textless{}{-}}\StringTok{ }\NormalTok{df }\OperatorTok{\%\textgreater{}\%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{product\_size\_extracted =} \KeywordTok{str\_extract}\NormalTok{(product\_size, number\_pattern)) }\OperatorTok{\%\textgreater{}\%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{units =} \KeywordTok{str\_extract}\NormalTok{(product\_size, unit\_pattern)) }\OperatorTok{\%\textgreater{}\%}
+\StringTok{  }\KeywordTok{drop\_na}\NormalTok{(units)}
+
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{str\_trim}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{product\_size\_extracted \textless{}{-}}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{str\_trim}\NormalTok{(df1}\OperatorTok{$}\NormalTok{product\_size\_extracted))}
+
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "litre"}\NormalTok{, }\StringTok{"l"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "ltrs"}\NormalTok{, }\StringTok{"l"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "ltr"}\NormalTok{, }\StringTok{"l"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "Litres"}\NormalTok{, }\StringTok{"l"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "L"}\NormalTok{, }\StringTok{"l"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "gm"}\NormalTok{, }\StringTok{"g"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df1}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df1}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "m"}\NormalTok{, }\StringTok{"ml"}\NormalTok{, df1}\OperatorTok{$}\NormalTok{units)}
+
+
+\NormalTok{df2 \textless{}{-}}\StringTok{ }\NormalTok{df1 }\OperatorTok{\%\textgreater{}\%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{amount =} \KeywordTok{case\_when}\NormalTok{(}
+\NormalTok{      units }\OperatorTok{==}\StringTok{ "l"} \OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{product\_size\_extracted }\OperatorTok{*}\StringTok{ }\DecValTok{1000}\NormalTok{,}
+\NormalTok{      units }\OperatorTok{==}\StringTok{ "kg"} \OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{product\_size\_extracted }\OperatorTok{*}\StringTok{ }\DecValTok{1000}\NormalTok{,}
+      \OtherTok{TRUE} \OperatorTok{\textasciitilde{}}\StringTok{ }\NormalTok{product\_size\_extracted}
+\NormalTok{    )}
+\NormalTok{    )}
+
+\NormalTok{df2}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df2}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "l"}\NormalTok{, }\StringTok{"ml"}\NormalTok{, df2}\OperatorTok{$}\NormalTok{units)}
+\NormalTok{df2}\OperatorTok{$}\NormalTok{units \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(df2}\OperatorTok{$}\NormalTok{units }\OperatorTok{==}\StringTok{ "kg"}\NormalTok{, }\StringTok{"g"}\NormalTok{, df2}\OperatorTok{$}\NormalTok{units)}
+
+\NormalTok{data \textless{}{-}}\StringTok{ }\NormalTok{df2 }\OperatorTok{\%\textgreater{}\%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(batch,}
+\NormalTok{         brand\_name,}
+\NormalTok{         manufacturer\_name,}
+\NormalTok{         manufacturer\_country,}
+\NormalTok{         scan\_country,}
+\NormalTok{         amount,}
+\NormalTok{         units,}
+\NormalTok{         bottle\_count)}
+
+\CommentTok{\#we are left with columns}
+\KeywordTok{glue}\NormalTok{(}\StringTok{"We are left with the columns; \{columns\}"}\NormalTok{,}
+     \DataTypeTok{columns =} \KeywordTok{glue\_collapse}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(data),}
+                             \DataTypeTok{sep =} \StringTok{", "}\NormalTok{,}
+                             \DataTypeTok{last =} \StringTok{", and "}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## We are left with the columns; batch, brand_name, manufacturer_name, manufacturer_country, scan_country, amount, units, and bottle_count
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#\#perform cluster analysis}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
