@@ -114,11 +114,12 @@ data <- df2 %>%
 # we are left with columns
 glue("We are left with the columns; {columns}",
      columns = glue_collapse(colnames(data),
-                             sep = ", ",
+                             sep = ", \n" ,
                              last = ", and ")
 )
 
 ```
+
 
 ## clean our environment
 

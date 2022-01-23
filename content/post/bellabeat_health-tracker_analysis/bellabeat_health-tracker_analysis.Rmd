@@ -1,0 +1,712 @@
+---
+title: Bellabeat Health-Tracker Analysis  `r emo::ji("footprint")`
+date: 2022-01-23T12:43:54+03:00
+draft: false
+author: "Peter Boshe"
+categories: ["Socio-eco Welfare"]
+tags: ["E.D.A",  "Unguided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining"]
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 4
+images: []
+summary: "Within this case study we are going to dive into wearable-tech health monitoring data.  We are to derive key insights from our data and perform customer segmentation to group the customers with respect to their user data behavior for targeted marketing strategies "
+editor_options: 
+  markdown: 
+    wrap: 80
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, collapse = TRUE, message=FALSE, warning = FALSE)
+```
+
+--------------------------------------------------------------------------------
+
+## Scenario
+
+## Stakeholders and products
+
+**Stakeholders**
+
+-   **Urška Sršen**: Bellabeat's cofounder and Chief Creative Oﬃcer
+-   **Sando Mur**: Mathematician and Bellabeat's cofounder; key member of the
+    Bellabeat executive team
+-   **Bellabeat marketing analytics team**: A team of data analysts responsible
+    for collecting, analyzing, and reporting data that helps guide Bellabeat's
+    marketing strategy. You joined this team six months ago and have been busy
+    learning about Bellabeat''s mission and business goals --- as well as how
+    **you, as a junior data analyst**, can help Bellabeat achieve them.
+
+**Products**
+
+-   **Bellabeat app**: The Bellabeat app provides users with health data related
+    to their activity, sleep, stress, menstrual cycle, and mindfulness habits.
+    This data can help users better understand their current habits and make
+    healthy decisions. The Bellabeat app connects to their line of smart
+    wellness products.
+-   **Leaf** : Bellabeat's classic wellness tracker can be worn as a bracelet,
+    necklace, or clip. The Leaf tracker connects to the Bellabeat app to track
+    activity, sleep, and stress.
+-   **Time** : This wellness watch combines the timeless look of a classic
+    timepiece with smart technology to track user activity, sleep, and stress.
+    The Time watch connects to the Bellabeat app to provide you with insights
+    into your daily wellness.
+-   **Spring**: This is a water bottle that tracks daily water intake using
+    smart technology to ensure that you are appropriately hydrated throughout
+    the day. The Spring bottle connects to the Bellabeat app to track your
+    hydration levels.
+-   **Bellabeat membership**: Bellabeat also oﬀers a subscription-based
+    membership program for users. Membership gives users 24/7 access to fully
+    personalized guidance on nutrition, activity, sleep, health and beauty, and
+    mindfulness based on their lifestyle and goals.
+
+## About the company
+
+![](logo.png){style="float: right;"}
+
+Sršen knows that an analysis of Bellabeat's available consumer data would reveal
+more opportunities for growth. She has asked the marketing analytics team to
+focus on a Bellabeat product and analyze smart device usage data in order to
+gain insight into how people are already using their smart devices. Then, using
+this information, she would like high-level recommendations for how these trends
+can inform Bellabeat marketing strategy.
+
+## Ask
+
+Sršen asks you to analyze smart device usage data in order to gain insight into
+how consumers use non-Bellabeat smart devices. She then wants you to select one
+Bellabeat product to apply these insights to in your presentation. These
+questions will guide your analysis:
+
+1.  What are some trends in smart device usage?
+2.  How could these trends apply to Bellabeat customers?
+3.  How could these trends help inﬂuence Bellabeat marketing strategy?
+
+```{r, message=FALSE}
+## preparing our environment
+library(tidyverse)
+library(lubridate)
+library(dendextend)
+library(cowplot)
+library(DT)
+```
+
+```{r pressure, echo=FALSE}
+#### Loading your CSV files
+setwd('~/Projects/bellabeat/fitabase_data') #setting our working directory to thour file path temporarily
+daily_activity <- read.csv("dailyActivity_merged.csv")
+sleep_day <- read.csv("sleepDay_merged.csv")
+heart_rate <- read.csv("heartrate_seconds_merged.csv")
+weight_log <- read.csv("weightLogInfo_merged.csv")
+```
+
+--------------------------------------------------------------------------------
+
+## Exploratory Data Analysis (EDA)
+
+--------------------------------------------------------------------------------
+
+### 1. Our data
+
+From the datasets provided, I have selected the datasets that would bring most
+insights to important metrics for a healthcare application, which are;
+
+1.  `daily_activity` - provides information about their daily activities (during
+    the day time).\n The columns in this dataframe include;
+    `r colnames(daily_activity)`
+2.  `sleep_day` - provides their night time information, may be crucial to
+    consider sleeping behavior. \n The columns in this dataframe include;
+    `r colnames(sleep_day)`
+3.  `heart_rate` - provides information on the clients' heart rates as recorded
+    by the trackers.\n The columns in this dataframe include;
+    `r colnames(heart_rate)`
+4.  `weight_log` - provides information about clients' weights and body mass
+    index. \n The columns in this dataframe include; `r colnames(weight_log)`
+
+```{r, eval=FALSE}
+glimpse(daily_activity)
+glimpse(sleep_day)
+glimpse(heart_rate)
+glimpse(weight_log)
+```
+
+**Note**;
+
+-   Our data has the names of clients removed for anonymity, so we will be
+    working with assigned IDs
+-   Not all clients made their data available for each of the datasets, we will
+    explore further on this on the next section
+
+##### Understanding some general information on our data collection
+
+How many unique participants are there in each dataframe? It looks like there
+may be more participants in the daily activity dataset than the sleep dataset.
+
+```{r distinct users, echo=TRUE}
+n_distinct(daily_activity$Id)
+n_distinct(sleep_day$Id)
+n_distinct(heart_rate$Id)
+n_distinct(weight_log$Id)
+```
+
+How many observations are there in each dataframe?
+
+```{r observations, echo=TRUE}
+nrow(daily_activity)
+nrow(sleep_day)
+nrow(heart_rate)
+nrow(weight_log)
+```
+
+##### Key takeaways;
+
+-   Only 8 members provided their weight info
+-   `heart_rate` data has over 2 million rows
+
+We can see that most of our data is numeric so our visualization and exploration
+methods would reflect that nature
+
+--------------------------------------------------------------------------------
+
+### 2. Data Visualization
+
+#### density plots
+
+```{r}
+#### creating a function for the distributions
+plot_distribution <- function(data, column){
+  data %>% 
+    ggplot(aes({{column}})) + 
+    geom_density()
+}
+
+```
+
+1.  `daily_activity`
+
+```{r, collapse=TRUE}
+#### plotting the different density distributions
+a <- plot_distribution(daily_activity, TotalSteps) 
+b <- plot_distribution(daily_activity, TotalDistance)
+c <- plot_distribution(daily_activity, SedentaryMinutes)
+d <- plot_distribution(daily_activity, TrackerDistance)
+e <- plot_distribution(daily_activity, Calories)
+plot_grid(a,b,c,d,e, labels = "AUTO")
+```
+
+2.  `sleep_day`
+
+```{r}
+f <- plot_distribution(sleep_day, TotalMinutesAsleep)
+g <- plot_distribution(sleep_day, TotalTimeInBed)
+plot_grid(f,g, labels = "AUTO")
+```
+
+3.  `heart_rate`
+
+```{r}
+plot_distribution(heart_rate, Value)
+```
+
+4.  `weight_log`
+
+```{r}
+i <- plot_distribution(weight_log, WeightKg)
+j <- plot_distribution(weight_log, WeightPounds)
+k <- plot_distribution(weight_log, Fat)
+l <- plot_distribution(weight_log, BMI)
+plot_grid(i,j,k,l, labels = "AUTO")
+```
+
+##### Key takeaways;
+
+**Unimodal distributions**
+
+-   `TotalMinutesAsleep`
+-   `TotalTimeInBed`
+
+**Multi-modal distributions include**
+
+-   `SedentaryMinutes`
+-   `Calories`
+-   `WeightKg`
+-   `WeightPounds`
+-   `BMI`
+
+**Skewed distributions include**
+
+-   `TotalSteps`
+-   `TotalDistance`
+-   `TrackerDistance`
+-   `Value`
+-   `BMI`
+
+**uniform distribution**
+
+-   `Fat`
+
+--------------------------------------------------------------------------------
+
+#### histograms
+
+```{r}
+#### creating a function for the histogram distributions
+plot_hist_distribution <- function(data, column, binwidth = 30, breaks = waiver()){
+  data %>% 
+    ggplot(aes({{column}})) + 
+    geom_histogram(binwidth = binwidth) +
+    scale_x_continuous(breaks = breaks)
+}
+```
+
+1.  `daily_activity`
+
+```{r}
+#### plotting the different histogram distributions
+m <- plot_hist_distribution(daily_activity, SedentaryMinutes, 50, seq(0,1500,100))
+n <- plot_hist_distribution(daily_activity, Calories, 150, seq(0,5000,500))
+plot_grid(m,n, labels = "AUTO")
+```
+
+2.  `weight_log`
+
+```{r}
+o <- plot_hist_distribution(weight_log, WeightKg, 10, seq(0,150,10))
+p <- plot_hist_distribution(weight_log, BMI, 1, seq(20,60,2))
+plot_grid(o,p, labels = "AUTO")
+```
+
+##### Key takeaways;
+
+-   The most common sedentary minutes are around 600-800, 1050-1300, 1450
+-   Peak sedentary minutes recorded at maximum of 1450
+-   Most common calories around 2000 and 3000
+-   Most common weights were recorded at 55-65 kgs and 85-95 kgs
+-   Outlier weight around 130 kgs
+-   Most BMI vary between 24-26 with an outlier at 48
+
+--------------------------------------------------------------------------------
+
+#### box plots
+
+```{r}
+#### creating a function for the boxplots to spot outliers
+plot_box_distribution <- function(data, column){
+  data %>% 
+    ggplot(aes(x = 1, y = {{column}})) + 
+    geom_boxplot() +
+    geom_jitter(color="black", size=0.4, alpha=0.5) +
+    coord_flip()
+}
+
+```
+
+1.  `daily_activity`
+
+```{r}
+#### plotting the different boxplots to spot outliers
+q <- plot_box_distribution(daily_activity, TotalSteps)
+r <- plot_box_distribution(daily_activity, TotalDistance)
+s <- plot_box_distribution(daily_activity, SedentaryMinutes)
+t <- plot_box_distribution(daily_activity, TrackerDistance)
+plot_grid(q,r,s,t, labels = "AUTO")
+```
+
+2.  `weight_log`
+
+```{r}
+#### plotting the different boxplots to spot outliers
+u <- plot_box_distribution(weight_log, WeightKg)
+v <- plot_box_distribution(weight_log, BMI)
+plot_grid(u,v, labels = "AUTO")
+```
+
+##### Key takeaways;
+
+-   cluster of data points on the zero mark on the graphs for TotalSteps,
+    TotalDistance, TrackerDistance & on maximum value of SedentaryMinutes, might
+    imply no data recorded, clients might not be wearing their trackers often
+
+-   we have three outliers in the boxplots for TotalSteps, TotalDistance,
+    TrackerDistance. I t would be interesting to see if its the same three
+    individuals in all three charts, They would be our top performers.
+
+-   we have a single outlier on both WeightKg and BMI
+
+--------------------------------------------------------------------------------
+
+#### time-frame bar plots
+
+```{r}
+#### making out graphs for distribution over time units
+##convert the date column into a time object
+##using the lubridate package
+
+daily_activity <- daily_activity %>%
+  mutate(ActivityDate = as_date(mdy(daily_activity$ActivityDate)))  
+
+## add date item columns to categorize trends by
+daily_activity_ext <- daily_activity %>% 
+  mutate(year = year(ActivityDate), 
+         month = month(ActivityDate, 
+                       label = T, 
+                       abbr = T), 
+         week = week(ActivityDate),
+         wday = wday(ActivityDate,
+                label = T, 
+                abbr = T), 
+         day = day(ActivityDate),
+         hour = hour(ActivityDate) 
+  ) 
+
+
+```
+
+<!-- ```{r} -->
+
+<!-- #### create functions for time frame distributions -->
+
+<!-- #plot distribution with time_frame -->
+
+<!-- plot_activity_time_distribution <- function(data, time_frame, column){ -->
+
+<!--   data %>%  -->
+
+<!--     group_by({{time_frame}}) %>% -->
+
+<!--     drop_na() %>% -->
+
+<!--     summarize(across(c("TotalSteps",  -->
+
+<!--                        "TotalDistance",  -->
+
+<!--                        "TrackerDistance",  -->
+
+<!--                        "SedentaryMinutes",  -->
+
+<!--                        "Calories"),  -->
+
+<!--                      median)) %>%  -->
+
+<!--     ggplot(aes(as.factor({{time_frame}}),{{column}})) +  -->
+
+<!--     geom_col() -->
+
+<!-- } -->
+
+<!-- ``` -->
+
+<!-- ```{r, warning=FALSE} -->
+
+<!-- #### plotting the different time frame distributions -->
+
+<!-- w <- plot_activity_time_distribution(daily_activity_ext, wday, TotalSteps) -->
+
+<!-- x <- plot_activity_time_distribution(daily_activity_ext, wday, TotalDistance) -->
+
+<!-- y <- plot_activity_time_distribution(daily_activity_ext, wday, TrackerDistance) -->
+
+<!-- z <- plot_activity_time_distribution(daily_activity_ext, wday, SedentaryMinutes) -->
+
+<!-- plot_grid(w,x,y,z, labels = "AUTO") -->
+
+<!-- ``` -->
+
+```{r}
+##convert the date column into a time object
+##using the lubridate package
+
+sleep_day_ext <- sleep_day %>%
+  mutate(SleepDay = as_datetime(mdy_hms(sleep_day$SleepDay)))  
+
+
+## add date item columns to categorize trends by
+sleep_day_ext <- sleep_day_ext %>% 
+  mutate(year = year(SleepDay), 
+         month = month(SleepDay, 
+                       label = T, 
+                       abbr = T), 
+         week = week(SleepDay),
+         wday = wday(SleepDay,
+                label = T, 
+                     abbr = T), 
+         hour = hour(SleepDay) 
+  ) 
+
+
+```
+
+```{r}
+#### create functions for time frame distributions
+#plot distribution with time_frame
+plot_sleep_time_distribution <- function(data, time_frame, column){
+
+  data %>% 
+    group_by({{time_frame}}) %>%
+    drop_na() %>%
+    summarize(across(c("TotalMinutesAsleep", 
+                       "TotalTimeInBed"), 
+                     mean)) %>% 
+    ggplot(aes(as.factor({{time_frame}}),{{column}})) + 
+    geom_col()
+}
+
+```
+
+1.  `sleep_day`
+
+```{r, warning=FALSE}
+
+a1 <- plot_sleep_time_distribution(sleep_day_ext, wday, TotalMinutesAsleep)
+b1 <- plot_sleep_time_distribution(sleep_day_ext, wday, TotalTimeInBed)
+plot_grid(a1,b1, labels = "AUTO")
+```
+
+```{r}
+##convert the date column into a time object
+##using the lubridate package
+
+heart_rate_ext <- heart_rate %>%
+  mutate(Time = as_datetime(mdy_hms(heart_rate$Time)))  
+
+## add date item columns to categorize trends by
+heart_rate_ext <- heart_rate_ext %>% 
+  mutate(year = year(Time), 
+         month = month(Time, 
+                       label = T, 
+                       abbr = T), 
+         week = week(Time),
+         wday = wday(Time,
+                label = T, 
+                     abbr = T),
+         day = day(Time),
+         hour = hour(Time) 
+  ) 
+
+
+```
+
+```{r}
+heart_rate_summary <- heart_rate_ext %>% 
+  group_by(Id, wday) %>% 
+  summarise(mean_value = mean(Value), 
+            median_value = median(Value), 
+            max_value = max(Value), 
+            min_value = min(Value), 
+            range = range(Value), 
+            count =n())
+  
+```
+
+2.  `heart_rate`
+
+```{r}
+c1 <- ggplot(heart_rate_summary, aes(wday, range)) + geom_col()
+d1 <- ggplot(heart_rate_summary, aes(wday, max_value)) + geom_col()
+e1 <- ggplot(heart_rate_summary, aes(wday, min_value)) + geom_col()
+f1 <- ggplot(heart_rate_summary, aes(wday, median_value)) + geom_col()
+plot_grid(c1,d1,e1,f1, labels = "AUTO")
+```
+
+Inspect if there are patterns in the data with 0 activity
+
+```{r}
+a3 <- daily_activity_ext %>% filter(TotalSteps == 0) %>% ggplot(aes(wday)) + geom_bar() 
+b3 <- daily_activity_ext %>% filter(TotalSteps == 0) %>% ggplot(aes(day)) + geom_bar() 
+plot_grid(a3,b3, labels = "AUTO")
+```
+
+Inspect if there are patterns in the data with max SedentaryMinutes
+
+```{r}
+h1 <- daily_activity_ext %>% filter(SedentaryMinutes > 1400) %>% ggplot(aes(wday)) + geom_bar()
+i1 <- daily_activity_ext %>% filter(SedentaryMinutes > 1400) %>% ggplot(aes(day)) + geom_bar() 
+plot_grid(h1,i1, labels = "AUTO")
+```
+
+##### Key takeaways;
+
+-   from our `sleep_day` dataset we can see general elevated resting periods on
+    Sundays.
+
+-   from our `heart_rate` dataset we can see heigtened fluctuations in heart
+    rate values on Mondays.
+
+-   by inspecting the patterns of the data that registered 0 active minutes and
+    maximum sedentary minutes, they seem to have come from the same clients
+    hence the matching patterns of occurence, however the patterns do not tell
+    us any much more.
+
+--------------------------------------------------------------------------------
+
+### inspect the three outliers
+
+```{r}
+outliers <- daily_activity_ext %>% filter(TotalDistance > 25) %>% select(Id) %>% group_by(Id) %>% count()
+# daily_activity_ext %>% filter(TotalSteps > 25000) %>% select(Id) %>% group_by(Id) %>% count()
+# daily_activity_ext %>% filter(TrackerDistance > 25) %>% select(Id) %>% group_by(Id) %>% count()
+
+datatable(outliers)
+```
+
+##### Key takeaways;
+
+-   the three outlier points were readings from two candidates
+-   we might need store the IDs in case we will need them for future analysis or
+    for a possible reward incentive
+
+```{r}
+top_performers <- daily_activity_ext %>% filter(TrackerDistance > 25) %>% select(Id) %>% distinct()
+```
+
+--------------------------------------------------------------------------------
+
+## Cluster Analysis
+
+--------------------------------------------------------------------------------
+
+Lets perform cluster analysis with our `daily_activities` dataset since we have
+the most users data.
+
+### 1. create statistics per client
+
+```{r}
+daily_activity_clus <- daily_activity %>% 
+  filter(TrackerDistance < 25 & TotalSteps < 25000) %>% #removing outliers
+  group_by(Id) %>% 
+  summarise_if(is.numeric, median)
+
+datatable(daily_activity_clus)
+```
+
+### 2. scale our variables
+
+```{r}
+daily_activity_scaled <- scale(daily_activity_clus[,-1])
+```
+
+### 3. perform clustering
+
+```{r}
+dist_daily <- dist(daily_activity_scaled, method = 'euclidean')
+hclust_complete <- hclust(dist_daily, method = "complete")
+hclust_avg <- hclust(dist_daily, method = "average")
+hclust_single <- hclust(dist_daily, method = "single")
+par(mfrow=c(1,3))
+plot(hclust_complete)
+plot(hclust_avg)
+plot(hclust_single)
+
+```
+
+-   complete method is more suitable for our data as it clusters out data points
+    better(better distribution of the data points)
+-   initial exploratory analysis suggested that we have 2-3 groups in our
+    data(ref. the multimodal distributions derived from the density plots)
+
+### 4. split our data and visualize
+
+```{r}
+daily_dend <- as.dendrogram(hclust_complete)
+daily_dend_col_2 <- color_branches(daily_dend, k = 2)
+daily_dend_col_3 <- color_branches(daily_dend, k = 3)
+par(mfrow=c(1,2))
+plot(daily_dend_col_2)
+plot(daily_dend_col_3)
+
+```
+
+We are going to go with the 2 group cluster (on the left) as having a third
+cluster with only one client does not make much sense.
+
+### 5. Assign our data with their respective clusters
+
+```{r}
+cut_complete <- cutree(hclust_complete, k = 2)
+daily_activity_cl <- daily_activity_clus %>%
+  mutate(cluster = as.factor(cut_complete))
+```
+
+### 6. Compute general stats for each cluster
+
+```{r}
+datatable(daily_activity_cl %>% 
+  select(TotalSteps, 
+         TrackerDistance,
+         VeryActiveDistance,
+         VeryActiveMinutes,
+         SedentaryMinutes,
+         Calories,
+         cluster) %>% 
+  group_by(cluster) %>% 
+  summarise_if(is.numeric, median))
+```
+
+We can see contrasting behavior between cluster 1 and cluster 2, for instance;
+
+-   cluster 1 one clients have a more active behavior overall.
+-   cluster 2 clients clocked almost twice the amount of `SedimentaryMinutes`.
+-   cluster 1 generally burnt more calories as a result.
+-   we have 0 `VeryActiveMinutes` from cluster 2 which might mean they do not
+    have an exercise schedule or they might be taking the trackers off during
+    exercise, further survey might be required.
+
+The main point of clustering the data was to be able to segment our customers so
+we know what marketing approach is more suitable for which customer, and now
+that we have all our data labelled between cluster 1 & 2 for a more targeted
+approach.
+
+-   We might decide to label our data into more descriptive labels for the
+    clusters like "active" and "less active".
+
+--------------------------------------------------------------------------------
+
+## Combined Key Findings
+
+Lets consolidate all our key takeaways
+
+-   Only 8 members provided their weight info
+-   `heart_rate` data has over 2 million rows
+-   `TotalMinutesAsleep` - Unimodal distribution
+-   `TotalTimeInBed` - Unimodal distribution
+-   `SedentaryMinutes` - Multi-modal distribution
+-   `Calories` - Multi-modal distribution
+-   `WeightKg` - Multi-modal distribution
+-   `WeightPounds` - Multi-modal distribution
+-   `BMI` - Multi-modal distribution
+-   `TotalSteps` - Skewed distribution
+-   `TotalDistance` - Skewed distribution
+-   `TrackerDistance` - Skewed distribution
+-   `Value` - Skewed distributions
+-   `BMI` - Skewed distributions
+-   `Fat` - uniform distribution
+-   The most common sedentary minutes are around 600-800, 1050-1300, 1450
+-   Peak sedentary minutes recorded at maximum of 1450
+-   Most common calories around 2000 and 3000
+-   Most common weights were recorded at 55-65 kgs and 85-95 kgs
+-   Outlier weight around 130 kgs
+-   Most BMI vary between 24-26 with an outlier at 48
+-   cluster of data points on the zero mark on the graphs for `TotalSteps`,
+    `TotalDistance`, `TrackerDistance` & on maximum value of `SedentaryMinutes`,
+    might imply no data recorded, clients might not be wearing their trackers
+    often
+-   we have three outliers in the boxplots for `TotalSteps`, `TotalDistance`,
+    `TrackerDistance`. It would be interesting to see if its the same three
+    individuals in all three charts, They would be our top performers.
+-   we have a single outlier on both WeightKg and BMI
+-   from our `sleep_day` dataset we can see general elevated resting periods on
+    Sundays.
+-   from our `heart_rate` dataset we can see heigtened fluctuations in heart
+    rate values on Mondays.
+-   by inspecting the patterns of the data that registered 0 active minutes and
+    maximum sedentary minutes, they seem to have come from the same clients
+    hence the matching patterns of occurence, however the patterns do not tell
+    us any much more.
+-   the three outlier points were readings from two candidates (not from three
+    candidates as previously assumed)
+-   we might need store the IDs in case we will need them for future analysis or
+    for a possible reward incentive
+-   now that we have our customers segmented into two definitive clusters
+    ("active" and "less active")
+
+--------------------------------------------------------------------------------
