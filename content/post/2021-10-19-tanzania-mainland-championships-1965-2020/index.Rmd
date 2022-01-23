@@ -1,5 +1,5 @@
 ---
-title: Tanzania Mainland Football Championships; 1965 - 2020 `r emo::ji("soccer")`
+title: Tanzania Mainland Football Championships; 1965 - 2020 `r emo::ji("tanzania")` `r emo::ji("soccer")`
 author: 'Peter Boshe'
 date: '2021-10-19'
 categories: ["Sports"]

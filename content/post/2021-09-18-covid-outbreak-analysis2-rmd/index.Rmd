@@ -1,5 +1,5 @@
 ---
-title: "COVID-19 Outbreak Analysis"
+title: COVID-19 Outbreak Analysis `r emo::ji("world")` `r emo::ji("microscope")`
 description: "DataCamp's Guided Project visualizing the trends of the spread and cummulative increase"
 author: "Peter Boshe"
 date: '2021-09-18'

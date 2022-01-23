@@ -1,5 +1,5 @@
 ---
-title: Popular Pollutants of The Public `r emo::ji("litter")`
+title: Popular Pollutants of The Public `r emo::ji("tanzania")` `r emo::ji("litter")`
 description: "Analysis on data collected from plastic bottles barcodes"
 author: "Peter Boshe"
 date: '2021-09-30'

@@ -10,7 +10,7 @@ output:
     toc: true
     toc_depth: 4
 images: []
-summary: "Within this case study, We are going to dive into wearable-tech health data. We are to derive key insights from our data and perform Customer Segmentation. Hence, grouping the customers with respect to their user data behavior for targeted marketing strategies "
+summary: Within this case study, We are going to dive into wearable-tech health data. We are to derive key insights from our data and perform Customer Segmentation. Hence, grouping the customers with respect to their user data behavior for `r emo::ji("target")` targeted marketing strategies
 editor_options: 
   markdown: 
     wrap: 80

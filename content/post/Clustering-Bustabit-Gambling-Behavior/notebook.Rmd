@@ -1,7 +1,7 @@
 ---
 author: Peter Boshe
 date: '2022-01-15'
-title: Clustering Bustabit Gambling Behavior `r emo::ji("money")`
+title: Clustering Bustabit Gambling Behavior `r emo::ji("currency")`
 categories: ["Finance"]
 tags: ["E.D.A",  "Guided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining", "Cryptocurrency"]
 output: html_document
