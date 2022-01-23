@@ -1,5 +1,5 @@
 ---
-title: RArt; plotting flowers with the golden ratio and R 👩‍🎨
+title: RArt; plotting flowers with the golden ratio and R 👨‍🎨
 author: Peter Boshe
 date: '2021-12-04'
 categories:
@@ -34,11 +34,6 @@ R is a tool for doing serious analysis, but not everything in life is serious. L
 <p>
 In this notebook, we are using the <code>ggplot2</code> package. Apart from having fun, we will learn many important features of it that will be useful not only to do art but also to represent data in real-life problems. Let’s start by loading the library.
 </p>
-<pre class="r"><code># Set plot images to a nice size
-options(repr.plot.width = 4, repr.plot.height = 4)
-
-# Load the ggplot2 package
-library(ggplot2)</code></pre>
 </div>
 <div id="warming-up-drawing-points-on-a-circle" class="section level2">
 <h2>2. Warming up: drawing points on a circle</h2>
@@ -48,16 +43,7 @@ There are many ways to represent data with <code>ggplot2</code>: from simple sca
 <p>
 We’ll start by drawing 50 points on a circle of radius 1. As every <code>(x, y)</code> point should be in the unit circle, it follows that x² + y² = 1. We can get this using the <em>super famous</em> Pythagorean trigonometric identity which states that sin²(θ) + cos²(θ) = 1 for any real number θ.
 </p>
-<pre class="r"><code># Create circle data to plot
-t &lt;- seq(0, 2 * pi, length.out = 50)
-x &lt;- sin(t)
-y &lt;- cos(t)
-df &lt;- data.frame(t, x, y)
-
-# Make a scatter plot of points in a circle
-p &lt;- ggplot(df, aes(x, y))
-p + geom_point()</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="make-it-harmonious-with-the-golden-angle" class="section level2">
 <h2>3. Make it harmonious with the Golden Angle</h2>
@@ -79,21 +65,7 @@ The Golden Angle is the angle subtended by the smaller (red) arc. Both the Golde
 <p>
 It’s time to <em>spiralize</em>!
 </p>
-<pre class="r"><code># Define the number of points
-points &lt;- 500
-
-# Define the Golden Angle
-angle &lt;- (3 - sqrt(5)) * pi
-
-t &lt;- (1:points) * angle
-x &lt;- sin(t)
-y &lt;- cos(t)
-df &lt;- data.frame(t, x, y)
-
-# Make a scatter plot of points in a spiral
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point()</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="remove-everything-unnecessary" class="section level2">
 <h2>4. Remove everything unnecessary</h2>
@@ -120,113 +92,35 @@ a <strong>title</strong> on each axis
 <p>
 Art does not get along with most of these elements, so it’s time to move to action.
 </p>
-<pre class="r"><code>df &lt;- data.frame(t, x, y)
-
-# Make a scatter plot of points in a spiral and remove some plot components
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point() +
-  theme(
-    panel.background = element_rect(fill = &quot;white&quot;),
-    panel.grid = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-    axis.text = element_blank()
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="a-bit-of-makeup-size-color-and-transparency" class="section level2">
 <h2>5. A bit of makeup: size, color and transparency</h2>
 <p>
 Our drawing is starting to look like a plant, but we can better. By changing color, transparency (also called <em>alpha</em>), and size of the points, the image will become more appealing.
 </p>
-<pre class="r"><code># Change the code from Task 4 to modify the
-# size, transparency, and color of the points
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point(
-  size = 8,
-  alpha = 0.5,
-  color = &quot;darkgreen&quot;
-) +
-  theme(
-    line = element_blank(),
-    rect = element_blank(),
-    text = element_blank(),
-    title = element_blank()
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="play-with-aesthetics-the-dandelion" class="section level2">
 <h2>6. Play with aesthetics: the dandelion</h2>
 <p>
 Until now, all points have the same appearance (<code>size</code>, <code>color</code>, <code>shape</code>, and <code>alpha</code>). Sometimes we will want to make the appearance of the points dependent on a variable in the dataset. Now we will make the size variable. We will also change the shape of the points. Although we won’t be able to blow on it, the resulting image should remind you of a dandelion.
 </p>
-<pre class="r"><code># Copy the code from Task 5 and modify the
-# color, size, and shape of the points
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point(aes(size = t),
-  shape = 8
-) +
-  theme(
-    panel.background = element_rect(fill = &quot;white&quot;),
-    panel.grid = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-    axis.text = element_blank(),
-    legend.position = &quot;none&quot;
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="put-all-it-together-the-sunflower" class="section level2">
 <h2>7. Put all it together: the sunflower</h2>
 <p>
 Plants not only use the Golden Angle to arrange leaves. The Golden Angle is also found in the arrangement of sunflower seeds. We don’t need anything new to draw a sunflower; we just need to combine some of the things we already know.
 </p>
-<pre class="r"><code># Copy the code from Task 6 and modify the color and
-# shape of the points, and the background color
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point(aes(size = t),
-  shape = 17,
-  color = &quot;yellow&quot;
-) +
-  theme(
-    line = element_blank(),
-    rect = element_blank(),
-    text = element_blank(),
-    title = element_blank(),
-    panel.background = element_rect(fill = &quot;darkmagenta&quot;),
-    legend.position = &quot;none&quot;
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="what-if-you-modify-the-angle" class="section level2">
 <h2>8. What if you modify the angle?</h2>
 <p>
 These patterns are very sensitive to the angle between the points that form the spiral. Small changes to the angle can generate very different images. Let’s look at an example of that.
 </p>
-<pre class="r"><code># Change the value of the angle
-angle &lt;- 2.0
-points &lt;- 1000
-
-t &lt;- (1:points) * angle
-x &lt;- sin(t)
-y &lt;- cos(t)
-df &lt;- data.frame(t, x, y)
-
-# Copy the plotting code from Task 7
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point(aes(size = t),
-  shape = 17,
-  color = &quot;yellow&quot;
-) +
-  theme(
-    line = element_blank(),
-    rect = element_blank(),
-    text = element_blank(),
-    title = element_blank(),
-    plot.background = element_rect(fill = &quot;darkmagenta&quot;, colour = NA),
-    legend.position = &quot;none&quot;
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="all-together-now-imaginary-flowers" class="section level2">
 <h2>9. All together now: imaginary flowers</h2>
@@ -239,25 +133,5 @@ The techniques we’ve used so far allow us to create an <em>infinite</em> numbe
 <p>
 The image on the left is a simple variation of the previous flower and is in essence very similar to the first figure in which we plotted 50 points in a circle. I hope you’ve enjoyed the journey between that simple circle and this beautiful flower.
 </p>
-<pre class="r"><code># Change the values of angle and points
-angle &lt;- 13 * pi / 180
-points &lt;- 2000
-
-t &lt;- (1:points) * angle
-x &lt;- sin(t)
-y &lt;- cos(t)
-df &lt;- data.frame(t, x, y)
-
-# Adjust the plot parameters to create the magenta flower
-p &lt;- ggplot(df, aes(x * t, y * t))
-p + geom_point(size = 80, alpha = 0.1, shape = 1, color = &quot;magenta4&quot;) +
-  theme(
-    legend.position = &quot;none&quot;,
-    panel.background = element_rect(fill = &quot;white&quot;),
-    panel.grid = element_blank(),
-    axis.ticks = element_blank(),
-    axis.title = element_blank(),
-    axis.text = element_blank()
-  )</code></pre>
-<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/flowers/notebook_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>

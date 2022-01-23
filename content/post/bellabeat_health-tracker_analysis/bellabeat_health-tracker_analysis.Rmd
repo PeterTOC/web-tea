@@ -4,13 +4,13 @@ date: 2022-01-23T12:43:54+03:00
 draft: false
 author: "Peter Boshe"
 categories: ["Socio-eco Welfare"]
-tags: ["E.D.A",  "Unguided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining"]
+tags: ["E.D.A",  "Unguided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining", "Data Analysis"]
 output:
   blogdown::html_page:
     toc: true
     toc_depth: 4
 images: []
-summary: "Within this case study we are going to dive into wearable-tech health monitoring data.  We are to derive key insights from our data and perform customer segmentation to group the customers with respect to their user data behavior for targeted marketing strategies "
+summary: "Within this case study, We are going to dive into wearable-tech health data. We are to derive key insights from our data and perform Customer Segmentation. Hence, grouping the customers with respect to their user data behavior for targeted marketing strategies "
 editor_options: 
   markdown: 
     wrap: 80
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = FALSE, collapse = TRUE, message=FALSE, warning = FA
 
 ## Scenario
 
-## Stakeholders and products
+### Stakeholders and products
 
 **Stakeholders**
 
@@ -60,7 +60,7 @@ knitr::opts_chunk$set(echo = FALSE, collapse = TRUE, message=FALSE, warning = FA
     personalized guidance on nutrition, activity, sleep, health and beauty, and
     mindfulness based on their lifestyle and goals.
 
-## About the company
+### About the company
 
 ![](logo.png){style="float: right;"}
 
@@ -71,7 +71,7 @@ gain insight into how people are already using their smart devices. Then, using
 this information, she would like high-level recommendations for how these trends
 can inform Bellabeat marketing strategy.
 
-## Ask
+### Ask
 
 Sršen asks you to analyze smart device usage data in order to gain insight into
 how consumers use non-Bellabeat smart devices. She then wants you to select one
@@ -112,16 +112,24 @@ From the datasets provided, I have selected the datasets that would bring most
 insights to important metrics for a healthcare application, which are;
 
 1.  `daily_activity` - provides information about their daily activities (during
-    the day time).\n The columns in this dataframe include;
-    `r colnames(daily_activity)`
+    the day time).
+
+    The columns in this dataframe include; `r colnames(daily_activity)`
+
 2.  `sleep_day` - provides their night time information, may be crucial to
-    consider sleeping behavior. \n The columns in this dataframe include;
-    `r colnames(sleep_day)`
+    consider sleeping behavior.
+
+    The columns in this dataframe include; `r colnames(sleep_day)`
+
 3.  `heart_rate` - provides information on the clients' heart rates as recorded
-    by the trackers.\n The columns in this dataframe include;
-    `r colnames(heart_rate)`
+    by the trackers.
+
+    The columns in this dataframe include; `r colnames(heart_rate)`
+
 4.  `weight_log` - provides information about clients' weights and body mass
-    index. \n The columns in this dataframe include; `r colnames(weight_log)`
+    index.
+
+    The columns in this dataframe include; `r colnames(weight_log)`
 
 ```{r, eval=FALSE}
 glimpse(daily_activity)
@@ -539,7 +547,7 @@ plot_grid(h1,i1, labels = "AUTO")
 
 --------------------------------------------------------------------------------
 
-### inspect the three outliers
+### Inspect the outliers
 
 ```{r}
 outliers <- daily_activity_ext %>% filter(TotalDistance > 25) %>% select(Id) %>% group_by(Id) %>% count()
@@ -619,7 +627,7 @@ plot(daily_dend_col_3)
 We are going to go with the 2 group cluster (on the left) as having a third
 cluster with only one client does not make much sense.
 
-### 5. Assign our data with their respective clusters
+### 5. assign our data with their respective clusters
 
 ```{r}
 cut_complete <- cutree(hclust_complete, k = 2)
@@ -627,7 +635,7 @@ daily_activity_cl <- daily_activity_clus %>%
   mutate(cluster = as.factor(cut_complete))
 ```
 
-### 6. Compute general stats for each cluster
+### 6. compute general stats for each cluster
 
 ```{r}
 datatable(daily_activity_cl %>% 
@@ -707,6 +715,7 @@ Lets consolidate all our key takeaways
 -   we might need store the IDs in case we will need them for future analysis or
     for a possible reward incentive
 -   now that we have our customers segmented into two definitive clusters
-    ("active" and "less active")
+    ("active" and "less active"), We can derive our targeted marketing
+    strategies from the above key points and apply to the most relevant cluster!
 
 --------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ tags:
 - Data Mining
 - E.D.A
 - Data Analysis
-- Unguided project
+- Guided project
 - R programming
 output:
   blogdown::html_page:
@@ -20,7 +20,7 @@ draft: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
+knitr::opts_chunk$set(fig.align = 'center', echo = FALSE, collapse = TRUE)
 ```
 
 ## Sentiment Analysis

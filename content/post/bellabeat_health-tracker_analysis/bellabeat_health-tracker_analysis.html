@@ -4,13 +4,13 @@ date: 2022-01-23T12:43:54+03:00
 draft: false
 author: "Peter Boshe"
 categories: ["Socio-eco Welfare"]
-tags: ["E.D.A",  "Unguided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining"]
+tags: ["E.D.A",  "Unguided Project", "Un-supervised learning", "Cluster Analysis", "Data Mining", "Data Analysis"]
 output:
   blogdown::html_page:
     toc: true
     toc_depth: 4
 images: []
-summary: "Within this case study we are going to dive into wearable-tech health monitoring data.  We are to derive key insights from our data and perform customer segmentation to group the customers with respect to their user data behavior for targeted marketing strategies "
+summary: "Within this case study, We are going to dive into wearable-tech health data. We are to derive key insights from our data and perform Customer Segmentation. Hence, grouping the customers with respect to their user data behavior for targeted marketing strategies "
 editor_options: 
   markdown: 
     wrap: 80
@@ -29,10 +29,12 @@ editor_options:
 
 <div id="TOC">
 <ul>
-<li><a href="#scenario">Scenario</a></li>
+<li><a href="#scenario">Scenario</a>
+<ul>
 <li><a href="#stakeholders-and-products">Stakeholders and products</a></li>
 <li><a href="#about-the-company">About the company</a></li>
 <li><a href="#ask">Ask</a></li>
+</ul></li>
 <li><a href="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a>
 <ul>
 <li><a href="#our-data">1. Our data</a></li>
@@ -43,7 +45,7 @@ editor_options:
 <li><a href="#box-plots">box plots</a></li>
 <li><a href="#time-frame-bar-plots">time-frame bar plots</a></li>
 </ul></li>
-<li><a href="#inspect-the-three-outliers">inspect the three outliers</a></li>
+<li><a href="#inspect-the-outliers">Inspect the outliers</a></li>
 </ul></li>
 <li><a href="#cluster-analysis">Cluster Analysis</a>
 <ul>
@@ -51,8 +53,8 @@ editor_options:
 <li><a href="#scale-our-variables">2. scale our variables</a></li>
 <li><a href="#perform-clustering">3. perform clustering</a></li>
 <li><a href="#split-our-data-and-visualize">4. split our data and visualize</a></li>
-<li><a href="#assign-our-data-with-their-respective-clusters">5. Assign our data with their respective clusters</a></li>
-<li><a href="#compute-general-stats-for-each-cluster">6. Compute general stats for each cluster</a></li>
+<li><a href="#assign-our-data-with-their-respective-clusters">5. assign our data with their respective clusters</a></li>
+<li><a href="#compute-general-stats-for-each-cluster">6. compute general stats for each cluster</a></li>
 </ul></li>
 <li><a href="#combined-key-findings">Combined Key Findings</a></li>
 </ul>
@@ -61,9 +63,8 @@ editor_options:
 <hr />
 <div id="scenario" class="section level2">
 <h2>Scenario</h2>
-</div>
-<div id="stakeholders-and-products" class="section level2">
-<h2>Stakeholders and products</h2>
+<div id="stakeholders-and-products" class="section level3">
+<h3>Stakeholders and products</h3>
 <p><strong>Stakeholders</strong></p>
 <ul>
 <li><strong>Urška Sršen</strong>: Bellabeat’s cofounder and Chief Creative Oﬃcer</li>
@@ -99,8 +100,8 @@ personalized guidance on nutrition, activity, sleep, health and beauty, and
 mindfulness based on their lifestyle and goals.</li>
 </ul>
 </div>
-<div id="about-the-company" class="section level2">
-<h2>About the company</h2>
+<div id="about-the-company" class="section level3">
+<h3>About the company</h3>
 <p><img src="logo.png" style="float: right;" /></p>
 <p>Sršen knows that an analysis of Bellabeat’s available consumer data would reveal
 more opportunities for growth. She has asked the marketing analytics team to
@@ -109,8 +110,8 @@ gain insight into how people are already using their smart devices. Then, using
 this information, she would like high-level recommendations for how these trends
 can inform Bellabeat marketing strategy.</p>
 </div>
-<div id="ask" class="section level2">
-<h2>Ask</h2>
+<div id="ask" class="section level3">
+<h3>Ask</h3>
 <p>Sršen asks you to analyze smart device usage data in order to gain insight into
 how consumers use non-Bellabeat smart devices. She then wants you to select one
 Bellabeat product to apply these insights to in your presentation. These
@@ -122,6 +123,7 @@ questions will guide your analysis:</p>
 </ol>
 <hr />
 </div>
+</div>
 <div id="exploratory-data-analysis-eda" class="section level2">
 <h2>Exploratory Data Analysis (EDA)</h2>
 <hr />
@@ -130,17 +132,18 @@ questions will guide your analysis:</p>
 <p>From the datasets provided, I have selected the datasets that would bring most
 insights to important metrics for a healthcare application, which are;</p>
 <ol style="list-style-type: decimal">
-<li><code>daily_activity</code> - provides information about their daily activities (during
-the day time).The columns in this dataframe include;
-Id, ActivityDate, TotalSteps, TotalDistance, TrackerDistance, LoggedActivitiesDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, SedentaryActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, SedentaryMinutes, Calories</li>
-<li><code>sleep_day</code> - provides their night time information, may be crucial to
-consider sleeping behavior. The columns in this dataframe include;
-Id, SleepDay, TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed</li>
-<li><code>heart_rate</code> - provides information on the clients’ heart rates as recorded
-by the trackers.The columns in this dataframe include;
-Id, Time, Value</li>
-<li><code>weight_log</code> - provides information about clients’ weights and body mass
-index. The columns in this dataframe include; Id, Date, WeightKg, WeightPounds, Fat, BMI, IsManualReport, LogId</li>
+<li><p><code>daily_activity</code> - provides information about their daily activities (during
+the day time).</p>
+<p>The columns in this dataframe include; Id, ActivityDate, TotalSteps, TotalDistance, TrackerDistance, LoggedActivitiesDistance, VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, SedentaryActiveDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, SedentaryMinutes, Calories</p></li>
+<li><p><code>sleep_day</code> - provides their night time information, may be crucial to
+consider sleeping behavior.</p>
+<p>The columns in this dataframe include; Id, SleepDay, TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed</p></li>
+<li><p><code>heart_rate</code> - provides information on the clients’ heart rates as recorded
+by the trackers.</p>
+<p>The columns in this dataframe include; Id, Time, Value</p></li>
+<li><p><code>weight_log</code> - provides information about clients’ weights and body mass
+index.</p>
+<p>The columns in this dataframe include; Id, Date, WeightKg, WeightPounds, Fat, BMI, IsManualReport, LogId</p></li>
 </ol>
 <p><strong>Note</strong>;</p>
 <ul>
@@ -334,8 +337,8 @@ us any much more.</p></li>
 </div>
 </div>
 </div>
-<div id="inspect-the-three-outliers" class="section level3">
-<h3>inspect the three outliers</h3>
+<div id="inspect-the-outliers" class="section level3">
+<h3>Inspect the outliers</h3>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2"],[1624580081,8877689391],[1,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Id<\/th>\n      <th>n<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <div id="key-takeaways-5" class="section level5">
@@ -379,10 +382,10 @@ data(ref. the multimodal distributions derived from the density plots)</li>
 cluster with only one client does not make much sense.</p>
 </div>
 <div id="assign-our-data-with-their-respective-clusters" class="section level3">
-<h3>5. Assign our data with their respective clusters</h3>
+<h3>5. assign our data with their respective clusters</h3>
 </div>
 <div id="compute-general-stats-for-each-cluster" class="section level3">
-<h3>6. Compute general stats for each cluster</h3>
+<h3>6. compute general stats for each cluster</h3>
 <div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","vertical":false,"data":[["1","2"],["1","2"],[9191.5,3726.5],[6.59500002861023,2.42499995231629],[0.974999994039538,0],[13.75,0],[774,1278],[2243,1990]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>cluster<\/th>\n      <th>TotalSteps<\/th>\n      <th>TrackerDistance<\/th>\n      <th>VeryActiveDistance<\/th>\n      <th>VeryActiveMinutes<\/th>\n      <th>SedentaryMinutes<\/th>\n      <th>Calories<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>We can see contrasting behavior between cluster 1 and cluster 2, for instance;</p>
@@ -451,7 +454,8 @@ candidates as previously assumed)</li>
 <li>we might need store the IDs in case we will need them for future analysis or
 for a possible reward incentive</li>
 <li>now that we have our customers segmented into two definitive clusters
-(“active” and “less active”)</li>
+(“active” and “less active”), We can derive our targeted marketing
+strategies from the above key points and apply to the most relevant cluster!</li>
 </ul>
 <hr />
 </div>

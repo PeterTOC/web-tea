@@ -57,7 +57,7 @@ In this notebook, you will visualize COVID-19 data from the first several weeks 
 
 </p>
 
-<div class="toggle"><button>Code</button>
+
 ```{r data, warning=FALSE, message=FALSE}
 # Load the readr, ggplot2, and dplyr packages
 library(readr)
@@ -69,7 +69,7 @@ library(DT)
 confirmed_cases_worldwide <- read_csv("~/Portfolio/web-tea/content/post/2021-09-18-covid-outbreak-analysis2-rmd/datasets/confirmed_cases_worldwide.csv")
 datatable(confirmed_cases_worldwide)
 ```
-</div>
+
 
 
 
@@ -81,7 +81,7 @@ The table above shows the cumulative confirmed cases of COVID-19 worldwide by da
 
 </p>
 
-<div class="toggle"><button>Code</button>
+
 ```{r confirmed cases,message=FALSE}
 # Draw a line plot of cumulative cases vs. date
 # Label the y-axis
@@ -89,7 +89,7 @@ ggplot(confirmed_cases_worldwide, aes(x = date, y = cum_cases)) +
      geom_line() +
   ylab("Cumulative confirmed cases")
 ```
-</div>
+
 
 
 ## 3. China compared to the rest of the world
@@ -113,7 +113,7 @@ Early on in the outbreak, the COVID-19 cases were primarily centered in China. L
 </p>
 
 
-<button type="button" class="btn btn-default">
+
 ```{r china vs world,message=FALSE}
 # Read in datasets/confirmed_cases_china_vs_world.csv
 confirmed_cases_china_vs_world <- read_csv("datasets/confirmed_cases_china_vs_world.csv")
@@ -127,7 +127,7 @@ plt_cum_confirmed_cases_china_vs_world <- ggplot(confirmed_cases_china_vs_world)
 # See the plot
 plt_cum_confirmed_cases_china_vs_world
 ```
-</button>
+
 
 
 ## 4. Let's annotate!
@@ -150,7 +150,7 @@ By annotating events like this, we can better interpret changes in the plot.
 
 </p>
 
-<button type="button" class="btn btn-default">Code</button>
+
 ```{r significant events,message=FALSE}
 who_events <- tribble(
   ~ date, ~ event,
@@ -183,7 +183,7 @@ There is a clear surge of cases around February 13, 2020, with the reporting cha
 </p>
 
 
-<button type="button" class="btn btn-default">
+
 ```{r, message=FALSE}
 # Filter for China, from Feb 15
 china_after_feb15 <- confirmed_cases_china_vs_world %>%
@@ -195,7 +195,7 @@ ggplot(china_after_feb15, aes(date,cum_cases)) +
   geom_smooth(method = "lm", se = FALSE) +
   ylab("Cumulative confirmed cases")
 ```
-</button>
+
 
 
 
@@ -285,7 +285,6 @@ Finally, congratulations on getting to the last step! If you would like to conti
 </p>
 
 
-<div class="fold o">
 ```{r, message=FALSE}
 # Read in the dataset from datasets/confirmed_cases_top7_outside_china.csv
 confirmed_cases_top7_outside_china <- read_csv("datasets/confirmed_cases_top7_outside_china.csv")
@@ -296,7 +295,6 @@ glimpse(confirmed_cases_top7_outside_china)
 ggplot(confirmed_cases_top7_outside_china, aes(date, cum_cases, color = country))+
     geom_line()
 ```
-</div>
 
 
 

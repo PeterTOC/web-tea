@@ -14,16 +14,17 @@ draft: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE)
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, echo = FALSE)
 ```
 
 This is a racing bar chart of the championships and the respective teams that have won over the past half century(acc. to [Data](http://www.rsssf.com/tablest/tanzchamp.html)),
 
 Would you have guessed that less than 10 teams (only 9 teams) have won since the conception of the cup? `r emo::ji("surprised")`
 
-## setting up the environment
+
 
 ```{r environment, warning=FALSE, message=FALSE}
+## setting up the environment
 # clear environment 
 rm(list = ls())
 
@@ -41,9 +42,10 @@ df <- read_excel("Tanzania mainland championships.xlsx")
 
 ```
 
-## pre-processing
+
 
 ```{r pre-processing}
+## pre-processing
 df2 <- df %>% 
   mutate(Cup = 1) %>% 
   complete(Team, Year) %>% 
@@ -63,18 +65,23 @@ ranked_by_year
 ```
 
 ```{r}
-my_theme <- theme_classic(base_family = "Times") +
+my_theme <- theme_classic(base_size = 22, 
+                          base_family = "Times") +
   theme(axis.text.y = element_blank()) +
   theme(axis.ticks.y = element_blank()) +
-  theme(axis.line.y = element_blank()) +
-  theme(legend.background = element_rect(fill = "gainsboro")) +
-  theme(plot.background = element_rect(fill = "gainsboro")) +
-  theme(panel.background = element_rect(fill = "gainsboro"))
+  theme(axis.line.y = element_blank()) 
+  # theme(legend.background = element_rect(fill = "gainsboro")) +
+  # theme(plot.background = element_rect(fill = "gainsboro")) +
+  # theme(panel.background = element_rect(fill = "gainsboro"))
 ```
 
-### Static Plot
+
 
 ```{r}
+### Static Plot
+values <- c("Azam FC" = "blue", "Young Africans SC" = "yellow", "Simba SC" = "red", "Hybrid SC" = "brown", "Cosmopolitan" = "lightblue", "Coastal Union" = "black", "Tukuyu Stars" = "orange", "Mtibwa Sugar" = "darkgreen")
+
+
 ranked_by_year %>% 
    ggplot(
   aes(xmin = 0,
@@ -96,6 +103,7 @@ ranked_by_year %>%
             position = "identity",
             size = 2.5) +
   scale_y_reverse() +
+  scale_fill_manual("legend", values = values) +
   # scale_x_continuous(
   #   limits = c(-39, 27),
   #   breaks = 1:30) +
@@ -109,9 +117,10 @@ ranked_by_year %>%
 my_plot
 ```
 
-## Make Gif
+
 
 ```{r}
+## Make Gif
 my_plot +  
   facet_null() +  
   scale_x_continuous(
@@ -122,9 +131,7 @@ my_plot +
             aes(label = as.character(Year)),  
             size = 20, col = "grey18") +  
   aes(group = Team) +  
-  transition_time(Year) +
-  enter_fade() +
-  exit_fade() -> p
+  transition_time(Year) -> p
 
 
 
