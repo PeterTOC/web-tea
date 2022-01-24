@@ -2,8 +2,10 @@
 <html lang="{{ .Site.LanguageCode | default "en-us" }}">
 <head>
     {{ partial "head.html" . }}
+    {{ partial "googleTagManagerHead.html" . }}
 </head>
 <body>
+    {{ partial "googleTagManagerBody.html" . }}
     {{ partial "header.html" . }}
 
     {{ block "main" . }}{{ end }}
