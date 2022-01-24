@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode | default "en-us" }}">
 <head>
-    {{ partial "head.html" . }}
-    {{- if not .Site.IsServer }}
-		    {{ partial "google_analytics.html" . }}
+    {{ if .Site.Params.GoogleAnalyticsID }}
+		    {{ partial "analytics-gtag.html" . }}
     	{{- end }}
+    {{ partial "head.html" . }}
+    
 </head>
 <body>
     {{ partial "header.html" . }}
