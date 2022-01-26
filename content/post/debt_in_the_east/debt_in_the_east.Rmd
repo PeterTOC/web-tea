@@ -1,0 +1,86 @@
+---
+title: "Debt in the East"
+date: 2022-01-25T19:49:17+03:00
+draft: true
+author: "Peter Boshe"
+categories: []
+tags: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 2
+images: []
+summary: ""
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, echo = FALSE, message = FALSE)
+```
+
+
+
+
+```{r}
+# clear the environment
+rm(list = ls())
+# set up the environment
+library(tidyverse)
+library(lubridate)
+library(DT)
+library(janitor)
+# load our dataset
+data <- read_csv("/home/pedro/Portfolio/web-tea/content/post/debt_in_the_east/data.csv")
+metadata <- read_csv("/home/pedro/Portfolio/web-tea/content/post/debt_in_the_east/metadata.csv")
+
+```
+## Our data 
+Our data was downloaded from the international debt statistics which was last updated on the 14th of January at the time of download.
+
+We have data on four countries in East Africa to Explore and compare some debt metrics from 1970-2020. The four countries are;
+
++ Kenya
++ Uganda
++ Rwanda
++ Tanzania
+
+
+```{r}
+#we now wrangle our data
+data %>%
+  group_by(`Series Name`) %>% 
+  pivot_longer(cols = contains('YR'), names_to = "year") %>% 
+  mutate(year = str_match(year, '^\\d{4}')) %>%
+  select(year,
+         `Country Name`, 
+         `Series Name`,
+         value) %>%
+  clean_names() -> df
+datatable(df)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+```
+

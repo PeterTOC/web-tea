@@ -37,6 +37,7 @@ author = "authors"
 [params]
   author = "Peter Boshe"
   description = "This is my Data Science Portfolio, <br> Look around."
+  images = ['/images/webteatheme3.png']
   homepageImage = "/images/webteatheme3.png"
   dateFormat = "January 2, 2006"
   share = true
