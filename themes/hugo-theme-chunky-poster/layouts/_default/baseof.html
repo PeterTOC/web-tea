@@ -5,6 +5,7 @@
 <head>
     {{ partial "head.html" . }}
     {{ partial "googleTagManagerHead.html" . }}
+    {{ partial "opengraph.html" . }}
 </head>
 <body>
     {{ partial "googleTagManagerBody.html" . }}
@@ -16,5 +17,6 @@
     {{ partial "foot.html" . }}
 
     {{ template "_internal/google_analytics.html" . }}
+    {{ template "_internal/opengraph.html" . }}
 </body>
 </html>
