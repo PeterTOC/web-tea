@@ -8,6 +8,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 2
+    code_download: true
 images: []
 summary: "This is a racing bar chart of the male football championships and the respective teams that have won over the past half century"
 draft: false
@@ -69,7 +70,8 @@ my_theme <- theme_classic(base_size = 22,
                           base_family = "Times") +
   theme(axis.text.y = element_blank()) +
   theme(axis.ticks.y = element_blank()) +
-  theme(axis.line.y = element_blank()) 
+  theme(axis.line.y = element_blank()) +
+  theme(legend.position = "none")
   # theme(legend.background = element_rect(fill = "gainsboro")) +
   # theme(plot.background = element_rect(fill = "gainsboro")) +
   # theme(panel.background = element_rect(fill = "gainsboro"))
@@ -101,7 +103,7 @@ ranked_by_year %>%
                   label = round(count)),
             color = "black",
             position = "identity",
-            size = 2.5) +
+            size = 3.5) +
   scale_y_reverse() +
   scale_fill_manual("legend", values = values) +
   # scale_x_continuous(
@@ -135,6 +137,6 @@ my_plot +
 
 
 
-  animate(p, fps = 4, duration = 27, width = 800, height = 600)
+  animate(p, fps = 2, duration = 28, width = 800, height = 600)
   
 ```
