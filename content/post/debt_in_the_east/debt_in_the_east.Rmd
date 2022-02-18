@@ -27,7 +27,6 @@ library(janitor)
 library(naniar)
 library(ggthemes)
 library(ggdark)
-library(tidylog)
 # load our dataset
 # data <- read_csv("/home/pedro/Portfolio/web-tea/content/post/debt_in_the_east/data.csv")
 # metadata <- read_csv("/home/pedro/Portfolio/web-tea/content/post/debt_in_the_east/metadata.csv")
