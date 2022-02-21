@@ -8,8 +8,9 @@
     {{ partial "googleTagManagerHead.html" . }}
 </head>
 <body>
-    {{ partial "googleTagManagerBody.html" . }}
     {{ partial "header.html" . }}
+    
+    {{ partial "googleTagManagerBody.html" . }}
     
     {{ block "main" . }}{{ end }}
 

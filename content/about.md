@@ -22,6 +22,7 @@ I am a :computer: **Data Analyst** and an **R** fanatic.
 
 ## 🌱 I’m currently learning more on;
 
+- Julia Programming
 - Statistical Inference
 - Practical/Applied Machine Learning
 
