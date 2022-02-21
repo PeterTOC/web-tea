@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://peterboshe.netlify.app/"
 title = "Peter Boshe"
 description = "This is Peter Boshe's Data Science Portfolio, Look Around."
 copyright = "Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved."
