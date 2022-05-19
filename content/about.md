@@ -3,7 +3,7 @@ author: Peter Boshe
 date: "2021-09-18"
 description: Brief Description of Peter's Scope in Data Science
 title: About
-images: ["/images/cover_shot.jpeg"]
+images: []
 ---
 
 ![](/images/cover_shot.jpeg)

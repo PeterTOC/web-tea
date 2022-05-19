@@ -5,6 +5,7 @@ author: "Peter Boshe"
 date: 2021-05-01T11:00:59-04:00
 categories: ["Socio-eco Welfare"]
 tags: ["DataViz", "Guided Project"]
+images: ["/images/selection_criteria.png"]
 summary: "This project includes charts that were used in a research paper on 'Data Protection Regulation in Africa'"
 ---
 

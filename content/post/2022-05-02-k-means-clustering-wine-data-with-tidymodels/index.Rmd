@@ -16,7 +16,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 5
-images: []
+images: ["/images/wine_clusters.jpeg"]
 summary: What a fun weekend dataset `r emo::ji("smile")` <br> In this clustering project, I explore the strengths and weakness of two methods of dimensionality reduction when it comes to visualizing clusters.
 draft: false
 ---
@@ -390,8 +390,9 @@ umap_clusterings <- umap_kclusts |>
 
   ggplot(umap_assignments, aes(UMAP1, UMAP2, color = .cluster)) +
   geom_point(alpha = 0.4) +
-  facet_wrap(~k) -> p1
-p1
+  facet_wrap(~k) 
+
+ggsave("../../images/wine_clusters.jpeg")
 
 ```
 

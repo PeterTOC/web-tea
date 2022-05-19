@@ -8,7 +8,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 5
-images: []
+images: ["/images/east_africa_debt.png"]
 summary: "In this Article we explore the trends of debt and major events in Burundi, Kenya, Rwanda, Tanzania,  and Uganda."
 ---
 
@@ -237,7 +237,7 @@ df2 %>%
   annotate("rect", xmin = "2011", xmax = "2012", ymin = -Inf, ymax = Inf,
               alpha = .2, fill = "grey") 
 
-
+ggsave("../../images/east_africa_debt.png")
 
 ```
 
