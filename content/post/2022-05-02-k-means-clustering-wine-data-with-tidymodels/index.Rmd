@@ -17,7 +17,7 @@ output:
     toc: true
     toc_depth: 5
 images: ["/images/wine_clusters.jpeg"]
-summary: What a fun weekend dataset `r emo::ji("smile")` <br> In this clustering project, I explore the strengths and weakness of two methods of dimensionality reduction when it comes to visualizing clusters.
+summary: What a fun weekend dataset `r emo::ji("smile")` <br> In this clustering project, I explore the strengths and weaknesses of two methods of dimensionality reduction when it comes to visualizing clusters.
 draft: false
 ---
 
