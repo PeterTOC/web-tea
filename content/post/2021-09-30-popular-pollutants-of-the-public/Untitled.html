@@ -5,7 +5,6 @@ title: Popular Polutants of the Public `r emo::ji("litter")
 output: html_document 
 ---
 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
 <link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
 <script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
@@ -166,7 +165,8 @@ tz_manufacturer_country &lt;- tz_data %&gt;%
   summarise(total_bottles = sum(bottle_count)) %&gt;%
   arrange(desc(total_bottles)) %&gt;%
   head(20)
-## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using the `.groups` argument.
+## `summarise()` has grouped output by &#39;manufacturer_name&#39;. You can override using
+## the `.groups` argument.
 
 
 datatable(tz_manufacturer_country)</code></pre>
@@ -429,7 +429,8 @@ data %&gt;%
   replace_na(list(total_bottles = 0)) %&gt;%
   ggplot(aes(batch, total_bottles, color = scan_country)) +
   geom_line(aes(group = scan_country))
-## `summarise()` has grouped output by &#39;scan_country&#39;. You can override using the `.groups` argument.</code></pre>
+## `summarise()` has grouped output by &#39;scan_country&#39;. You can override using the
+## `.groups` argument.</code></pre>
 <p><img src="/post/2021-09-30-popular-pollutants-of-the-public/Untitled_files/figure-html/trend_per_nation-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>

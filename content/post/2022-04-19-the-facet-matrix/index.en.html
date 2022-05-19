@@ -1,0 +1,122 @@
+---
+title: The Facet Matrix
+author: Peter Boshe
+date: '2022-04-19'
+slug: []
+categories:
+  - Educational
+  - R
+tags:
+  - Data Analysis
+  - Data Mining
+  - E.D.A
+  - R programming
+images: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 4
+summary: "This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why."
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/htmlwidgets/htmlwidgets.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/datatables-binding/datatables.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/jquery/jquery-3.6.0.min.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="{{< blogdown/postref >}}index.en_files/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/crosstalk/css/crosstalk.min.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/crosstalk/js/crosstalk.min.js"></script>
+
+<div id="TOC">
+<ul>
+<li><a href="#the-data">The Data</a></li>
+</ul>
+</div>
+
+<p>This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across <code>ggforce</code>. This <code>ggplot</code> complimentary package written by the data imaginist, <a href="https://www.data-imaginist.com/about">Thomas Lin Pedersen</a> is now my newest addition to my data science toolbox, and here’s why.</p>
+<p>The package itself has many different and useful functions but the specific function that caught my attention is the <code>facet_matrix()</code>, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one’s needs.</p>
+<div id="the-data" class="section level3">
+<h3>The Data</h3>
+<p>To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.</p>
+<div id="description-of-the-dataset" class="section level5">
+<h5>Description of the dataset</h5>
+<p>Format
+A data frame with 234 rows and 11 variables:</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>column name</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>manufacturer</td>
+<td>manufacturer name</td>
+</tr>
+<tr class="even">
+<td>displ</td>
+<td>engine displacement, in litres</td>
+</tr>
+<tr class="odd">
+<td>year</td>
+<td>year of manufacture</td>
+</tr>
+<tr class="even">
+<td>cyl</td>
+<td>number of cylinders</td>
+</tr>
+<tr class="odd">
+<td>trans</td>
+<td>type of transmission</td>
+</tr>
+<tr class="even">
+<td>drv</td>
+<td>the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd</td>
+</tr>
+<tr class="odd">
+<td>cty</td>
+<td>city miles per gallon</td>
+</tr>
+<tr class="even">
+<td>hwy</td>
+<td>highway miles per gallon</td>
+</tr>
+<tr class="odd">
+<td>fl</td>
+<td>fuel type</td>
+</tr>
+<tr class="even">
+<td>class</td>
+<td>“type” of car</td>
+</tr>
+</tbody>
+</table>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["audi","audi","audi","audi","audi","audi"],["a4","a4","a4","a4","a4","a4"],[1.8,1.8,2,2,2.8,2.8],[1999,1999,2008,2008,1999,1999],[4,4,4,4,6,6],["auto(l5)","manual(m5)","manual(m6)","auto(av)","auto(l5)","manual(m5)"],["f","f","f","f","f","f"],[18,21,20,21,16,18],[29,29,31,30,26,26],["p","p","p","p","p","p"],["compact","compact","compact","compact","compact","compact"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer<\/th>\n      <th>model<\/th>\n      <th>displ<\/th>\n      <th>year<\/th>\n      <th>cyl<\/th>\n      <th>trans<\/th>\n      <th>drv<\/th>\n      <th>cty<\/th>\n      <th>hwy<\/th>\n      <th>fl<\/th>\n      <th>class<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre><code>## Rows: 234
+## Columns: 11
+## $ manufacturer &lt;chr&gt; &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;audi&quot;, &quot;…
+## $ model        &lt;chr&gt; &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4&quot;, &quot;a4 quattro&quot;, &quot;…
+## $ displ        &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0, 2.0, 2.…
+## $ year         &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1999, 200…
+## $ cyl          &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, 8, …
+## $ trans        &lt;chr&gt; &quot;auto(l5)&quot;, &quot;manual(m5)&quot;, &quot;manual(m6)&quot;, &quot;auto(av)&quot;, &quot;auto…
+## $ drv          &lt;chr&gt; &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;f&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4&quot;, &quot;4…
+## $ cty          &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17, 1…
+## $ hwy          &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 25, 25, 2…
+## $ fl           &lt;chr&gt; &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p&quot;, &quot;p…
+## $ class        &lt;chr&gt; &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;compact&quot;, &quot;c…</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>

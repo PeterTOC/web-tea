@@ -8,6 +8,7 @@ categories:
 tags:
   - Guided Project
   - DataViz
+draft: true
 output: 
   html_document:
     code_folding: hide

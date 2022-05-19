@@ -1,0 +1,157 @@
+---
+title: The Facet Matrix
+author: Peter Boshe
+date: '2022-04-19'
+slug: []
+categories:
+  - Educational
+  - R
+tags:
+  - Data Analysis
+  - Data Mining
+  - E.D.A
+  - R programming
+images: []
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 4
+summary: "This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why."
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler', echo = FALSE)
+thematic::thematic_rmd(bg = '#F6ECDF', fg = 'black', accent = '#9EF702')
+# auto_config_set()
+# thematic::thematic_on()
+```
+
+ 
+```{r environment, warning=FALSE,message=FALSE}
+library(thematic)
+library(tidyverse)
+library(ggforce)
+library(DT)
+
+
+# config <- auto_config(
+#   bg = NULL,
+#   fg = NULL,
+#   accent = NULL,
+#   font = NULL,
+#   priority = c("shiny", "config", "bslib", "rstudio")
+# )
+# auto_config_set(config)
+# thematic::thematic_on()
+# auto_config_get()
+```
+ 
+
+
+
+ This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why.
+ 
+ The package itself has many different and useful functions but the specific function that caught my attention is the `facet_matrix()`, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one's needs.
+
+### The Data
+
+ To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.
+
+##### Description of the dataset
+
+Format
+A data frame with 234 rows and 11 variables:
+
+|column name | description |
+| --- | --- |
+| manufacturer | manufacturer name |
+| displ | engine displacement, in litres |
+| year | year of manufacture |
+| cyl | number of cylinders |
+| trans | type of transmission |
+| drv | the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd |
+| cty | city miles per gallon |
+| hwy | highway miles per gallon |
+| fl | fuel type |
+| class | "type" of car |
+
+
+
+ 
+```{r data}
+datatable(head(mpg))
+```
+
+```{r}
+glimpse(mpg)
+```
+
+```{r}
+# Standard use:
+ggplot(mpg) +
+  geom_point(aes(x = .panel_x, y = .panel_y)) +
+  facet_matrix(vars(displ, cty, hwy))
+```
+
+
+```{r}
+# Mix discrete and continuous columns. Use geom_autopoint for scale-based jitter
+ggplot(mpg) +
+  geom_autopoint() +
+  facet_matrix(vars(drv:fl))
+```
+
+```{r}
+# Have a special diagonal layer
+ggplot(mpg) +
+  geom_autopoint() +
+  geom_autodensity() +
+  facet_matrix(vars(drv:fl), layer.diag = 2)
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+ggplot(mpg) +
+  geom_autopoint() +
+  geom_autodensity(aes(color = drv, fill = drv), alpha = 0.3) +
+  geom_density2d(aes(x = .panel_x, y = .panel_y)) +
+  geom_boxplot(aes(x=.panel_x, y=.panel_y, group = .panel_x)) +
+  # geom_bin2d(aes(x = .panel_x, y = .panel_y)) +
+  facet_matrix(vars(displ,drv:fl), layer.lower = 1, layer.diag = 2,
+               layer.continuous = -4, layer.discrete = -3, layer.mixed = -3)
+
+
+```
+
+```{r}
+ggplot(mpg) +
+  geom_autopoint() +
+  geom_autodensity(aes(color = drv), alpha = 0.3) +
+  geom_density2d(aes(x = .panel_x, y = .panel_y)) +
+  geom_bin2d(aes(x = .panel_x, y = .panel_y, group = .panel_x)) +
+  facet_matrix(vars(displ,drv:fl), layer.lower = 1, layer.diag = 2,
+               layer.continuous = -4, layer.discrete = -3, layer.mixed = -3)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

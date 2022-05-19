@@ -1,5 +1,5 @@
 ---
-title: Dealing with missing data in R; Best Practices
+title: Dealing with missing data in R ; Best Practices
 author: "Peter Boshe"
 date: '2021-09-25'
 slug: []
@@ -13,7 +13,20 @@ editor_options:
     wrap: 90
 ---
 
-## Dealing with missing values :mag:
+
+###### Table of Contents
+
+1. [Some important functions for exploring](#exploring_functions)
+2. [How to handle Implicitly missing data](#implicit_missing)
+3. [How to handle Explicitly missing data](#explicit_missing)
+4. [Missing dependancies](#dependancies)
+5. [Imputing data workflow](#imputation)<br>
+    5a. [Performing imputations](#perform_imputation)<br>
+    5b. [Imputation model comparisons](#compare_imputation)
+
+
+
+### 1. Some important functions for exploring :mag: <a name="exploring_functions"></a>
 
 -   `any_na()` returns TRUE if any value is missing
 -   `are_na()` returns a logical vector indicating missing values
@@ -23,13 +36,10 @@ editor_options:
 -   `pct_miss()` returns the percentage of missing values
 -   `n_complete` returns the number of complete values
 
-Note: -NULL,NaN and Inf values are not detected by these methods, only NA
+Note
+: NULL,NaN and Inf values are not detected by these methods, only NA
 
--   NA \| TRUE = TRUE
--   NA \| FALSE = NA
--   NaN + NA = NaN
--   NA + NA = NA
--   NA + 1 = NA
+
 
 `naniar` package holds functions to help us create dataframe summaries of the missing data
 
@@ -49,7 +59,7 @@ Note: -NULL,NaN and Inf values are not detected by these methods, only NA
 -   `replace_with_na()`, `replace_with_na_at()`, `replace_with_na_if()`,
 -   `replace_with_na_all()` functions to have all NAs 'uniform'.
 
-### Visualization
+#### Visualization
 
 -   `vis_miss` from `visdat` package for an overview
 -   `gg_miss_var` can be faceted by one variable
@@ -61,23 +71,19 @@ Note: -NULL,NaN and Inf values are not detected by these methods, only NA
 -   combinations of missing values that co-occur
 -   `gg_miss_span` , supports faceting
 
-## How to handle Implicitly missing data
+### 2a. How to handle Implicitly missing data <a name="implicit_missing"></a>
 
-Here we are dealing with missing data that is missing in the data (confusing, right?), in
+Here we are dealing with missing data that is missing in the data :ghost: (confusing, right?), in
 other words, it turns the implicit missing variables into explicit missing variables. use
 `tidyr`s `complete()` function, with the columns you want unique combinations of.
 
-```{r remedy001,  tidy = 'styler'}
 
-data %>% 
-tidyr::complete(col1,col2)
+### 2. How to handle Explicitly missing data <a name="explicit_missing"></a>
 
-```
+-   an important function is the `fill()`, also from the `tidyr` package. 
 
--   another important function is the `fill()`, also from the `tidyr` package. last
-    observation carried forward (LOCF).
 
-## Missing Dependancies
+### 3. Missing Dependancies <a name="dependancies"></a>
 
 1.  **MCAR** (Missing Completely at Random) \~the nissing data is 'randomly consistent' or
     'consistently random' and you cant describe its trend or cause -Imputation is
@@ -94,7 +100,7 @@ tidyr::complete(col1,col2)
     catch 22, if you will -Data will be biased from both deletion and imptutation
     -Inference can be limited, proceed with caution
 
-### Visualization
+##### Visualization
 
 -   using the function `shadow-bind()` we are able to create a nabular(NA + tabular)
     dataframe that is essential to spot trends associated with missing data, which can be
@@ -106,7 +112,7 @@ tidyr::complete(col1,col2)
 
 -   these two methods can be combined to bring fourth even more insight!!!
 
-## Imputing data workflow
+### 5. Imputing data workflow <a name="imputation"></a>
 
 Just as imputing missing values is to our analysis, we need to also keep track of the
 values that we have imputed, For this we will make use of the same `naniar` package that
@@ -126,13 +132,14 @@ value in a subsequent identifier column
 we can also make use of histograms from the `ggplot2` package to analyse the distribution
 of missingness across each variable.
 
-#### Things to keep track of
+**Things to keep track of**
 
 -   mean
 -   median (boxplots)
 -   spread (scatterplots)
 
-NOTE: when we want to explore the missingness of more than two variables we would first
+Note
+: when we want to explore the missingness of more than two variables we would first
 need to perform some data wrangling and reformat our data table into a longer version with
 variables as values(gather/pivot_longer), this can be assisted with `naniar`s function
 `shadow_long()` then combined with a histogram of the variable values grouped by their
@@ -146,7 +153,7 @@ facet_wrap(~variable)`
 
 ```
 
-## Performing imputations
+#### 5a. Performing imputations <a name="perform_imputation"></a>
 
 Imputing the mean of the present variable is a common bad practise. As this artificially
 increases the mean of your dataset and decreases the variance. And more likely than not,
@@ -176,7 +183,7 @@ following is an example of what a plot of imputation comparisons would look like
 
 </center>
 
-### Imputation model comparisons
+#### 5b. Imputation model comparisons <a name="compare_imputation"></a>
 
 to compare imputation models it is more practical to create the different sets of data
 derived from different imputation models (including one version of the data with all the

@@ -1,0 +1,382 @@
+---
+title: Clustering wine data with Kmeans
+author: Peter Boshe
+date: '2022-05-02'
+slug: []
+categories:
+  - Educational
+  - R
+tags:
+  - Data Analysis
+  - Data Mining
+  - Cluster Analysis
+  - Unguided project
+  - Un-supervised learning
+images: []
+authors: []
+draft: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, echo = FALSE, message = FALSE)
+```
+
+```{r message=FALSE,error=FALSE,echo=FALSE}
+# setup environment
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(skimr)
+library(patchwork)
+library(DT)
+library(gt)
+library(here)
+tidymodels_prefer()
+```
+
+
+
+##### Our dataset
+
+Downloaded from Kaggle, is our unlabelled test dataset on different wines that we are going to perform unsupervised learning on, so as to get a feel of the different clusters in the wine data.
+
+```{r}
+wine <- read_csv(here::here("content/post/2022-05-02-k-means-clustering-wine-data-with-tidymodels/data/Wine.csv"))
+# datatable(wine,options = list(searching = FALSE),class = "display", rownames = FALSE)
+# datatable(skim(wine), options = list(pageLength = 15), class = "display", width = 2000)
+
+```
+
+
+```{r}
+create_dt <- function(x){
+  DT::datatable(x,
+                extensions = 'Buttons',
+                options = list(dom = 'Btrp',   # Blfrtip
+                               buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+                               lengthMenu = list(c(10,25,50,-1),
+                                                 c(10,25,50,"All"))))
+}
+
+create_dt(wine)
+```
+
+
+
+**takeaways from exploration;**
+
+- We do not have any missing data, convenient.
+- We do not have any character vectors which is ideal for clustering, however scaling of the data is needed since the values on the different variables appear to be in significantly different scales.
+
+
+
+```{r}
+# conducting some preprocessing
+wine_df <- wine |> 
+  clean_names() 
+
+wine_rec <- recipe(~., data = wine_df) |>
+  update_role(customer_segment, new_role = "id") |> 
+  step_normalize(all_predictors())
+
+wine_rec |>
+  prep() |>
+  juice() -> scaled_wine
+```
+
+
+##### Kmeans clustering
+
+###### Thou shall not cluster without a number of centers !
+
+
+For k-means clustering a parameter, *k*, is required which denotes the number of centers of clusters the data is to "have", which kind of defeats our purpose of exploration. How do we give a parameter we ourselves do not have?
+
+> `scree plots` to the rescue !!!
+
+- their main purpose is to give us a good starting point on deciding how many clusters we are to assign.
+- achieved by creating a grid of results based on different centers
+- the optimum number of clusters would be found at the 'elbow' of the plot.
+
+
+
+```{r}
+# create the grid with results from k 1 through 9
+
+kclusts <- tibble(k = 1:9) |> 
+  mutate(kclust = map(k, ~ kmeans(scaled_wine, .x)),
+         tidied = map(kclust,tidy),
+         glanced = map(kclust,glance),
+         augmented = map(kclust,augment,scaled_wine))
+```
+
+
+```{r}
+# store in separate datasets
+
+clusters <- kclusts |> 
+  unnest(cols = c(tidied))
+
+assignments <- kclusts |>
+  unnest(cols = c(augmented))
+
+clusterings <- kclusts |> 
+  unnest(cols = c(glanced))
+
+
+```
+
+```{r}
+# the scree plot
+clusterings |> 
+  ggplot(aes(k, tot.withinss)) +
+  geom_line()  +   
+  geom_point()
+
+
+```
+
+ The screeplot(elbow plot) appears to have the elbow we are interested in around *k* = 3. We can start performing the clustering knowing the optimum centers
+ 
+```{r}
+set.seed(1234)
+kclust_df <- kmeans(scaled_wine, centers = 3)
+
+```
+ 
+**The following are some of our results from our kmeans clustering;**
+
+
++ **summary of mean values of our clusters**
+
+```{r}
+# kclust_df |> 
+#   tidy() |> 
+#   # group_by(cluster) |> 
+#   gt() |> 
+#   cols_move_to_start(cluster) |>
+#   tab_spanner(
+#     label = "mean values per cluster",
+#     columns = 1:14
+#   ) |> 
+#   data_color(columns=1:13,
+#                colors = scales::col_numeric(
+#                    palette = as.character(paletteer::paletteer_d(palette = "ggsci::red_material")),
+#                    domain = NULL)
+#                )
+
+kclust_df |>
+  tidy() |>
+  select(-size, -withinss, -customer_segment) |>
+  group_by(cluster) |>
+  pivot_longer(cols = 1:13, names_to = "ingredients") |>
+  pivot_wider(names_from = cluster, values_from = value, names_prefix = "cluster ") |>
+  gt() |>
+  data_color(
+    columns = 2:4,
+    colors = scales::col_numeric(
+      palette = as.character(paletteer::paletteer_d(palette = "ggsci::red_material")),
+      domain = NULL
+    )
+  )
+
+```
+
+
+
+
+
+
+
+
+
++ **single row summary of our clustering**
+
+```{r}
+kclust_df |> 
+  glance() |> 
+  gt()
+```
+
+let's demistify some metrics
+
+> total within sum of squares (tot.withinss)
+: explains the variability *within* groups/clusters of interest
+
+> total between sum of squares (betweenss)
+: explains the variability *between* groups/clusters of interest
+
+
+From our summary of mean values we can see some of the difference in wine content standing out, 
+For instance;
+
++ cluster _ appears to be the cluster with high alcohol, nonflavanoid phenols,ash and malic acid content, while showing low amount of total_phenols, flavanoids
++ cluster _ is almost the polar opposite to cluster _ with high amounts of flavanoid, total_phenols, with low amounts of ash, malic_acid and nonflavanoid_phenols
++ cluster _ has the lowest alcohol value and the highest hue value, although it does not have many standing out values.
+
+
+A wine connoisseur would probably already tell the wine types apart, and that is where domain knowledge comes in handy when it comes to any business problem.
+
+
+```{r}
+# To get the assignments
+wine_cluster <- augment(kclust_df, scaled_wine) |> 
+  mutate(customer_segment = fct_inorder(as.character(customer_segment)))
+```
+
+##### Visualization
+
+Now we may want to see what our clusters look like in the data, but with so many variables(ingredients), a proper representation of most of the data in a 2D plot can only be possible by **dimension reduction**.
+
+> Dimension reduction/Dimensionality reduction
+: is the transformation of data from a high-dimensional space into a low-dimensional space so that the low-dimensional representation retains some meaningful properties of the original data, ideally close to its intrinsic dimension.
+
+The alternative would be to pick the 2 variables that explain the most variation in the data for the x and y axis, which also requires a lot of trial and error.
+
+**So we will explore**;
+
+- 1. linear dimension reduction with PCA
+- 2. non-linear dimension reduction with UMAP
+
+
+
+###### 1. Dimension reduction by PCA
+
+
+```{r}
+pca_rec <- recipe(~., wine_cluster) |>
+  update_role(customer_segment, .cluster, new_role = "id" ) |> 
+  step_pca(all_predictors())
+
+pca_rec |> 
+  prep() |> 
+  juice() -> pca_wine
+
+```
+```{r, echo=FALSE}
+# we got 13 PCs, now to calculate the variance explained by each PC
+# names(prep(pca_rec)) # inspecting items
+# prep(pca_rec)$var_info # info on data we used
+sdev <- prep(pca_rec)$steps[[1]]$res$sdev # the standard deviations
+
+# calculate the percentage variance
+percent_variation <- sdev^2/sum(sdev^2)
+
+# create dataframe with PCs and percent variation
+
+var_df <- data.frame(PC= paste0("PC",1:length(sdev)),
+           var_explained=percent_variation,
+           stringsAsFactors = FALSE)
+
+var_df |> 
+  mutate(PC = fct_inorder(PC)) |> 
+  ggplot(aes(PC,var_explained)) + 
+  geom_col()+
+  geom_label(aes(label = round(var_explained,2))) +
+  labs(title = "PCA scree plot",
+       x = "Principal Components",
+       y = "% variance explained")
+
+```
+
+from the PCA screeplot shows that PC1, PC2 and PC3 combined explains only about 66% of the data, so even a 3D plot with PCA values would not be the best representation of our data. 
+
+Let us plot the clusters on the 2 PCs (PC1 and PC2) anyway and see how it looks in 2D
+
+```{r, fig.height = 6, fig.width = 10.5, fig.align = "center"}
+pca_wine |> 
+  ggplot(aes(PC1, PC2, color = .cluster)) + 
+  geom_point() -> a
+
+pca_wine |> 
+  ggplot(aes(PC1, PC2, color = customer_segment)) +
+  geom_point() -> b
+
+a + b
+```
+ 
+###### 2. Dimension reduction by UMAP
+
+Now let's see how the non-linear approach results differ in the 2D space
+
+```{r}
+
+library(embed)
+umap_rec <- recipe(~., wine_cluster) |>
+  update_role(customer_segment, .cluster, new_role = "id" ) |> 
+  step_umap(all_predictors())
+
+umap_rec |> 
+  prep() |> 
+  juice() -> umap_wine
+
+# summary(umap_wine)
+
+```
+
+
+
+
+
+
+```{r, fig.height = 6, fig.width = 10.5, fig.align = "center"}
+umap_wine |> 
+  ggplot(aes(UMAP1, UMAP2, color = .cluster)) + 
+  geom_point() -> c
+
+umap_wine |> 
+  ggplot(aes(UMAP1, UMAP2, color = customer_segment)) +
+  geom_point() -> d
+
+c + d
+```
+
+ Even without the red flag we got from the PCA's performance on this specific dataset, I personally like the cluster representation in the latter approach. 
+
+
+And now with a dimension reduction approach we are happy with, we can see how different **k** values may look in an x-y plane. let's plot 9 trials.
+
+```{r}
+umap_kclusts <- tibble(k = 1:9) |> 
+  mutate(kclust = map(k, ~ kmeans(umap_wine, .x)),
+         tidied = map(kclust, tidy),
+         glanced = map(kclust, glance),
+         augmented = map(kclust, augment, umap_wine))
+# umap_kclusts
+```
+
+
+```{r}
+# store in separate datasets
+
+umap_clusters <- umap_kclusts |> 
+  unnest(cols = c(tidied))
+
+umap_assignments <- umap_kclusts |>
+  unnest(cols = c(augmented))
+
+umap_clusterings <- umap_kclusts |> 
+  unnest(cols = c(glanced))
+
+
+
+```
+
+
+```{r}
+
+  ggplot(umap_assignments, aes(UMAP1, UMAP2, color = .cluster)) +
+  geom_point(alpha = 0.4) +
+  facet_wrap(~k) -> p1
+p1
+
+```
+
+
+
+
+
+
+
+
