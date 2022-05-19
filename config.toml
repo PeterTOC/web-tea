@@ -23,14 +23,19 @@ enableEmoji = true
     url = "/"
     weight = 10
   [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/about/"
+    identifier = "sample-dashboard"
+    name = "Sample Dashboard"
+    url = "https://petertoc.github.io/flexdashboard/"
     weight = 0
   [[menu.main]]
     identifier = "sample-reports"
     name = "Sample Reports"
     url = "https://rpubs.com/Peter_Beta/"
+    weight = 0
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
     weight = 0
 
 [taxonomies]
