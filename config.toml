@@ -50,8 +50,8 @@ author = "authors"
   googleTagManager = "GTM-TRR9NK9"
 
   # Custom CSS and JS. Relative to /static/css and /static/js respectively.
-  #customCSS = ["style1.css"]
-  #customJS = ["web-tea/themes/hugo-theme-chunky-poster/src/main.js"]
+  customCSS = ["style1.css"]
+  customJS = ["web-tea/themes/hugo-theme-chunky-poster/src/main.js"]
 
   [params.social]
     rss = true

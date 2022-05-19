@@ -84,8 +84,11 @@ datatable(head(mpg))
 ```
 
 ```{r}
-glimpse(mpg)
+# glimpse(mpg)
 ```
+
+
+- with just coninuous various variables
 
 ```{r}
 # Standard use:
@@ -93,7 +96,7 @@ ggplot(mpg) +
   geom_point(aes(x = .panel_x, y = .panel_y)) +
   facet_matrix(vars(displ, cty, hwy))
 ```
-
+- throw in some categorical variables
 
 ```{r}
 # Mix discrete and continuous columns. Use geom_autopoint for scale-based jitter
@@ -101,6 +104,7 @@ ggplot(mpg) +
   geom_autopoint() +
   facet_matrix(vars(drv:fl))
 ```
+- specify diagonal to display the univariate distributions
 
 ```{r}
 # Have a special diagonal layer
@@ -109,12 +113,9 @@ ggplot(mpg) +
   geom_autodensity() +
   facet_matrix(vars(drv:fl), layer.diag = 2)
 ```
+- group the univariate distribution with a categorical variable to explore its influence
 
-```{r}
-
-```
-
-
+- change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don't need and get a better feel of the outliers
 
 ```{r}
 ggplot(mpg) +
@@ -128,6 +129,7 @@ ggplot(mpg) +
 
 
 ```
+- replace the boxplots with binned distributions
 
 ```{r}
 ggplot(mpg) +
