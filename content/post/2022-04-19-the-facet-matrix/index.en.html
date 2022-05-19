@@ -1,5 +1,5 @@
 ---
-title: The Facet Matrix
+title: The Facet Matrix 📊
 author: Peter Boshe
 date: '2022-04-19'
 slug: []
@@ -16,7 +16,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 4
-summary: "This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why."
+summary: This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across ggforce which is now my newest addition to my data science toolbox, and here's why.
 ---
 
 <script src="{{< blogdown/postref >}}index.en_files/htmlwidgets/htmlwidgets.js"></script>
@@ -31,14 +31,15 @@ summary: "This weekend while I was browsing through github for inspirational pac
 
 <div id="TOC">
 <ul>
-<li><a href="#the-data">The Data</a></li>
+<li><a href="#the-data">The data</a></li>
+<li><a href="#the-plots">The plots</a></li>
 </ul>
 </div>
 
 <p>This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across <code>ggforce</code>. This <code>ggplot</code> complimentary package written by the data imaginist, <a href="https://www.data-imaginist.com/about">Thomas Lin Pedersen</a> is now my newest addition to my data science toolbox, and here’s why.</p>
 <p>The package itself has many different and useful functions but the specific function that caught my attention is the <code>facet_matrix()</code>, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one’s needs.</p>
 <div id="the-data" class="section level3">
-<h3>The Data</h3>
+<h3>The data</h3>
 <p>To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.</p>
 <div id="description-of-the-dataset" class="section level5">
 <h5>Description of the dataset</h5>
@@ -100,20 +101,29 @@ A data frame with 234 rows and 11 variables:</p>
 </table>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["audi","audi","audi","audi","audi","audi"],["a4","a4","a4","a4","a4","a4"],[1.8,1.8,2,2,2.8,2.8],[1999,1999,2008,2008,1999,1999],[4,4,4,4,6,6],["auto(l5)","manual(m5)","manual(m6)","auto(av)","auto(l5)","manual(m5)"],["f","f","f","f","f","f"],[18,21,20,21,16,18],[29,29,31,30,26,26],["p","p","p","p","p","p"],["compact","compact","compact","compact","compact","compact"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>manufacturer<\/th>\n      <th>model<\/th>\n      <th>displ<\/th>\n      <th>year<\/th>\n      <th>cyl<\/th>\n      <th>trans<\/th>\n      <th>drv<\/th>\n      <th>cty<\/th>\n      <th>hwy<\/th>\n      <th>fl<\/th>\n      <th>class<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="the-plots" class="section level3">
+<h3>The plots</h3>
 <ul>
 <li>with just coninuous various variables</li>
 </ul>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" />
-- throw in some categorical variables</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" />
-- specify diagonal to display the univariate distributions</p>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" />
-- group the univariate distribution with a categorical variable to explore its influence</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 <ul>
-<li>change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don’t need and get a better feel of the outliers</li>
+<li>throw in some categorical variables</li>
 </ul>
-<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" />
-- replace the boxplots with binned distributions</p>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>specify diagonal to display the univariate distributions</li>
+</ul>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>group the univariate distribution with a categorical variable to explore its influence</p></li>
+<li><p>change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don’t need and get a better feel of the outliers</p></li>
+</ul>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>replace the boxplots with binned distributions</li>
+</ul>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
 </div>

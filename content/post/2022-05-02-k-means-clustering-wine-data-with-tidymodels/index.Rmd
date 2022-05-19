@@ -1,5 +1,5 @@
 ---
-title: Clustering wine data with Kmeans
+title: Clustering wine data with K-means algorithm `r emo::ji("wine")`
 author: Peter Boshe
 date: '2022-05-02'
 slug: []
@@ -12,14 +12,22 @@ tags:
   - Cluster Analysis
   - Unguided project
   - Un-supervised learning
+output:
+  blogdown::html_page:
+    toc: true
+    toc_depth: 5
 images: []
-authors: []
-draft: true
+summary: What a fun weekend dataset `r emo::ji("smile")` <br> In this clustering project, I explore the strengths and weakness of two methods of dimensionality reduction when it comes to visualizing clusters.
+draft: false
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, echo = FALSE, message = FALSE)
+
+thematic::thematic_rmd(bg = '#FFF7DE', fg = 'black', accent = '#F82D0C')
+
+
 ```
 
 ```{r message=FALSE,error=FALSE,echo=FALSE}
@@ -33,13 +41,32 @@ library(DT)
 library(gt)
 library(here)
 tidymodels_prefer()
+
+# set ggplot theme
+new_theme <- theme_bw(
+    base_size = 13,
+  base_family = "Bookman"
+  )
+
+theme_set(new_theme)
+
+# set gt theme
+gt_theme <- function(data, ...){
+  data %>% 
+    tab_options(
+      table.background.color = "#FFF7DE",
+      ...
+    )
+}
+
+
 ```
 
 
 
-##### Our dataset
+#### Our dataset
 
-Downloaded from Kaggle, is our unlabelled test dataset on different wines that we are going to perform unsupervised learning on, so as to get a feel of the different clusters in the wine data.
+Downloaded from Kaggle, is our unlabelled test dataset on different wines that we are going to perform unsupervised learning on, to explore the different clusters sharing similar behavior.
 
 ```{r}
 wine <- read_csv(here::here("content/post/2022-05-02-k-means-clustering-wine-data-with-tidymodels/data/Wine.csv"))
@@ -64,8 +91,9 @@ create_dt(wine)
 
 
 
-**takeaways from exploration;**
+**Key takeaways from exploration;**
 
+- Data included a `Customer_Segment` which we won't need since we will be doing the segmentation ourselves
 - We do not have any missing data, convenient.
 - We do not have any character vectors which is ideal for clustering, however scaling of the data is needed since the values on the different variables appear to be in significantly different scales.
 
@@ -74,10 +102,10 @@ create_dt(wine)
 ```{r}
 # conducting some preprocessing
 wine_df <- wine |> 
-  clean_names() 
+  clean_names() |> 
+  select(-customer_segment)
 
 wine_rec <- recipe(~., data = wine_df) |>
-  update_role(customer_segment, new_role = "id") |> 
   step_normalize(all_predictors())
 
 wine_rec |>
@@ -86,7 +114,7 @@ wine_rec |>
 ```
 
 
-##### Kmeans clustering
+#### Kmeans clustering
 
 ###### Thou shall not cluster without a number of centers !
 
@@ -103,7 +131,7 @@ For k-means clustering a parameter, *k*, is required which denotes the number of
 
 ```{r}
 # create the grid with results from k 1 through 9
-
+set.seed(1234)
 kclusts <- tibble(k = 1:9) |> 
   mutate(kclust = map(k, ~ kmeans(scaled_wine, .x)),
          tidied = map(kclust,tidy),
@@ -127,15 +155,19 @@ clusterings <- kclusts |>
 
 ```
 
+
 ```{r}
-# the scree plot
+
+
+
+
 clusterings |> 
   ggplot(aes(k, tot.withinss)) +
   geom_line()  +   
   geom_point()
-
-
 ```
+
+
 
  The screeplot(elbow plot) appears to have the elbow we are interested in around *k* = 3. We can start performing the clustering knowing the optimum centers
  
@@ -151,39 +183,40 @@ kclust_df <- kmeans(scaled_wine, centers = 3)
 + **summary of mean values of our clusters**
 
 ```{r}
-# kclust_df |> 
-#   tidy() |> 
-#   # group_by(cluster) |> 
-#   gt() |> 
-#   cols_move_to_start(cluster) |>
-#   tab_spanner(
-#     label = "mean values per cluster",
-#     columns = 1:14
-#   ) |> 
-#   data_color(columns=1:13,
-#                colors = scales::col_numeric(
-#                    palette = as.character(paletteer::paletteer_d(palette = "ggsci::red_material")),
-#                    domain = NULL)
-#                )
+
+
 
 kclust_df |>
   tidy() |>
-  select(-size, -withinss, -customer_segment) |>
+  select(-size, -withinss) |>
   group_by(cluster) |>
   pivot_longer(cols = 1:13, names_to = "ingredients") |>
   pivot_wider(names_from = cluster, values_from = value, names_prefix = "cluster ") |>
   gt() |>
-  data_color(
-    columns = 2:4,
-    colors = scales::col_numeric(
-      palette = as.character(paletteer::paletteer_d(palette = "ggsci::red_material")),
-      domain = NULL
-    )
-  )
+  # data_color(
+  #   columns = 2:4,
+  #   colors = scales::col_numeric(
+  #     palette = as.character(paletteer::paletteer_d(palette = "ggsci::red_material")),
+  #     domain = NULL
+  #   )
+  # ) |> 
+  gt_theme()
 
 ```
 
+**Key takeaways**
 
+From our summary of mean values we can see some of the difference in wine content standing out, 
+For instance;
+
++ cluster 1 appears to be the cluster with high `alcohol`, `total_phenols`,`ash` and `flavanoids`, while showing low amount of `ash_alcanity`, `nonflavanoid_phenols`
++ cluster 2  has the lowest `alcohol` value and the highest `hue` value, although it does not have many outstanding values.
++ cluster 1 & 2 appear to have similar `hue` and `color_intensity` so they might be difficult to distinguish appearance-wise if they do not have any other observational distinguishing factors.
++ cluster 3 is almost the polar opposite to cluster 1 in some of the contents including `malic_acid`, `total_phenols`, `flavanoids`, `nonflavanoid_phenols`, and `ash_alcanity`
+
+
+
+A wine connoisseur would probably already tell the wine types apart, and that is where domain knowledge comes in handy when it comes to any business problem.
 
 
 
@@ -196,7 +229,8 @@ kclust_df |>
 ```{r}
 kclust_df |> 
   glance() |> 
-  gt()
+  gt() |> 
+  gt_theme()
 ```
 
 let's demistify some metrics
@@ -208,24 +242,14 @@ let's demistify some metrics
 : explains the variability *between* groups/clusters of interest
 
 
-From our summary of mean values we can see some of the difference in wine content standing out, 
-For instance;
-
-+ cluster _ appears to be the cluster with high alcohol, nonflavanoid phenols,ash and malic acid content, while showing low amount of total_phenols, flavanoids
-+ cluster _ is almost the polar opposite to cluster _ with high amounts of flavanoid, total_phenols, with low amounts of ash, malic_acid and nonflavanoid_phenols
-+ cluster _ has the lowest alcohol value and the highest hue value, although it does not have many standing out values.
-
-
-A wine connoisseur would probably already tell the wine types apart, and that is where domain knowledge comes in handy when it comes to any business problem.
 
 
 ```{r}
 # To get the assignments
-wine_cluster <- augment(kclust_df, scaled_wine) |> 
-  mutate(customer_segment = fct_inorder(as.character(customer_segment)))
+wine_cluster <- augment(kclust_df, scaled_wine)
 ```
 
-##### Visualization
+#### Visualization
 
 Now we may want to see what our clusters look like in the data, but with so many variables(ingredients), a proper representation of most of the data in a 2D plot can only be possible by **dimension reduction**.
 
@@ -244,9 +268,11 @@ The alternative would be to pick the 2 variables that explain the most variation
 ###### 1. Dimension reduction by PCA
 
 
+A PCA (Principal Component Analysis) scree plot will show how much variability of the data is explained by each Principal Component after reducing our number of variables, in that effect, gives us a feel of how many PCs it would take to properly represent our data.
+
 ```{r}
 pca_rec <- recipe(~., wine_cluster) |>
-  update_role(customer_segment, .cluster, new_role = "id" ) |> 
+  update_role(.cluster, new_role = "id" ) |> 
   step_pca(all_predictors())
 
 pca_rec |> 
@@ -254,6 +280,9 @@ pca_rec |>
   juice() -> pca_wine
 
 ```
+
+
+
 ```{r, echo=FALSE}
 # we got 13 PCs, now to calculate the variance explained by each PC
 # names(prep(pca_rec)) # inspecting items
@@ -280,22 +309,20 @@ var_df |>
 
 ```
 
-from the PCA screeplot shows that PC1, PC2 and PC3 combined explains only about 66% of the data, so even a 3D plot with PCA values would not be the best representation of our data. 
+`r emo::ji("warning")` From the PCA screeplot shows that PC1, PC2 and PC3 combined explains only about 66% of the variance in our data, so even a 3D plot with PCA values would not be the best representation of our data. 
 
-Let us plot the clusters on the 2 PCs (PC1 and PC2) anyway and see how it looks in 2D
+Out of curiosity, let us plot the clusters on the 2 PCs (PC1 and PC2) anyway and see how it looks in a 2 dimensional space, our x-y axis.
 
 ```{r, fig.height = 6, fig.width = 10.5, fig.align = "center"}
 pca_wine |> 
   ggplot(aes(PC1, PC2, color = .cluster)) + 
-  geom_point() -> a
+  geom_point() 
 
-pca_wine |> 
-  ggplot(aes(PC1, PC2, color = customer_segment)) +
-  geom_point() -> b
-
-a + b
 ```
- 
+
+Now lets try a non-linear approach..
+
+
 ###### 2. Dimension reduction by UMAP
 
 Now let's see how the non-linear approach results differ in the 2D space
@@ -304,7 +331,7 @@ Now let's see how the non-linear approach results differ in the 2D space
 
 library(embed)
 umap_rec <- recipe(~., wine_cluster) |>
-  update_role(customer_segment, .cluster, new_role = "id" ) |> 
+  update_role(.cluster, new_role = "id" ) |> 
   step_umap(all_predictors())
 
 umap_rec |> 
@@ -323,13 +350,8 @@ umap_rec |>
 ```{r, fig.height = 6, fig.width = 10.5, fig.align = "center"}
 umap_wine |> 
   ggplot(aes(UMAP1, UMAP2, color = .cluster)) + 
-  geom_point() -> c
+  geom_point() 
 
-umap_wine |> 
-  ggplot(aes(UMAP1, UMAP2, color = customer_segment)) +
-  geom_point() -> d
-
-c + d
 ```
 
  Even without the red flag we got from the PCA's performance on this specific dataset, I personally like the cluster representation in the latter approach. 

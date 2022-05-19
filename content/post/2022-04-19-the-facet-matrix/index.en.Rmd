@@ -1,5 +1,5 @@
 ---
-title: The Facet Matrix
+title: The Facet Matrix `r emo::ji("metrics")`
 author: Peter Boshe
 date: '2022-04-19'
 slug: []
@@ -16,7 +16,7 @@ output:
   blogdown::html_page:
     toc: true
     toc_depth: 4
-summary: "This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why."
+summary: This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across ggforce which is now my newest addition to my data science toolbox, and here's why.
 ---
 
 
@@ -54,7 +54,7 @@ library(DT)
  
  The package itself has many different and useful functions but the specific function that caught my attention is the `facet_matrix()`, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one's needs.
 
-### The Data
+### The data
 
  To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.
 
@@ -88,6 +88,8 @@ datatable(head(mpg))
 ```
 
 
+### The plots
+
 - with just coninuous various variables
 
 ```{r}
@@ -96,6 +98,8 @@ ggplot(mpg) +
   geom_point(aes(x = .panel_x, y = .panel_y)) +
   facet_matrix(vars(displ, cty, hwy))
 ```
+
+
 - throw in some categorical variables
 
 ```{r}
@@ -104,6 +108,8 @@ ggplot(mpg) +
   geom_autopoint() +
   facet_matrix(vars(drv:fl))
 ```
+
+
 - specify diagonal to display the univariate distributions
 
 ```{r}
@@ -113,6 +119,8 @@ ggplot(mpg) +
   geom_autodensity() +
   facet_matrix(vars(drv:fl), layer.diag = 2)
 ```
+
+
 - group the univariate distribution with a categorical variable to explore its influence
 
 - change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don't need and get a better feel of the outliers
@@ -129,6 +137,8 @@ ggplot(mpg) +
 
 
 ```
+
+
 - replace the boxplots with binned distributions
 
 ```{r}
