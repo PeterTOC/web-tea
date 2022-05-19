@@ -3,11 +3,17 @@ author: Peter Boshe
 date: "2021-09-18"
 description: Brief Description of Peter's Scope in Data Science
 title: About
+images: ["/images/cover_shot.jpeg"]
 ---
-# 👋 Hi, I’m Peter Boshe
-I am a :computer: **Data Analyst** and an **R** fanatic.
 
-## My Tools of Trade include;
+![](/images/cover_shot.jpeg)
+
+
+# Hi, I’m Peter Boshe 👋
+I am a :computer: **Data Analyst** and an :sparkles: **R** :sparkles: fanatic.
+
+
+## :tools: My Tools of Trade include;
 - Descriptive Analysis
 - Data Cleaning
 - Data Wrangling
@@ -22,12 +28,11 @@ I am a :computer: **Data Analyst** and an **R** fanatic.
 
 ## 🌱 I’m currently learning more on;
 
-- Julia Programming
 - Statistical Inference
 - Practical/Applied Machine Learning
 
 
-## Fields Explored;
+## :telescope: Fields Explored;
 - Telematic/IOT Analytics
 - Business Data Analysis
 - Sports Analytics
