@@ -27,6 +27,11 @@ enableEmoji = true
     name = "About"
     url = "/about/"
     weight = 0
+  [[menu.main]]
+    identifier = "sample-reports"
+    name = "Sample Reports"
+    url = "https://rpubs.com/Peter_Beta/"
+    weight = 0
 
 [taxonomies]
 category = "categories"
