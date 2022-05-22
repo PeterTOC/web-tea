@@ -14,6 +14,8 @@ I am a :computer: **Data Analyst** and an :sparkles: **R** :sparkles: fanatic.
 
 
 ## :tools: My Tools of Trade include;
+- R programming
+- SQL
 - Descriptive Analysis
 - Data Cleaning
 - Data Wrangling
@@ -21,7 +23,6 @@ I am a :computer: **Data Analyst** and an :sparkles: **R** :sparkles: fanatic.
 - Data Visualization
 - Task Automation
 - Bash Scripting
-- R programming
 - Web Scraping
 - Clustering analysis for segmentation
 - Supervised and Unsupervised Machine Learning

@@ -19,7 +19,6 @@ output:
 summary: This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across ggforce which is now my newest addition to my data science toolbox, and here's why.
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler', echo = FALSE)
 thematic::thematic_rmd(bg = '#F6ECDF', fg = 'black', accent = '#9EF702')
@@ -27,7 +26,6 @@ thematic::thematic_rmd(bg = '#F6ECDF', fg = 'black', accent = '#9EF702')
 # thematic::thematic_on()
 ```
 
- 
 ```{r environment, warning=FALSE,message=FALSE}
 library(thematic)
 library(tidyverse)
@@ -46,39 +44,32 @@ library(DT)
 # thematic::thematic_on()
 # auto_config_get()
 ```
- 
 
+This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why.
 
-
- This weekend while I was browsing through github for inspirational packages written in R to improve my data analysis workflow, I came across `ggforce`. This `ggplot` complimentary package written by the data imaginist, [Thomas Lin Pedersen](https://www.data-imaginist.com/about) is now my newest addition to my data science toolbox, and here's why.
- 
- The package itself has many different and useful functions but the specific function that caught my attention is the `facet_matrix()`, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one's needs.
+The package itself has many different and useful functions but the specific function that caught my attention is the `facet_matrix()`, which allows a user to explore a dataset across different columns/variables in one go and in one condensed plot. What I liked most about the function is how easy it is to customize according to one's needs.
 
 ### The data
 
- To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.
+To see how the function works, lets use some Fuel economy data from 1999 to 2008 for 38 popular models of cars.
 
 ##### Description of the dataset
 
-Format
-A data frame with 234 rows and 11 variables:
+Format A data frame with 234 rows and 11 variables:
 
-|column name | description |
-| --- | --- |
-| manufacturer | manufacturer name |
-| displ | engine displacement, in litres |
-| year | year of manufacture |
-| cyl | number of cylinders |
-| trans | type of transmission |
-| drv | the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd |
-| cty | city miles per gallon |
-| hwy | highway miles per gallon |
-| fl | fuel type |
-| class | "type" of car |
+| column name  | description                                                                         |
+|----------------------|--------------------------------------------------|
+| manufacturer | manufacturer name                                                                   |
+| displ        | engine displacement, in litres                                                      |
+| year         | year of manufacture                                                                 |
+| cyl          | number of cylinders                                                                 |
+| trans        | type of transmission                                                                |
+| drv          | the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd |
+| cty          | city miles per gallon                                                               |
+| hwy          | highway miles per gallon                                                            |
+| fl           | fuel type                                                                           |
+| class        | "type" of car                                                                       |
 
-
-
- 
 ```{r data}
 datatable(head(mpg))
 ```
@@ -87,10 +78,9 @@ datatable(head(mpg))
 # glimpse(mpg)
 ```
 
-
 ### The plots
 
-- with just coninuous various variables
+-   with just coninuous various variables
 
 ```{r}
 # Standard use:
@@ -99,8 +89,7 @@ ggplot(mpg) +
   facet_matrix(vars(displ, cty, hwy))
 ```
 
-
-- throw in some categorical variables
+-   throw in some categorical variables
 
 ```{r}
 # Mix discrete and continuous columns. Use geom_autopoint for scale-based jitter
@@ -109,8 +98,7 @@ ggplot(mpg) +
   facet_matrix(vars(drv:fl))
 ```
 
-
-- specify diagonal to display the univariate distributions
+-   specify diagonal to display the univariate distributions
 
 ```{r}
 # Have a special diagonal layer
@@ -120,17 +108,16 @@ ggplot(mpg) +
   facet_matrix(vars(drv:fl), layer.diag = 2)
 ```
 
+-   group the univariate distribution with a categorical variable to explore its influence
 
-- group the univariate distribution with a categorical variable to explore its influence
-
-- change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don't need and get a better feel of the outliers
+-   change the upper left diagonal to boxplots to reduce plot redundancy of repeated scatterplots that we don't need and get a better feel of the outliers
 
 ```{r}
 ggplot(mpg) +
   geom_autopoint() +
   geom_autodensity(aes(color = drv, fill = drv), alpha = 0.3) +
   geom_density2d(aes(x = .panel_x, y = .panel_y)) +
-  geom_boxplot(aes(x=.panel_x, y=.panel_y, group = .panel_x)) +
+  geom_boxplot(aes(x = .panel_x, y = .panel_y, group = .panel_x)) +
   # geom_bin2d(aes(x = .panel_x, y = .panel_y)) +
   facet_matrix(vars(displ,drv:fl), layer.lower = 1, layer.diag = 2,
                layer.continuous = -4, layer.discrete = -3, layer.mixed = -3)
@@ -138,8 +125,7 @@ ggplot(mpg) +
 
 ```
 
-
-- replace the boxplots with binned distributions
+-   replace the boxplots with binned distributions
 
 ```{r}
 ggplot(mpg) +
@@ -151,20 +137,3 @@ ggplot(mpg) +
                layer.continuous = -4, layer.discrete = -3, layer.mixed = -3)
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
