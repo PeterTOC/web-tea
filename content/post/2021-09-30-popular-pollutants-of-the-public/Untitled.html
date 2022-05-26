@@ -130,9 +130,9 @@ rm(list = c(
 <div id="total-bottles-per-country" class="section level3">
 <h3>Total bottles per country</h3>
 <pre class="r"><code>
-data %&gt;%
-  group_by(scan_country) %&gt;%
-  summarise(total_bottles = sum(bottle_count)) %&gt;%
+data |&gt;
+  group_by(scan_country) |&gt;
+  summarise(total_bottles = sum(bottle_count)) |&gt;
   arrange(desc(total_bottles))
 ## # A tibble: 11 × 2
 ##    scan_country total_bottles

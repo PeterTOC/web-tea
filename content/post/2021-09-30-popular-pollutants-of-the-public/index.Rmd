@@ -24,7 +24,7 @@ knitr::opts_chunk$set(fig.align = 'center', collapse = TRUE, tidy = 'styler', ec
 
 The data was collected by [Wastebase's Data Partner](https://www.unwaste.io/partners) by methods decribed on this [source page](https://www.kaggle.com/wastebase/plastic-bottle-waste)
 
-
+<!-- TODO make this process automated and into a dashboard -->
 
 ## setting the environment
 
@@ -61,6 +61,7 @@ df <- combined_file %>%
   select(-bottle_weight, -data_url, -product_label, -product_barcode)
 
 #convert batch, manufacturer_name, manufacturer_country, scan_country into factors, months
+# FIXME apply better cleaning methods
 df$batch <- as.factor(df$batch)
 df$manufacturer_country <- as.factor(df$manufacturer_country)
 df$manufacturer_name <- as.factor(df$manufacturer_name)
@@ -157,11 +158,11 @@ data %>%
 tz_data <- data %>%
         filter(scan_country == "TZ")   #filter data for Tanzania (case study)
 
-
-tz_manufacturer_country  <-  tz_data %>%
+# TODO consider using gt instead
+tz_manufacturer_country <- tz_data %>%
   group_by(manufacturer_name, manufacturer_country) %>%
   summarise(total_bottles = sum(bottle_count)) %>%
-  arrange(desc(total_bottles)) %>% 
+  arrange(desc(total_bottles)) %>%
   head(20)
 
 

@@ -39,9 +39,11 @@ The following are three staples for scraping politeness;
 1.  **Introduction**
 
     It is always a good idea to leave an introductory note in the `User-Agent` Field, the note should include your email and purpose of scraping. exaple below;
+<!-- #REVIEW to check alternative for r -->
+<!-- #REVIEW to check alternative for r -->
 
     ```{r}
-
+# FIXME to be deleted
     ```
 
 2.  **Throttle your requests**
@@ -49,7 +51,8 @@ The following are three staples for scraping politeness;
     As web scraping by code does not offer the natural buffer between requests to a website like one would do when retrieving the data manually, and while servers for websites like Wikipedia would likely not feel a thing. One can easily overload a server if the frequency of requests is not supported, especially when dealing with large amounts of data. If many people are simultaneously trying to get a massive amount of data this could easily overwhelm the system which can hurt a service provider, we do not want that..
 
     ```{r}
-
+# IDEA show code sample
+# FIXME or remove completely
     ```
 
 3.  **Cite your source**
@@ -57,6 +60,8 @@ The following are three staples for scraping politeness;
     Well this golden rule depends on the reason of scraping, It is always Imperative that we cite our data sources in any publication.
 
 ## Web Scraping Demonstration
+
+<!-- CHANGED should include tips&tricks and link to scraping code --> 
 
 Our sample target site is a website with [Dar es Salaam Stock Exchange data](https://www.dse.co.tz/).
 

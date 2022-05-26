@@ -125,9 +125,9 @@ rm(list = c("all_files",
 
 ```{r bottles_per_country}
 
-data %>%
-  group_by(scan_country) %>%
-  summarise(total_bottles = sum(bottle_count)) %>%
+data |> 
+  group_by(scan_country) |> 
+  summarise(total_bottles = sum(bottle_count)) |> 
   arrange(desc(total_bottles))
 
 ```
