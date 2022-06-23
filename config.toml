@@ -1,6 +1,7 @@
 baseURL = "https://peterboshe.netlify.app/"
 title = "Peter Boshe"
-description = "This is Peter Boshe's Data Science Portfolio, Look Around."
+subtitle = "This is Peter's online data science portfolio."
+description = "I enjoy tackling real world problems with **data analysis** and **machine learning**. I specialize in building data products, reports and facilitating data-driven decisions using R."
 copyright = "Copyright © 2008–2019, Steve Francia and the Hugo Authors; all rights reserved."
 paginate = 2
 languageCode = "en"
@@ -14,7 +15,9 @@ theme = "hugo-theme-chunky-poster"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
 summaryLength = 25
 canonifyURLs = true
+relativeURLs = true
 enableEmoji = true
+uglyURLs = false
 
 [menu]
   [[menu.main]]
@@ -51,13 +54,14 @@ author = "authors"
 
 [params]
   author = "Peter Boshe"
-  description = "This is my Data Science Portfolio, <br> Look around."
+  description = "I enjoy tackling real world <br>problems with data analysis and <br>machine learning. I specialize in building <br>data products, reports and facilitating <br>data-driven decisions using R. <br><br>Below are some of the recent posts I have published, Look around.."
   images = "/static/images/webteatheme3.png"
   homepageImage = "/images/webteatheme3.png"
   dateFormat = "January 2, 2006"
   share = true
   showLanguageSwitcher = false
   googleTagManager = "GTM-TRR9NK9"
+  subtitle = "This is my data science portfolio"
 
   # Custom CSS and JS. Relative to /static/css and /static/js respectively.
   customCSS = ["style1.css"]

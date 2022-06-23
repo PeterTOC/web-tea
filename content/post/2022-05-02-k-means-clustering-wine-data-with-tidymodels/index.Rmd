@@ -159,7 +159,7 @@ clusterings <- kclusts |>
 ```{r}
 
 
-
+# TODO add a red circle around the elbow
 
 clusterings |> 
   ggplot(aes(k, tot.withinss)) +
