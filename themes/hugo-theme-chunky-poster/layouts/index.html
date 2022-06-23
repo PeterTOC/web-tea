@@ -9,14 +9,25 @@
                 </div>
             {{- end -}}
 
-            <h1 class="display-4">{{ .Site.Title }}</h1>
+            {{- with .Site.Params.title  -}}
+            <h1 class=text-muted>{{ . | safeHTML }}</h1>
+            {{- end -}}
             {{- with .Site.Params.description -}}
                 <h3 class="font-weight-normal">{{ . | safeHTML }}</h3>
             {{- end -}}
         </div>
     </div>
-
+  
+    
+    
+    
+    
+     <h4 class=text-muted>Latest article.</h4>
+     <hr>
     <!-- Latest article -->
+    
+   
+    
     {{- range first 1 (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) -}}
         {{ $page := . }}
         <div class="latest row py-lg-5">
@@ -44,7 +55,11 @@
         </div>
     {{- end -}}
 
+
     <!-- Articles -->
+    <h4 class=text-muted>Previous articles.</h4>
+    <hr>
+    
     <div class="articles row row-cols-1 row-cols-lg-3">
         {{ range after 1 (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) }}
             <div class="col mb-3">

@@ -54,15 +54,15 @@ series = "series"
 author = "authors"
 
 [params]
-  author = "Peter Boshe"
-  description = "I enjoy tackling real world <br>problems with data analysis and <br>machine learning. I specialize in building <br>data products, reports and facilitating <br>data-driven decisions using R. <br><br>Below are some of the recent posts I have published, Look around.."
+  title = "Welcome to my<br>data science portfolio."
+  description = "I enjoy tackling real world <br>problems with data analysis and <br>machine learning. I specialize in building <br>data products, reports and facilitating <br>data-driven decisions using R. <br><br>Below are some of the recent posts I have published."
   images = "/static/images/webteatheme3.png"
   homepageImage = "/images/webteatheme3.png"
   dateFormat = "January 2, 2006"
   share = true
   showLanguageSwitcher = false
   googleTagManager = "GTM-TRR9NK9"
-  subtitle = "This is my data science portfolio"
+  subtitle = "Data Analyst"
 
   # Custom CSS and JS. Relative to /static/css and /static/js respectively.
   customCSS = ["style1.css"]
