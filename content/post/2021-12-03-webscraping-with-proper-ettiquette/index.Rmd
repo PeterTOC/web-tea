@@ -36,10 +36,9 @@ Well this relates to a lot of things and Data Scraping is no exception.
 
 The following are three staples for scraping politeness;
 
-1.  **Introduction**
+1.  **Introduce yourself**
 
     It is always a good idea to leave an introductory note in the `User-Agent` Field, the note should include your email and purpose of scraping. exaple below;
-<!-- #REVIEW to check alternative for r -->
 <!-- #REVIEW to check alternative for r -->
 
     ```{r}
@@ -50,244 +49,234 @@ The following are three staples for scraping politeness;
 
     As web scraping by code does not offer the natural buffer between requests to a website like one would do when retrieving the data manually, and while servers for websites like Wikipedia would likely not feel a thing. One can easily overload a server if the frequency of requests is not supported, especially when dealing with large amounts of data. If many people are simultaneously trying to get a massive amount of data this could easily overwhelm the system which can hurt a service provider, we do not want that..
 
-    ```{r}
-# IDEA show code sample
-# FIXME or remove completely
-    ```
 
 3.  **Cite your source**
 
     Well this golden rule depends on the reason of scraping, It is always Imperative that we cite our data sources in any publication.
 
-## Web Scraping Demonstration
 
-<!-- CHANGED should include tips&tricks and link to scraping code --> 
+Now let me introduce my personal tenets to webscraping I have learned to abide by given my experience;
 
-Our sample target site is a website with [Dar es Salaam Stock Exchange data](https://www.dse.co.tz/).
+## Webscraping tenets
 
-Lets say we were trying to extract data from the table labelled `GAINERS & LOSERS`
+- Xpaths over CSS selectors
+: When web scraping you are going to want to select items of interest from the target of interest, and depending on what language you use to code, it normally comes down to whether you are going to identify the items for your script by their **CSS/HTML** tags or by their **xpaths**. From my recent endevours I have found the latter to be a more robust option as the xpaths tend to be more uniform throughout most pages.
 
-![Table in the Html to extract](images/webscrape01.png "Snapshot 1")
+- Hope for the best, Plan for the worst
+: While scraping it's good practise to test out your script on the web pages of interest, we are not always sure the web format will always remain the same in the future. So it is important to have a contigency plan, for instance you would much rather have your script impute 'NA's on items it failed to scrape and continue with its scraping, instead of having your script fail and stop on its first obstacle. In R this can be achieved by functions like `safely()` and `possibly()` in the tidyverse ecosystem.
 
-by pressing `F12` we can inspect the html page elements so we know the identifiers of our table of interest.
+- If your Internet is shaky, increase your timeout limit
+: I, for one, do not have very reliable internet service so my script kept getting timed out in between the requests, and when you are timed out, your script goes sit on a corner `r emo::ji("laugh")`. You get an error with no results. as a solution I simply increased my timeout limit to 60 seconds and I had no further issues.
 
-![Inspecting Html element](images/webscrape02.png "snapshot 2")
+- Functional programming FOR THE WIN!
+: This is a concept I learned of recently that eases the process of repetitive tasks.
 
-1. Prepare Environment
+ For instance, for a task where we are supposed to scrape a parent page, extract the links of several job posts from the parent page, then exctract information from the individual pages from each of the links scraped from the parent page. Writing code to scrape each page individually will be time draining, to say the least.
 
-<details>
-<summary>Click for Code</summary>
-```{r data, message=FALSE,warning=FALSE}
-#setupenvironment------------------------------------------------------
+Using functional programming this can be acheived as follows;
 
+1. pick a link from the list of pages to scrape
+2. write code to scrape the target info from that one page
+3. if code works, turn code into a **function**
+4. **map** the function to the whole list of url links (remember to throttle requests as explained above and to allow for failed attempts)
+5. tabulate results
+
+Below is sample script in R for a recent webscraping project I did recently using the principles above toobtain the data to create [this dashboard.]("https://petertoc.github.io/flexdashoard") hosted on github pages.
+
+
+```{r, eval = FALSE, echo = TRUE}
+
+# script to extract to webscrape indeed for entry level data scientist
+
+# Author: Peter Boshe
+# Version: 2022-05-07
+
+# Packages
+library(tidyverse)
 library(rvest)
 library(httr)
-library(purrr)
-library(dplyr)
-library(ggplot2)
-library(DT)
+library(broom)
+require(wordcloud2)
+require(tm)
+
+# Parameters
+url <- "https://www.indeed.com/jobs?q=entry%20level%20data%20scientist&l=Remote&from=searchOnHP&vjk=e4dd563aa0c5df59"
+domain <- "https://www.indeed.com"
+file_out <- here::here("data/table.rds")
+file_out2 <- here::here("data/wordcloud.html")
+report <- here::here("index.Rmd")
+html_output <- here:: here("docs/")
+log_output <- here::here("data/logs/")
+
+# ============================================================================
+
+# Code
+
+
+
+html <- url |>
+  GET(timeout(60)) |>
+  read_html()
+
+
+job_title <- html |>
+  html_nodes("span[title]") |>
+  html_text()
+
+
+company <- html |>
+  html_nodes("span.companyName") |>
+  html_text()
+
+location <- html |>
+  html_nodes("div.companyLocation") |>
+  html_text()
+
+
+links <- html |>
+  html_nodes(xpath = "/html/body//tbody//div[1]/h2/a") |>
+  html_attr("href")
+
+max_length <- length(job_title)
+df <- data.frame(job_title,
+                 company,
+                 location,
+                 domain,
+                 links) |>
+  mutate(url_link = str_c(domain,"",links)) |>
+  select(job_title, company, location, url_link)
+
+
+# second iteration through the links --------------------------------------
+
+# test with one link
+
+# x <- "https://www.indeed.com/rc/clk?jk=655e1551430353b4&fccid=11619ce0d3c2c733&vjs=3"
+
+extract_description <- function(x) {
+
+  Sys.sleep(2) # to pause between requests
+
+  cat(".") # stone age progress bar
+
+  # html2 <- read_html(x)
+  html2 <- x |>
+    GET(timeout(60)) |> # important to not get timed out in some of the requests
+    read_html()
+
+  job_description <- html2 |>
+    html_nodes(xpath = '//*[@id="jobDescriptionText"]') |>
+    html_text() |>
+    str_squish()
+
+  count_r <- job_description |>
+    str_count('[./ ,]R{1}[./ ,]')
+
+  r_present <- job_description |>
+    str_detect('[./ ,]R{1}[./ ,]')
+
+
+  data.frame(job_description = job_description,
+         r_present = r_present,
+         count_r = count_r)    #important to name the variables to avoid script failure
+
+}
+
+
+# functional programming for the win! -------------------------------------
+
+
+listed_df <- df |>
+  mutate(description = map(url_link, safely(~ extract_description(.x), otherwise = NA_character_)))
+
+
+# Our new data set --------------------------------------------------------
+
+indeed_df <- listed_df |>
+  unnest(description) |>
+  unnest(description) |>
+  arrange(desc(count_r))
+
+# Write out table
+
+write_rds(indeed_df,file_out)
+
+
+# word cloud --------------------------------------------------------------
+
+
+
+df <- indeed_df
+
+# text mining
+# create corpus function
+corpus_tm <- function(x){
+  corpus_tm <- Corpus(VectorSource(x))
+}
+#create corpus
+df |>
+  pull(job_description) |>
+  unlist() |> # might need to remove
+  corpus_tm() ->corpus_descriptions
+
+#inspect corpus
+# summary(corpus_descriptions)
+
+corpus_descriptions |>
+  tm_map(removePunctuation) |>
+  tm_map(stripWhitespace) |>
+  tm_map(content_transformer(function(x) iconv(x, to='UTF-8', sub='byte'))) |>
+  tm_map(removeNumbers) |>
+  tm_map(removeWords, stopwords("en")) |>
+  tm_map(content_transformer(tolower)) |>
+  tm_map(removeWords, c("etc","ie","eg", stopwords("english"))) -> clean_corpus_descriptions
+
+# inspect content
+
+#clean_corpus_descriptions[[1]]$content
+
+# create termdocumentmatrix to attain frequent terms
+
+find_freq_terms_fun <- function(corpus_in){
+  doc_term_mat <- TermDocumentMatrix(corpus_in)
+  freq_terms <- findFreqTerms(doc_term_mat)[1:max(doc_term_mat$nrow)]
+  terms_grouped <- doc_term_mat[freq_terms,] %>%
+    as.matrix() %>%
+    rowSums() %>%
+    data.frame(Term=freq_terms, Frequency = .) %>%
+    arrange(desc(Frequency)) %>%
+    mutate(prop_term_to_total_terms=Frequency/nrow(.))
+  return(data.frame(terms_grouped))
+}
+
+description_freq_terms <- data.frame(find_freq_terms_fun(clean_corpus_descriptions))
+
+# save out wordcloud
+
+htmlwidgets::saveWidget(wordcloud2::wordcloud2(description_freq_terms[,1:2], shape="circle",
+                                               size=1.6, color='random-light', backgroundColor="#7D1854"),  #ED581F
+                        file = file_out2,
+                        selfcontained = FALSE)
+
+# knit report
+
+rmarkdown::render(report, output_dir = html_output)
+
+
+# clean environment
+rm(list = ls())
+
 
 
 ```
- 
-```{r, eval=FALSE, message=FALSE,warning=FALSE}
-
-
-#loadthehtml-----------------------------------------------------------
-
-response<-GET("https://www.dse.co.tz/")
-html<-content(response)
-status_code(response)
-
-```
-</details>
 
 
 
 
-2. Extract Required Data
-
-<details>
-<summary>Click for Code</summary>
-```{r extraction,eval=FALSE,warning=FALSE,message=FALSE}
-#extractanycompanynames--------------------------------------------
-
-company<-html%>%
-html_nodes(xpath='//table//tr/td/a')%>%
-html_text()
-
-#extractPrice----------------------------------------------------
-
-price<-html%>%
-html_nodes(xpath='//table//tr/td[a]')%>%
-html_nodes(xpath='..')%>%
-html_nodes(xpath='td[position()=2]')%>%
-html_text()
-
-#Extractingchange-------------------------------------------------------
-
-change<-html%>%
-html_nodes(xpath='//table//tr/td[a]')%>%
-html_nodes(xpath='..')%>%
-html_nodes(xpath='td[position()=3]')%>%
-html_text()
-
-```
-</details>
 
 
 
 
-3. Creating Data frame
-
-<details>
-<summary>Click for Code</summary>
-```{r dataframe, eval=FALSE}
-#creatingdataframeforanalysis-----------------------------------------
-gainers_losers<-data.frame(company=company,
-price=price,
-change=change)
-
-```
-</details>
 
 
 
-4. Data Scrubbing
-
-<details>
-<summary>Click for Code</summary>
-```{r scrub,  eval=FALSE}
-# clean data --------------------------------------------------------------
-gainers_losers$company = as.factor(gainers_losers$company)
-gainers_losers$price = as.numeric(gsub(",", "", gainers_losers$price))
-gainers_losers$percent_change = as.numeric(gsub("%", "", gainers_losers$change))
-
-gainers_losers <- gainers_losers %>% 
-  mutate(pos = percent_change >= 0)
-
-```
-</details>
-
-
-
-5. Analysis and Visualization
-
-Let's take a glimpse at the data in a table
-
-<details>
-<summary>Click for Code</summary>
-```{r, echo=TRUE, eval=FALSE}
-datatable(gainers_losers)
-```
-</details>
-
-
-```{r table, echo=FALSE, eval=FALSE}
-datatable(gainers_losers)
-```
-
-Now that we have our data in a format that is convenient for analysis we can get to the fun part, exploration!
-
-
-
-
-1. Sample Plot 1
-
-<details>
-<summary>Click for Code</summary>
-```{r, echo=TRUE, eval=FALSE}
-# visualization of the data -----------------------------------------------
-ggplot(gainers_losers, aes(price, reorder(company,price))) + 
-  geom_segment(aes(yend = company), 
-               xend = 0,
-               size = 7,
-               color = "#46843B") + 
-  geom_point(size = 6, 
-             color = "#46843B") +
-  scale_x_continuous("", limits = c(0,8000), position = "top") +
-  geom_vline(xintercept = mean(gainers_losers$price), 
-             linetype="longdash",
-             color = "#A0512A", 
-             size = 1.1) +
-  theme_minimal() +
-  theme(
-    legend.position="none",
-    axis.text = element_text(color = "black")
-  )  +
-  labs(title = "Price of Stock",
-       subtitle = "- dashed line represents mean stock price for listed companies",
-       caption = "Source: Dar es Salaam Stock Exchange PLC") +
-  xlab("") +
-  ylab("")
-```
-</details>
-
-
-```{r fig1,  eval=FALSE,echo=FALSE}
-# visualization of the data -----------------------------------------------
-ggplot(gainers_losers, aes(price, reorder(company,price))) + 
-  geom_segment(aes(yend = company), 
-               xend = 0,
-               size = 7,
-               color = "#46843B") + 
-  geom_point(size = 6, 
-             color = "#46843B") +
-  scale_x_continuous("", limits = c(0,8000), position = "top") +
-  geom_vline(xintercept = mean(gainers_losers$price), 
-             linetype="longdash",
-             color = "#A0512A", 
-             size = 1.1) +
-  theme_minimal() +
-  theme(
-    legend.position="none",
-    axis.text = element_text(color = "black")
-  )  +
-  labs(title = "Price of Stock",
-       subtitle = "- dashed line represents mean stock price for listed companies",
-       caption = "Source: Dar es Salaam Stock Exchange PLC") +
-  xlab("") +
-  ylab("")
-```
-
-
-
-
-2. Sample Plot 2
-
-<details>
-<summary>Click for Code</summary>
-```{r, echo=TRUE, eval=FALSE}
-ggplot(gainers_losers, aes(as.factor(company), percent_change, fill = pos)) +
-  geom_col(position = "identity", color = "black") +
-  scale_fill_manual(values = c("#A0512A", "#46843B"), guide = FALSE) +
-  theme_minimal() +
-  theme(
-    legend.position="none",
-    axis.text = element_text(color = "black")
-  )  +
-  labs(title = "Percent Change in Stock Prices",
-       caption = "Source: Dar es Salaam Stock Exchange PLC") +
-  xlab("") +
-  ylab("change in %")
-```
-</details>
-
-
-
-```{r fig2,  eval=FALSE,echo=FALSE}
-
-ggplot(gainers_losers, aes(as.factor(company), percent_change, fill = pos)) +
-  geom_col(position = "identity", color = "black") +
-  scale_fill_manual(values = c("#A0512A", "#46843B"), guide = FALSE) +
-  theme_minimal() +
-  theme(
-    legend.position="none",
-    axis.text = element_text(color = "black")
-  )  +
-  labs(title = "Percent Change in Stock Prices",
-       caption = "Source: Dar es Salaam Stock Exchange PLC") +
-  xlab("") +
-  ylab("change in %")
-
-```
