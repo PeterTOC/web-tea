@@ -8,7 +8,7 @@ tags: ["Unguided Project", "Data Mining", "Web Scraping"]
 output:
   blogdown::html_page:
     toc: true
-    toc_depth: 2
+    toc_depth: 4
 images: []
 summary: "In this article we take a look at how we can scrape raw information/data from websites without the hassle of copying and pasting and clicking and retyping whole data tables and ~then~ analysing your data."
 draft: true
@@ -17,9 +17,16 @@ draft: true
 
 <div id="TOC">
 <ul>
-<li><a href="#why-web-scrape">Why Web Scrape? 😄</a></li>
-<li><a href="#web-scraping-etiquette">Web Scraping Etiquette</a></li>
-<li><a href="#web-scraping-demonstration">Web Scraping Demonstration</a></li>
+<li><a href="#why-web-scrape" id="toc-why-web-scrape">Why Web Scrape? 😄</a></li>
+<li><a href="#web-scraping-etiquette" id="toc-web-scraping-etiquette">Web Scraping Etiquette</a></li>
+<li><a href="#web-scraping-tenets" id="toc-web-scraping-tenets">Web scraping tenets</a>
+<ul>
+<li><a href="#xpaths-over-css-selectors" id="toc-xpaths-over-css-selectors">- Xpaths over CSS selectors</a></li>
+<li><a href="#hope-for-the-best-plan-for-the-worst" id="toc-hope-for-the-best-plan-for-the-worst">- Hope for the best, Plan for the worst</a></li>
+<li><a href="#if-your-internet-is-shaky-increase-your-timeout-limit" id="toc-if-your-internet-is-shaky-increase-your-timeout-limit">- If your Internet is shaky, increase your timeout limit</a></li>
+<li><a href="#functional-programming-for-the-win" id="toc-functional-programming-for-the-win">- Functional programming FOR THE WIN!</a></li>
+</ul></li>
+<li><a href="#sample-code" id="toc-sample-code">Sample code</a></li>
 </ul>
 </div>
 
@@ -38,171 +45,195 @@ draft: true
 <p>Well this relates to a lot of things and Data Scraping is no exception.</p>
 <p>The following are three staples for scraping politeness;</p>
 <ol style="list-style-type: decimal">
-<li><p><strong>Introduction</strong></p>
-<p>It is always a good idea to leave an introductory note in the <code>User-Agent</code> Field, the note should include your email and purpose of scraping. exaple below;</p></li>
+<li><p><strong>Introduce yourself</strong></p>
+<p>It is always a good idea to leave an introductory note in the <code>User-Agent</code> Field, the note should include your email and purpose of scraping. exaple below; <!-- #REVIEW to check alternative for r --></p></li>
 <li><p><strong>Throttle your requests</strong></p>
 <p>As web scraping by code does not offer the natural buffer between requests to a website like one would do when retrieving the data manually, and while servers for websites like Wikipedia would likely not feel a thing. One can easily overload a server if the frequency of requests is not supported, especially when dealing with large amounts of data. If many people are simultaneously trying to get a massive amount of data this could easily overwhelm the system which can hurt a service provider, we do not want that..</p></li>
 <li><p><strong>Cite your source</strong></p>
 <p>Well this golden rule depends on the reason of scraping, It is always Imperative that we cite our data sources in any publication.</p></li>
 </ol>
+<p>Now let me introduce you to my personal tenets to web scraping I have learned to abide by given my experience;</p>
 </div>
-<div id="web-scraping-demonstration" class="section level2">
-<h2>Web Scraping Demonstration</h2>
-<p>Our sample target site is a website with <a href="https://www.dse.co.tz/">Dar es Salaam Stock Exchange data</a>.</p>
-<p>Lets say we were trying to extract data from the table labelled <code>GAINERS &amp; LOSERS</code></p>
-<div class="figure">
-<img src="images/webscrape01.png" title="Snapshot 1" alt="" />
-<p class="caption">Table in the Html to extract</p>
+<div id="web-scraping-tenets" class="section level2">
+<h2>Web scraping tenets</h2>
+<div id="xpaths-over-css-selectors" class="section level4">
+<h4>- Xpaths over CSS selectors</h4>
+<p>When web scraping you are going to want to select items of interest from the target of interest, and depending on what language you use to code, it normally comes down to whether you are going to identify the items for your script by their <strong>CSS/HTML</strong> tags or by their <strong>Xpaths</strong>. From my recent endeavors I have found the latter to be a more robust option as the xpaths tend to be more uniform throughout most pages.</p>
 </div>
-<p>by pressing <code>F12</code> we can inspect the html page elements so we know the identifiers of our table of interest.</p>
-<div class="figure">
-<img src="images/webscrape02.png" title="snapshot 2" alt="" />
-<p class="caption">Inspecting Html element</p>
+<div id="hope-for-the-best-plan-for-the-worst" class="section level4">
+<h4>- Hope for the best, Plan for the worst</h4>
+<p>While scraping it’s good practice to test out your script on the web pages of interest, we are not always sure the web format will always remain the same in the future. So it is important to have a contingency plan, for instance you would much rather have your script impute ’NA’s on items it failed to scrape and continue with its scraping, instead of having your script fail and stop on its first obstacle. In R this can be achieved by functions like <code>safely()</code> and <code>possibly()</code> in the tidyverse ecosystem.</p>
 </div>
+<div id="if-your-internet-is-shaky-increase-your-timeout-limit" class="section level4">
+<h4>- If your Internet is shaky, increase your timeout limit</h4>
+<p>I, for one, do not have very reliable internet service so my script kept getting timed out in between the requests, and when you are timed out, your script goes sit on a corner 😄. You get an error with no results. as a solution I simply increased my timeout limit to 60 seconds and I had no further issues.</p>
+</div>
+<div id="functional-programming-for-the-win" class="section level4">
+<h4>- Functional programming FOR THE WIN!</h4>
+<p>This is a concept I learned of recently that eases the process of repetitive tasks.</p>
+<p>For instance, for a task where we are supposed to scrape a parent page, extract the links of several job posts from the parent page, then extract information from the individual pages from each of the links scraped from the parent page. Writing code to scrape each page individually will be time draining, to say the least.</p>
+<p>Using functional programming this can be achieved as follows;</p>
 <ol style="list-style-type: decimal">
-<li>Prepare Environment</li>
+<li>Pick a link from the list of pages to scrape</li>
+<li>Write code to scrape the target info from that one page</li>
+<li>If code works, turn code into a <strong>function</strong></li>
+<li><strong>Map</strong> the function to the whole list of URL links (remember to throttle requests as explained above and to allow for failed attempts)</li>
+<li>Tabulate results</li>
 </ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code>#setupenvironment------------------------------------------------------
+<p>Below is sample script in R for a recent web scraping project I did recently using the principles above to obtain the data to create <a href="%22https://petertoc.github.io/flexdashoard%22">this dashboard.</a> hosted on github pages.</p>
+</div>
+</div>
+<div id="sample-code" class="section level2">
+<h2>Sample code</h2>
+<pre class="r"><code># script to web scrape indeed website for entry level data scientist
+# Author: Peter Boshe
+# Version: 2022-05-07
+# Packages
+library(tidyverse) #wrangling
+library(rvest) #harvest html
+library(httr) #download html
+library(broom) #tidy data
+require(wordcloud2)
+require(tm)
+# Parameters
+url &lt;- &quot;https://www.indeed.com/jobs?q=entry%20level%20data%20scientist&amp;l=Remote&amp;from=searchOnHP&amp;vjk=e4dd563aa0c5df59&quot;
+domain &lt;- &quot;https://www.indeed.com&quot;
+file_out &lt;- here::here(&quot;data/table.rds&quot;)
+file_out2 &lt;- here::here(&quot;data/wordcloud.html&quot;)
+report &lt;- here::here(&quot;index.Rmd&quot;)
+html_output &lt;- here:: here(&quot;docs/&quot;)
+log_output &lt;- here::here(&quot;data/logs/&quot;)
+# ============================================================================
 
-library(rvest)
-library(httr)
-library(purrr)
-library(dplyr)
-library(ggplot2)
-library(DT)
+
+# Download parent page and components --------------------------------------
+
+# download webpage
+html &lt;- url |&gt;
+  GET(timeout(60)) |&gt;
+  read_html()
+# scrape job titles
+job_title &lt;- html |&gt;
+  html_nodes(&quot;span[title]&quot;) |&gt; # scraping using html/Css 
+  html_text()
+# scrape company names
+company &lt;- html |&gt;
+  html_nodes(&quot;span.companyName&quot;) |&gt; 
+  html_text()
+# scrape company location
+location &lt;- html |&gt;
+  html_nodes(&quot;div.companyLocation&quot;) |&gt;
+  html_text()
+# scrape the links to the individual pages
+links &lt;- html |&gt;
+  html_nodes(xpath = &quot;/html/body//tbody//div[1]/h2/a&quot;) |&gt; # scraping using xpaths
+  html_attr(&quot;href&quot;)
+# create the dataframe of scraped info (first round)
+max_length &lt;- length(job_title)
+df &lt;- data.frame(job_title,
+                 company,
+                 location,
+                 domain,
+                 links) |&gt;
+  mutate(url_link = str_c(domain,&quot;&quot;,links)) |&gt; # to have the links in a format the scraper will understand
+  select(job_title, company, location, url_link)
+
+
+# second iteration through the links --------------------------------------
+
+# functional programming for the win! -------------------------------------
+# test with one link
+# x &lt;- &quot;https://www.indeed.com/rc/clk?jk=655e1551430353b4&amp;fccid=11619ce0d3c2c733&amp;vjs=3&quot;
+
+
+# create function to extract info from the page
+extract_description &lt;- function(x) {
+  Sys.sleep(2) # to pause between requests (throttle your requests)
+  cat(&quot;.&quot;) # stone age progress bar
+  # html2 &lt;- read_html(x)
+  # download child page
+  html2 &lt;- x |&gt;
+    GET(timeout(60)) |&gt; # important to not get timed out in some of the requests
+    read_html()
+  job_description &lt;- html2 |&gt;
+    html_nodes(xpath = &#39;//*[@id=&quot;jobDescriptionText&quot;]&#39;) |&gt;
+    html_text() |&gt;
+    str_squish()
+  count_r &lt;- job_description |&gt;
+    str_count(&#39;[./ ,]R{1}[./ ,]&#39;)
+  r_present &lt;- job_description |&gt;
+    str_detect(&#39;[./ ,]R{1}[./ ,]&#39;)
+  data.frame(job_description = job_description,
+         r_present = r_present,
+         count_r = count_r)    #important to name the variables to avoid script failure
+
+}
+
+# mapping -------------------------------------
+listed_df &lt;- df |&gt;
+  mutate(description = map(url_link, safely(~ extract_description(.x), otherwise = NA_character_)))
+
+# Our new data set --------------------------------------------------------
+indeed_df &lt;- listed_df |&gt;
+  unnest(description) |&gt;
+  unnest(description) |&gt;
+  arrange(desc(count_r))
+# Write out table
+write_rds(indeed_df,file_out)
+
+# word cloud (BONUS) --------------------------------------------------------------
+df &lt;- indeed_df
+# text mining
+# create corpus function
+corpus_tm &lt;- function(x){
+  corpus_tm &lt;- Corpus(VectorSource(x))
+}
+#create corpus
+df |&gt;
+  pull(job_description) |&gt;
+  unlist() |&gt; # might need to remove
+  corpus_tm() -&gt;corpus_descriptions
+
+#inspect corpus
+# summary(corpus_descriptions)
+
+corpus_descriptions |&gt;
+  tm_map(removePunctuation) |&gt;
+  tm_map(stripWhitespace) |&gt;
+  tm_map(content_transformer(function(x) iconv(x, to=&#39;UTF-8&#39;, sub=&#39;byte&#39;))) |&gt;
+  tm_map(removeNumbers) |&gt;
+  tm_map(removeWords, stopwords(&quot;en&quot;)) |&gt;
+  tm_map(content_transformer(tolower)) |&gt;
+  tm_map(removeWords, c(&quot;etc&quot;,&quot;ie&quot;,&quot;eg&quot;, stopwords(&quot;english&quot;))) -&gt; clean_corpus_descriptions
+
+# inspect content
+#clean_corpus_descriptions[[1]]$content
+
+# create termdocumentmatrix to attain frequent terms
+find_freq_terms_fun &lt;- function(corpus_in){
+  doc_term_mat &lt;- TermDocumentMatrix(corpus_in)
+  freq_terms &lt;- findFreqTerms(doc_term_mat)[1:max(doc_term_mat$nrow)]
+  terms_grouped &lt;- doc_term_mat[freq_terms,] %&gt;%
+    as.matrix() %&gt;%
+    rowSums() %&gt;%
+    data.frame(Term=freq_terms, Frequency = .) %&gt;%
+    arrange(desc(Frequency)) %&gt;%
+    mutate(prop_term_to_total_terms=Frequency/nrow(.))
+  return(data.frame(terms_grouped))
+}
+
+description_freq_terms &lt;- data.frame(find_freq_terms_fun(clean_corpus_descriptions))
+
+# save out wordcloud
+htmlwidgets::saveWidget(wordcloud2::wordcloud2(description_freq_terms[,1:2], shape=&quot;circle&quot;,
+                                               size=1.6, color=&#39;random-light&#39;, backgroundColor=&quot;#7D1854&quot;),  #ED581F
+                        file = file_out2,
+                        selfcontained = FALSE)
+
+# knit report manually, if desired
+rmarkdown::render(report, output_dir = html_output)
+
+# clean environment
+rm(list = ls())
 </code></pre>
-<pre class="r"><code>
-
-#loadthehtml-----------------------------------------------------------
-
-response&lt;-GET(&quot;https://www.dse.co.tz/&quot;)
-html&lt;-content(response)
-status_code(response)
-</code></pre>
-</details>
-<ol start="2" style="list-style-type: decimal">
-<li>Extract Required Data</li>
-</ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code>#extractanycompanynames--------------------------------------------
-
-company&lt;-html%&gt;%
-html_nodes(xpath=&#39;//table//tr/td/a&#39;)%&gt;%
-html_text()
-
-#extractPrice----------------------------------------------------
-
-price&lt;-html%&gt;%
-html_nodes(xpath=&#39;//table//tr/td[a]&#39;)%&gt;%
-html_nodes(xpath=&#39;..&#39;)%&gt;%
-html_nodes(xpath=&#39;td[position()=2]&#39;)%&gt;%
-html_text()
-
-#Extractingchange-------------------------------------------------------
-
-change&lt;-html%&gt;%
-html_nodes(xpath=&#39;//table//tr/td[a]&#39;)%&gt;%
-html_nodes(xpath=&#39;..&#39;)%&gt;%
-html_nodes(xpath=&#39;td[position()=3]&#39;)%&gt;%
-html_text()
-</code></pre>
-</details>
-<ol start="3" style="list-style-type: decimal">
-<li>Creating Data frame</li>
-</ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code>#creatingdataframeforanalysis-----------------------------------------
-gainers_losers&lt;-data.frame(company=company,
-price=price,
-change=change)
-</code></pre>
-</details>
-<ol start="4" style="list-style-type: decimal">
-<li>Data Scrubbing</li>
-</ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code># clean data --------------------------------------------------------------
-gainers_losers$company = as.factor(gainers_losers$company)
-gainers_losers$price = as.numeric(gsub(&quot;,&quot;, &quot;&quot;, gainers_losers$price))
-gainers_losers$percent_change = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, gainers_losers$change))
-
-gainers_losers &lt;- gainers_losers %&gt;% 
-  mutate(pos = percent_change &gt;= 0)
-</code></pre>
-</details>
-<ol start="5" style="list-style-type: decimal">
-<li>Analysis and Visualization</li>
-</ol>
-<p>Let’s take a glimpse at the data in a table</p>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code>datatable(gainers_losers)</code></pre>
-</details>
-<p>Now that we have our data in a format that is convenient for analysis we can get to the fun part, exploration!</p>
-<ol style="list-style-type: decimal">
-<li>Sample Plot 1</li>
-</ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code># visualization of the data -----------------------------------------------
-ggplot(gainers_losers, aes(price, reorder(company,price))) + 
-  geom_segment(aes(yend = company), 
-               xend = 0,
-               size = 7,
-               color = &quot;#46843B&quot;) + 
-  geom_point(size = 6, 
-             color = &quot;#46843B&quot;) +
-  scale_x_continuous(&quot;&quot;, limits = c(0,8000), position = &quot;top&quot;) +
-  geom_vline(xintercept = mean(gainers_losers$price), 
-             linetype=&quot;longdash&quot;,
-             color = &quot;#A0512A&quot;, 
-             size = 1.1) +
-  theme_minimal() +
-  theme(
-    legend.position=&quot;none&quot;,
-    axis.text = element_text(color = &quot;black&quot;)
-  )  +
-  labs(title = &quot;Price of Stock&quot;,
-       subtitle = &quot;- dashed line represents mean stock price for listed companies&quot;,
-       caption = &quot;Source: Dar es Salaam Stock Exchange PLC&quot;) +
-  xlab(&quot;&quot;) +
-  ylab(&quot;&quot;)</code></pre>
-</details>
-<ol start="2" style="list-style-type: decimal">
-<li>Sample Plot 2</li>
-</ol>
-<details>
-<summary>
-Click for Code
-</summary>
-<pre class="r"><code>ggplot(gainers_losers, aes(as.factor(company), percent_change, fill = pos)) +
-  geom_col(position = &quot;identity&quot;, color = &quot;black&quot;) +
-  scale_fill_manual(values = c(&quot;#A0512A&quot;, &quot;#46843B&quot;), guide = FALSE) +
-  theme_minimal() +
-  theme(
-    legend.position=&quot;none&quot;,
-    axis.text = element_text(color = &quot;black&quot;)
-  )  +
-  labs(title = &quot;Percent Change in Stock Prices&quot;,
-       caption = &quot;Source: Dar es Salaam Stock Exchange PLC&quot;) +
-  xlab(&quot;&quot;) +
-  ylab(&quot;change in %&quot;)</code></pre>
-</details>
 </div>
