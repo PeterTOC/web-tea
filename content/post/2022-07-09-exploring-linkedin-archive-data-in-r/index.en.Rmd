@@ -1,0 +1,48 @@
+---
+title: Exploring LinkedIn archive data in R
+author: ''
+date: '2022-07-09'
+slug: exploring-linkedin-archive-data-in-r
+categories:
+  - Educational
+tags:
+  - Data Analysis
+  - Data Mining
+  - E.D.A
+  - Unguided project
+images: []
+authors: []
+draft: true
+---
+
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(skimr)
+library(visdat)
+library(lubridate)
+
+# parameters
+
+#input
+file_raw <- here::here("content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/Connections.csv")
+
+```
+
+
+```{r}
+df <- read_csv(file_raw,
+               skip = 2)
+
+df |> 
+  clean_names() |> 
+  mutate(connected_on = dmy(connected_on),
+         month = month(connected_on),
+         date = day(connected_on),
+         year = year(connected_on),
+         day = wday(connected_on, label = TRUE, abbr = TRUE),
+         week = week(connected_on)) |> 
+  view()
+```
+

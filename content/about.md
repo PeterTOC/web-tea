@@ -7,7 +7,6 @@ images: []
 ---
 
 
-
 # Hi, I'm Peter Boshe :wave:
 
 
@@ -39,6 +38,10 @@ When I am not up-skilling or earning a buck, I enjoy playing pc games (currently
 | **H20, TidyModels**       | Modelling and prediction.                                                                                                                                                                  |
 | **Tableau & PowerBI**     | Dashboard building.                                                                                                                                                                        |
 | **Cron & Bash scripting** |  Task Automation on Linux systems                                                                                                                                                          |
+
+## Experience
+
+<iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1GYo4JIg2xWV_CC-TU8jFvjTrW_odf7k6aV_yw3ZvAAI&font=Fjalla-Average&lang=en&initial_zoom=2&height=550' width='100%' height='550' webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>
 
 ## :telescope: Fields Explored;
 

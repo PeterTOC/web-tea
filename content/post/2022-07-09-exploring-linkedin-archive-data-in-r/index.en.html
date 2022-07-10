@@ -1,0 +1,64 @@
+---
+title: Exploring LinkedIn archive data in R
+author: ''
+date: '2022-07-09'
+slug: exploring-linkedin-archive-data-in-r
+categories:
+  - Educational
+tags:
+  - Data Analysis
+  - Data Mining
+  - E.D.A
+  - Unguided project
+images: []
+authors: []
+draft: true
+---
+
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tidyr   1.2.0     ✔ stringr 1.4.0
+## ✔ readr   2.1.2     ✔ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(janitor)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;janitor&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     chisq.test, fisher.test</code></pre>
+<pre class="r"><code>library(skimr)
+library(visdat)
+library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r"><code># parameters
+
+#input
+file_raw &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/Connections.csv&quot;)</code></pre>
+<pre class="r"><code>df &lt;- read_csv(file_raw,
+               skip = 2)</code></pre>
+<pre><code>## Rows: 632 Columns: 6
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (6): First Name, Last Name, Email Address, Company, Position, Connected On
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>df |&gt; 
+  clean_names() |&gt; 
+  mutate(connected_on = dmy(connected_on),
+         month = month(connected_on),
+         date = day(connected_on),
+         year = year(connected_on),
+         day = wday(connected_on, label = TRUE, abbr = TRUE),
+         week = week(connected_on)) |&gt; 
+  view()</code></pre>
