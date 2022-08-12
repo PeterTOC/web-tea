@@ -27,7 +27,7 @@ library(lubridate)
 
 #input
 file_raw <- here::here("content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/Connections.csv")
-
+file_raw2 <- here::here("content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/gendered_names.csv")
 ```
 
 
@@ -35,7 +35,8 @@ file_raw <- here::here("content/post/2022-07-09-exploring-linkedin-archive-data-
 df <- read_csv(file_raw,
                skip = 2)
 
-df |> 
+# clean dataframe
+linked_df <- df |> 
   clean_names() |> 
   mutate(connected_on = dmy(connected_on),
          month = month(connected_on),
@@ -43,6 +44,85 @@ df |>
          year = year(connected_on),
          day = wday(connected_on, label = TRUE, abbr = TRUE),
          week = week(connected_on)) |> 
-  view()
+  mutate_if(is.character,tolower)
+
+# create a dataframe of gender predictions
+
+#using genderizeR API
+# library(genderizeR)
+# 
+# given_names <- findGivenNames()
+# linked_df %>% 
+#     distinct(first_name, last_name) %>% view()
+# names <- distinct(linked_df, first_name)
+# prepped_names <- textPrepare(names)
+# found_nanes <- findGivenNames(prepped_names,
+#                               textPrepare = FALSE)
+# write_csv(found_names, here::here("content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/gendered_names.csv"))
+
+gendered_names <- read_csv(file_raw2) |> 
+  select(name,gender)
+
+linked_df |> 
+  left_join(gendered_names, by = c("first_name" = "name")) |> 
+  select(first_name,
+         last_name,
+         gender,
+         everything()) |> 
+  count(mean(!is.na(gender)))
+ 
+linked_df2 <- linked_df |> 
+  left_join(gendered_names, by = c("first_name" = "name")) |> 
+  select(first_name,
+         last_name,
+         gender,
+         everything())
+#> If you find this package useful cite it please. Thank you!
+#> See: citation('genderizeR')
+
 ```
 
+
+```{r}
+count(linked_df2, day)
+```
+
+
+
+```{r}
+library(fmsb)
+
+
+limits2 <- data.frame(Sun = c(200, 100),
+                     Mon = c(200, 100), 
+                     Tue = c(200, 100), 
+                     Wed = c(200, 100), 
+                     Thu = c(200, 100), 
+                     Fri = c(200, 100), 
+                     Sat = c(200, 100))
+
+radar_df2 <- limits2 |> 
+  bind_rows(count(linked_df2, day) |>
+  # transmute(day, prop = n / sum(n)) |>
+  pivot_wider(names_from = day, values_from = n))
+
+radarchart(radar_df2, axistype=1 , 
+ 
+    #custom polygon
+    pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 ,
+ 
+    #custom the grid
+    cglcol="grey", cglty=1, axislabcol="grey", caxislabels=c("100", "125", "150", "175", "200"), cglwd=0.8, centerzero = TRUE,
+ 
+    #custom labels
+    vlcex=0.8 )
+
+# try number of connections divided by 7 for better proportions
+
+```
+# new connections by year
+# new connections by year cummulative
+# company distribution
+# position distribution
+# gender distribution
+# Bonus view (YoY, avg. daily connection rate)

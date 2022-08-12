@@ -41,7 +41,8 @@ When I am not up-skilling or earning a buck, I enjoy playing pc games (currently
 
 ## Experience
 
-<iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1GYo4JIg2xWV_CC-TU8jFvjTrW_odf7k6aV_yw3ZvAAI&font=Fjalla-Average&lang=en&initial_zoom=2&height=550' width='100%' height='550' webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>
+
+<iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1GYo4JIg2xWV_CC-TU8jFvjTrW_odf7k6aV_yw3ZvAAI&font=Fjalla-Average&lang=en&start_at_end=true&initial_zoom=2&height=550' width='100%' height='550' webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe>
 
 ## :telescope: Fields Explored;
 

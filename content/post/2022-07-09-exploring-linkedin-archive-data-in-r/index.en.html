@@ -43,7 +43,8 @@ library(lubridate)</code></pre>
 <pre class="r"><code># parameters
 
 #input
-file_raw &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/Connections.csv&quot;)</code></pre>
+file_raw &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/Connections.csv&quot;)
+file_raw2 &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/gendered_names.csv&quot;)</code></pre>
 <pre class="r"><code>df &lt;- read_csv(file_raw,
                skip = 2)</code></pre>
 <pre><code>## Rows: 632 Columns: 6
@@ -53,7 +54,8 @@ file_raw &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archi
 ## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>df |&gt; 
+<pre class="r"><code># clean dataframe
+linked_df &lt;- df |&gt; 
   clean_names() |&gt; 
   mutate(connected_on = dmy(connected_on),
          month = month(connected_on),
@@ -61,4 +63,105 @@ file_raw &lt;- here::here(&quot;content/post/2022-07-09-exploring-linkedin-archi
          year = year(connected_on),
          day = wday(connected_on, label = TRUE, abbr = TRUE),
          week = week(connected_on)) |&gt; 
-  view()</code></pre>
+  mutate_if(is.character,tolower)
+
+# create a dataframe of gender predictions
+
+#using genderizeR API
+# library(genderizeR)
+# 
+# given_names &lt;- findGivenNames()
+# linked_df %&gt;% 
+#     distinct(first_name, last_name) %&gt;% view()
+# names &lt;- distinct(linked_df, first_name)
+# prepped_names &lt;- textPrepare(names)
+# found_nanes &lt;- findGivenNames(prepped_names,
+#                               textPrepare = FALSE)
+# write_csv(found_names, here::here(&quot;content/post/2022-07-09-exploring-linkedin-archive-data-in-r/data/gendered_names.csv&quot;))
+
+gendered_names &lt;- read_csv(file_raw2) |&gt; 
+  select(name,gender)</code></pre>
+<pre><code>## Rows: 996 Columns: 5
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): name, gender, country_id
+## dbl (2): probability, count
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>linked_df |&gt; 
+  left_join(gendered_names, by = c(&quot;first_name&quot; = &quot;name&quot;)) |&gt; 
+  select(first_name,
+         last_name,
+         gender,
+         everything()) |&gt; 
+  count(mean(!is.na(gender)))</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##   `mean(!is.na(gender))`     n
+##                    &lt;dbl&gt; &lt;int&gt;
+## 1                  0.872  1121</code></pre>
+<pre class="r"><code>linked_df2 &lt;- linked_df |&gt; 
+  left_join(gendered_names, by = c(&quot;first_name&quot; = &quot;name&quot;)) |&gt; 
+  select(first_name,
+         last_name,
+         gender,
+         everything())
+#&gt; If you find this package useful cite it please. Thank you!
+#&gt; See: citation(&#39;genderizeR&#39;)</code></pre>
+<pre class="r"><code>count(linked_df2, day)</code></pre>
+<pre><code>## # A tibble: 7 × 2
+##   day       n
+##   &lt;ord&gt; &lt;int&gt;
+## 1 Sun     161
+## 2 Mon     185
+## 3 Tue     156
+## 4 Wed     166
+## 5 Thu     175
+## 6 Fri     162
+## 7 Sat     116</code></pre>
+<pre class="r"><code>library(fmsb)
+
+
+limits2 &lt;- data.frame(Sun = c(200, 100),
+                     Mon = c(200, 100), 
+                     Tue = c(200, 100), 
+                     Wed = c(200, 100), 
+                     Thu = c(200, 100), 
+                     Fri = c(200, 100), 
+                     Sat = c(200, 100))
+
+radar_df2 &lt;- limits2 |&gt; 
+  bind_rows(count(linked_df2, day) |&gt;
+  # transmute(day, prop = n / sum(n)) |&gt;
+  pivot_wider(names_from = day, values_from = n))
+
+radarchart(radar_df2, axistype=1 , 
+ 
+    #custom polygon
+    pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=4 ,
+ 
+    #custom the grid
+    cglcol=&quot;grey&quot;, cglty=1, axislabcol=&quot;grey&quot;, caxislabels=c(&quot;100&quot;, &quot;125&quot;, &quot;150&quot;, &quot;175&quot;, &quot;200&quot;), cglwd=0.8, centerzero = TRUE,
+ 
+    #custom labels
+    vlcex=0.8 )</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code># try number of connections divided by 7 for better proportions</code></pre>
+<div id="new-connections-by-year" class="section level1">
+<h1>new connections by year</h1>
+</div>
+<div id="new-connections-by-year-cummulative" class="section level1">
+<h1>new connections by year cummulative</h1>
+</div>
+<div id="company-distribution" class="section level1">
+<h1>company distribution</h1>
+</div>
+<div id="position-distribution" class="section level1">
+<h1>position distribution</h1>
+</div>
+<div id="gender-distribution" class="section level1">
+<h1>gender distribution</h1>
+</div>
+<div id="bonus-view-yoy-avg.-daily-connection-rate" class="section level1">
+<h1>Bonus view (YoY, avg. daily connection rate)</h1>
+</div>
